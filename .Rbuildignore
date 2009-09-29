@@ -1,0 +1,5 @@
+R/fBasics.R
+R/misc.zoo.R
+man/defaultfrequency.Rd
+inst/doc/.*\.log
+inst/doc/.*\.dvi
