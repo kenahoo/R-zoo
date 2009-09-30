@@ -10,7 +10,7 @@ interfaces to \code{read.table} and \code{write.table}, respectively.
 }
 \usage{
 read.zoo(file, format = "", tz = "", FUN = NULL,
-  regular = FALSE, index.column = 1, drop = TRUE, make.unique = NULL,
+  regular = FALSE, index.column = 1, drop = TRUE, FUN2 = NULL,
   split = NULL, aggregate = FALSE, \dots)
 write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NULL, \dots)
 }
@@ -38,9 +38,8 @@ write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NUL
     because the row names are just character representations of the index.}
   \item{col.names}{logical. Should column names be written? Default is to
     write column names only if \code{x} has column names.}
-  \item{make.unique}{function. It is applied to the time index after 
-    \code{FUN} and before \code{aggregate} normally intended to make 
-    duplicate index values unique.}
+  \item{FUN2}{function. It is applied to the time index after 
+    \code{FUN} and before \code{aggregate}.}
   \item{split}{NULL or column number or name or vector of numbers or 
    names. If not NULL then the data is assumed to be in long format and is 
    split according to the indicated columns.  See the R 
@@ -117,7 +116,7 @@ index column in the
 as shown in the examples below.
 }
 
-\seealso{\code{\link{zoo}}, \code{\link{make.unique}}}
+\seealso{\code{\link{zoo}}}
 
 \examples{
 \dontrun{

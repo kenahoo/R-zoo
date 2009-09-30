@@ -1,5 +1,5 @@
 read.zoo <- function(file, format = "", tz = "", FUN = NULL,
-  regular = FALSE, index.column = 1, drop = TRUE, make.unique = NULL, 
+  regular = FALSE, index.column = 1, drop = TRUE, FUN2 = NULL, 
   split = NULL, aggregate = FALSE, ...)
 {
   ## `file' and `...' is simply passed to read.table
@@ -82,9 +82,9 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
     else FUN(ix, format = format, tz = tz)
   }
 
-  if (!is.null(make.unique)) {
-	make.unique <- match.fun(make.unique)
-	ix <- make.unique(ix)
+  if (!is.null(FUN2)) {
+	FUN2 <- match.fun(FUN2)
+	ix <- FUN2(ix)
   }
   
   ## sanity checking
