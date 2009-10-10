@@ -13,7 +13,7 @@ as.yearmon.yearqtr <- function(x, frac = 0, ...) {
 as.yearmon.dates <- 
 as.yearmon.Date <- 
 as.yearmon.POSIXt <- function(x, ...) as.yearmon(with(as.POSIXlt(x, tz="GMT"), 1900 + year + mon/12))
-# as.jul.yearmon <- function(x, ...) jul(as.Date(x, ...)) # jul is from fame pkg
+# as.jul.yearmon <- function(x, ...) jul(as.Date(x, ...)) # jul is from tis pkg
 as.yearmon.timeDate <-
 as.yearmon.jul <- function(x, ...) as.yearmon(as.Date(x, ...))
 as.yearmon.factor <- function(x, ...) as.yearmon(as.character(x), ...)

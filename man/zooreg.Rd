@@ -60,7 +60,7 @@ and strictly regular series. Internally, it is the same as \code{"zoo"} except
 it also has a \code{"frequency"} attribute. Its index class is more restricted 
 than \code{"zoo"}. The index: 1. must be numeric or a class which can be coerced
 via \code{as.numeric} (such as \code{\link{yearmon}}, \code{\link{yearqtr}},
-\code{\link{Date}}, \code{\link{POSIXct}}, \code{\link[fame]{tis}}, 
+\code{\link{Date}}, \code{\link{POSIXct}}, \code{\link[tis]{tis}}, 
 \code{\link[xts]{xts}}, etc.). 
 2. when converted to numeric
 must be expressible as multiples of 1/frequency. 3.

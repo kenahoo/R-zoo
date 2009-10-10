@@ -7,8 +7,8 @@ as.yearqtr.default <- function(x, ...) as.yearqtr(as.numeric(x))
 as.yearqtr.numeric <- function(x, ...) structure(floor(4*x + .0001)/4, class = "yearqtr")
 as.yearqtr.integer <- function(x, ...) structure(x, class = "yearqtr")
 
-# as.jul.yearqtr <- function(x, ...) jul(as.Date(x, ...)) # jul is from fame
-as.yearqtr.jul <- # jul is in fame package
+# as.jul.yearqtr <- function(x, ...) jul(as.Date(x, ...)) # jul is from tis
+as.yearqtr.jul <- # jul is in tis package
 as.yearqtr.timeDate <-
 as.yearqtr.dates <-
 as.yearqtr.Date <- 
