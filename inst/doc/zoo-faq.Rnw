@@ -491,4 +491,19 @@ detach("package:timeSeries")
 \pkg{YaleToolkit} & Data exploration tools from Yale University: accepts \code{"zoo"} input \\ \hline
 \end{tabular}
 
+\mysection[12. Why does \code{ifelse} not work as I expect?]
+The R \code{ifelse} function has a behavior that many do not expect (even when not used in conjunction with zoo).  To be safe, when using \code{ifelse} with zoo always make sure that the three arguments have the same index.  The first \code{ifelse} below is wrong since the three arguments do not have the same time index. The next two examles correct this.  In general, the easiest way to ensure that they all have the same time index is to merge them together first as in the second \code{ifelse} below.
+<<ifelse>>=
+z <- zoo(c(1, 5, 10, 15))
+# wrong
+ifelse(diff(z) > 4, -z, z)
+
+# merge first
+xm <- merge(z, dif = diff(z))
+with(xm, ifelse(dif > 4, -z, z))
+
+# in this case we alternately could use na.pad = TRUE
+ifelse(diff(z, na.pad = TRUE) > 4, -z, z)
+@
+
 \end{document}
