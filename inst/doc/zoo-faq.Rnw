@@ -491,7 +491,7 @@ detach("package:timeSeries")
 \pkg{YaleToolkit} & Data exploration tools from Yale University: accepts \code{"zoo"} input \\ \hline
 \end{tabular}
 
-\mysection[12. Why does \code{ifelse} not work as I expect?]
+\mysection[12. Why does ifelse not work as I expect?]{Why does \code{ifelse} not work as I expect?}
 The ordinary R \code{ifelse} function only works with zoo objects if all three arguments are zoo objects with the same time index.  \pkg{zoo} provides an \code{ifelse.zoo} function that should be used instead.  The \code{.zoo} part must be written out since \code{ifelse} is not generic.
 
 <<ifelse>>=
