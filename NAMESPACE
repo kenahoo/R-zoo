@@ -11,6 +11,7 @@ export(
   "as.zooreg.default",
   "cbind.zoo",
   "rbind.zoo",
+  "ifelse.zoo",
   "is.zoo",
   "merge.zoo",
   "read.zoo",

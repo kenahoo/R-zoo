@@ -37,6 +37,8 @@
 \alias{head.ts}
 \alias{tail.ts}
 
+\alias{ifelse.zoo}
+
 \title{Z's Ordered Observations}
 \description{
 \code{zoo} is the creator for an S3 class of indexed
@@ -127,6 +129,9 @@ include: \code{print} (see above), \code{summary}, \code{str}, \code{head},
 \code{plot} and \code{lines} (see \code{\link{plot.zoo}}). For multivariate
 \code{"zoo"} series with column names the \code{$} extractor is available,
 behaving similar as for \code{"data.frame"} objects.
+
+\code{ifelse.zoo} is not a method (because \code{ifelse} is not a generic) 
+but must be written out including the \code{.zoo} suffix.
 
 To \dQuote{prettify} printed output of \code{"zoo"} series the generic 
 function \code{index2char} is used for turning index values into character

@@ -243,4 +243,7 @@ rev.zoo <- function(x) {
 	zoo(coredata(x), time(x)[rev(ORDER(time(x)))])
 }
 
-
+ifelse.zoo <- function(test, yes, no) {
+	merge(test, yes, no, retclass = NULL)
+	ifelse(test, yes, no)
+}
