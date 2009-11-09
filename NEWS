@@ -6,9 +6,6 @@ Changes in Version 1.6-0
 
   o read.zoo() now optionally accepts a data frame for the file argument
 
-  o new function make.unique.approx() for resolving duplicate index values.  
-    Also new make.unique argument to read.zoo().
-
   o better error message in read.zoo() if NAs found in index
 
   o read.zoo() now accepts a split argument that allows reading in of datasets
@@ -16,11 +13,14 @@ Changes in Version 1.6-0
 
   o Methods for cbind(), merge(), rbind(), and c() now ignore NULL arguments
 
-  o fixed unique.yearmon and unique.yearqtr
+  o fixed unique() methods for "yearmon" and "yearqtr" objects  
+
+  o fixed a bug in group generic functions and -() generic for
+    "yearmon" and "yearqtr" objects
 
   o plot.zoo now accepts vector lwd
 
-  o rev.zoo
+  o new rev() method for "zoo" objects
 
 
 Changes in Version 1.5-8

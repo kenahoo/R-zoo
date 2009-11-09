@@ -113,7 +113,7 @@ Ops.yearmon <- function(e1, e2) {
     e1 <- as.numeric(as.yearmon(e1))
     e2 <- as.numeric(as.yearmon(e2))
     rval <- NextMethod(.Generic)
-    if(is.numeric(rval)) rval <- as.yearmon(rval)
+    rval <- yearmon(rval)
     return(rval)
 }
 
@@ -127,7 +127,7 @@ Ops.yearmon <- function(e1, e2) {
         return(as.numeric(e1) - as.numeric(e2))
     if (!is.null(attr(e2, "class"))) 
       stop("can only subtract yearmon objects and numbers from yearmon objects")
-    structure(unclass(as.yearmon(e1)) - e2, class = "yearmon")
+    yearmon(e1 - e2)
 }
 
 is.numeric.yearmon <- function(x) FALSE
