@@ -1,6 +1,5 @@
 zoo <- function (x = NULL, order.by = index(x), frequency = NULL) 
 {
-    #Z: why do we need this?# if (is.data.frame(x)) stop("first argument to zoo may not be a data frame")
     ## process index "order.by"    
     if(length(unique(MATCH(order.by, order.by))) < length(order.by))
       warning(paste("some methods for", dQuote("zoo"),
@@ -50,7 +49,6 @@ print.zoo <- function (x, style = ifelse(length(dim(x)) == 0,
     if (is.null(dim(x)) && length(x) == 0) style <- "plain"
     if (length(dim(x)) > 0 && style == "horizontal") style <- "plain"
     if (style == "vertical") {
-        # y <- format(eval(as.matrix(x), parent.frame(n = 3)))
 	y <- as.matrix(coredata(x))
         if (length(colnames(x)) < 1) {
             colnames(y) <- rep("", NCOL(x))

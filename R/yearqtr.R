@@ -148,7 +148,7 @@ Ops.yearqtr <- function(e1, e2) {
         return(as.numeric(e1) - as.numeric(e2))
     if (!is.null(attr(e2, "class"))) 
       stop("can only subtract yearqtr objects and numbers from yearqtr objects")
-    yearqtr(e1 - e2)
+    yearqtr(unclass(e1) - e2)
 }
 
 is.numeric.yearqtr <- function(x) FALSE

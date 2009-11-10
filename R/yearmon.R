@@ -127,7 +127,7 @@ Ops.yearmon <- function(e1, e2) {
         return(as.numeric(e1) - as.numeric(e2))
     if (!is.null(attr(e2, "class"))) 
       stop("can only subtract yearmon objects and numbers from yearmon objects")
-    yearmon(e1 - e2)
+    yearmon(unclass(e1) - e2)
 }
 
 is.numeric.yearmon <- function(x) FALSE

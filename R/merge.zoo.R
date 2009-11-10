@@ -10,6 +10,9 @@ rbind.zoo <- function(..., deparse.level = 1)
   }
   if(max(my.table(indexes)) > 1) stop("indexes overlap")
 
+  if(any(sapply(args, function(x) is.null(dim(x)) && length(x) == 0 && length(index(x)) > 0)))
+    stop("zero-length vectors with non-zero-length index are not allowed")  
+
   ncols <- sapply(args, NCOL)  
   if(!all(ncols == ncols[1])) stop("number of columns differ")
 
