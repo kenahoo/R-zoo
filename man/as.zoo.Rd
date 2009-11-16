@@ -32,7 +32,7 @@ as.zoo(x, \dots)
 
 \details{
 \code{as.zoo} currently has a default method and methods for \code{\link{ts}},
-\code{\link[its]{its}}, \code{\link[fts]{fts}}, \code{\link[tseries]{irts}},
+\code{\link[its]{itsDef}}, \code{\link[fts]{fts}}, \code{\link[tseries]{irts}},
 \code{\link[coda]{mcmc}}, \code{\link[tis]{tis}}, \code{\link[xts]{xts}} 
 objects (and \code{\link{zoo}} objects themselves).
 
@@ -50,7 +50,7 @@ always used.
 }
 
 \seealso{\code{\link{zoo}}, \code{\link{zooreg}}, \code{\link{ts}},
-  \code{\link[its]{its}}, \code{\link[tseries]{irts}}, 
+  \code{\link[its]{itsDef}}, \code{\link[tseries]{irts}}, 
   \code{\link[tis]{tis}}, \code{\link[fts]{fts}}, \code{\link[coda]{mcmc}},
   \code{\link[xts]{xts}}.
 }  
