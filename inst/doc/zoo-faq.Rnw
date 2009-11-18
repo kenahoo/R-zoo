@@ -97,18 +97,18 @@ wind up as \code{NA}s and we cannot have \code{NA} times.
 z[!is.na(time(z))]
 @
 
-An alternative to aggregating the data is to make the times unique
-by changing them slightly.  The facilities here are limited to 
-time classes for
-which addition by a number makes sense.  See the \code{make.unique.approx}
-and \code{make.unique.incr} functions which use interpolation or
-incrementing by a fixed number.  Interpolation has the further restriction
-that the interpolated result must make sense.  For example, it makes sense to
-interpolate \code{"POSIXct"} variables but not \code{"Date"} variables since
-the interpolation may fall between dates.
-Also see the \code{make.unique}
-argument to \code{read.zoo} which allows one to read in the data
-and make it unique all in one operation.  
+%% An alternative to aggregating the data is to make the times unique
+%% by changing them slightly.  The facilities here are limited to 
+%% time classes for
+%% which addition by a number makes sense.  See the \code{make.unique.approx}
+%% and \code{make.unique.incr} functions which use interpolation or
+%% incrementing by a fixed number.  Interpolation has the further restriction
+%% that the interpolated result must make sense.  For example, it makes sense to
+%% interpolate \code{"POSIXct"} variables but not \code{"Date"} variables since
+%% the interpolation may fall between dates.
+%% Also see the \code{make.unique}
+%% argument to \code{read.zoo} which allows one to read in the data
+%% and make it unique all in one operation.  
 
 The \code{read.zoo} command has an \code{aggregate} argument that
 supports arbitrary summarization.  For example, in the following
@@ -130,8 +130,8 @@ Lines <- "1|BHARTIARTL|EQ|18:15:05|600|1
 9|CHAMBLFERT|EQ|18:15:06|46|90
 10|BAJAUTOFIN|EQ|18:15:06|80|100"
 
-library(zoo)
-library(chron)
+library("zoo")
+library("chron")
 
 tail1 <- function(x) tail(x, 1)
 cls <- c("NULL", "NULL", "NULL", "character", "numeric", "numeric")
