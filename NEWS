@@ -1,6 +1,8 @@
-Changes in Version 1.6-0
+Changes in Version 1.6-1
 
   o xtfrm() methods for yearmon/yearqtr added.
+
+  o Bug fix in group generic functions for non-numeric return values.
 
 
 Changes in Version 1.6-0

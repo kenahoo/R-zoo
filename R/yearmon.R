@@ -113,7 +113,7 @@ Ops.yearmon <- function(e1, e2) {
     e1 <- as.numeric(as.yearmon(e1))
     e2 <- as.numeric(as.yearmon(e2))
     rval <- NextMethod(.Generic)
-    rval <- yearmon(rval)
+    if(is.numeric(rval)) rval <- yearmon(rval)
     return(rval)
 }
 
