@@ -1,5 +1,10 @@
 Changes in Version 1.6-0
 
+  o xtfrm() methods for yearmon/yearqtr added.
+
+
+Changes in Version 1.6-0
+
   o tis graphics support
 
   o workaround to eliminate as.Date.numeric() warning when zoo loads

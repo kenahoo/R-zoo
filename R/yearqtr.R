@@ -226,3 +226,4 @@ unique.yearqtr <- function(x, incomparables = FALSE, ...) {
 	as.yearqtr(unique.default(x, incomparables = incomparables, ...))
 }
 
+xtfrm.yearqtr <- function(x) xtfrm(as.vector(x))

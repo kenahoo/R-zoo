@@ -206,5 +206,6 @@ unique.yearmon <- function(x, incomparables = FALSE, ...) {
 	as.yearmon(unique.default(x, incomparables = incomparables, ...))
 }
 
+xtfrm.yearmon <- function(x) xtfrm(as.vector(x))
 
 
