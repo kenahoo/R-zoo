@@ -11,7 +11,7 @@ Changes in Version 1.6-0
   o read.zoo() now accepts a split argument that allows reading in of datasets
     in long format (where long is as defined in R's reshape command)
 
-  o Methods for cbind(), merge(), rbind(), and c() now ignore NULL arguments
+  o methods for cbind(), merge(), rbind(), and c() now ignore NULL arguments
 
   o fixed unique() methods for "yearmon" and "yearqtr" objects  
 
