@@ -34,7 +34,7 @@
 \alias{Summary.yearqtr}
 \alias{Sys.yearqtr}
 \alias{-.yearqtr}
-\alias{xtfrm.yearmon}
+\alias{xtfrm.yearqtr}
 
 \title{An Index Class for Quarterly Data}
 \description{
