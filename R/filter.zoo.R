@@ -12,7 +12,7 @@ filter.zoo <- function (x, ..., na.exclude = FALSE)
 	} else
 		if (length(dim(x)) < 2) {
 			filter(coredata(x), ...)
-		} else apply(coredata(x), 2, filter.zoo, ..., na.exclude = TRUE)
+		} else apply(coredata(x), 2, filter, ...)
 	x.
 }
 	
