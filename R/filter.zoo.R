@@ -90,7 +90,7 @@ cumsum.zoo <- function (x, na.exclude = FALSE)
 	x. <- x
 	if (na.exclude) x.[is.na(x)] <- 0
 	x.[] <- if (length(dim(x)) < 2) cumsum(coredata(x.))
-		else apply(coredata(x), 2, cumsum.zoo, na.exclude = TRUE)
+		else apply(coredata(x), 2, cumsum)
 	if (na.exclude) x.[is.na(x)] <- NA
 	x.
 }
