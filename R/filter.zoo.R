@@ -1,15 +1,22 @@
 
-filter.zoo <- function (x, ..., na.action) {
-
-	has.na.action <- !missing(na.action) && !is.null(na.action)
-	x. <- if (has.na.action) na.action(x) else x
-	fx <- filter(coredata(x.), ...)
-	fz <- zoo(coredata(fx), time(x.))
-	if (has.na.action) napredict(attr(x., "na.action"), fz) else fz
-
+filter.zoo <- function (x, ..., na.exclude = FALSE)
+{
+	if (length(x) == 0) return(x)
+	x. <- x
+	x.[] <- if (na.exclude) {
+		if (length(dim(x)) < 2) {
+			x.na <- na.exclude(x)
+			y <- filter(coredata(x.na), ...)
+			napredict(attr(x.na, "na.action"), y)
+		} else apply(coredata(x), 2, filter.zoo, ..., na.exclude = TRUE)
+	} else
+		if (length(dim(x)) < 2) {
+			filter(coredata(x), ...)
+		} else apply(coredata(x), 2, filter.zoo, ..., na.exclude = TRUE)
+	x.
 }
-
 	
+if (FALSE) {
 na.omit.zoo <- function (object, ...) 
 {
 	index <- index(object)
@@ -66,6 +73,7 @@ na.exclude.zoo <- function (object, ...)
     }
     object
 }
+}
 
 napredict.exclude.zoo <- function (omit, x, ...) 
 {
@@ -73,12 +81,17 @@ napredict.exclude.zoo <- function (omit, x, ...)
 	if (is.null(omit)) x else merge(zoo(, omit), x)
 }
 
-cumsum.zoo <- function (x, na.action) 
+cumsum.zoo <- function (x, na.exclude = FALSE)
 {
-	has.na.action <- !missing(na.action) && !is.null(na.action)
-	x. <- if (has.na.action) na.action(x) else x
-    x.[] <- if (length(dim(x.))) apply(coredata(x.), 2, cumsum)
-	else cumsum(coredata(x.))
-	if (has.na.action) napredict(attr(x., "na.action"), x.) else x.
+	# replace NA's with 0's, cumsum and put NA's back
+	# if x is 2d then do that for each column
+
+	if (length(x) == 0) return(x)
+	x. <- x
+	if (na.exclude) x.[is.na(x)] <- 0
+	x.[] <- if (length(dim(x)) < 2) cumsum(coredata(x.))
+		else apply(coredata(x), 2, cumsum.zoo, na.exclude = TRUE)
+	if (na.exclude) x.[is.na(x)] <- NA
+	x.
 }
 
