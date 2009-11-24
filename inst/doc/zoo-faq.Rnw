@@ -70,7 +70,7 @@ using the \code{aggregate.zoo} function.  Another way to do this
 is to use the \code{aggregate} argument of \code{read.zoo} which 
 will aggregate the zoo object read in by \code{read.zoo} all in one step.
 
-Note that in the example code below that \code{force} is the identity 
+Note that in the example code below that \code{identity} is the identity 
 function (i.e. it just returns its argument).  It 
 is an \pkg{R} core function:
 
@@ -81,11 +81,11 @@ z
 @
 Fix it up by averaging duplicates:
 <<duplicates2>>=
-aggregate(z, force, mean)
+aggregate(z, identity, mean)
 @
 Or, fix it up by taking last in each set of duplicates:
 <<duplicates3>>=
-aggregate(z, force, tail, 1)
+aggregate(z, identity, tail, 1)
 @
 Fix it up via interpolation of duplicate times
 <<duplicates4>>=
@@ -318,7 +318,7 @@ stores and allows recovery of the dates using \code{as.Date} and
 dd <- seq(as.Date("2000-01-01"), length = 5, by = 32)
 z <- zoo(1:5, as.yearmon2(dd))
 z
-aggregate(z, as.Date, force) 
+aggregate(z, as.Date, identity) 
 @
 
 \mysection[8. How are axes added to a plot created using plot.zoo?]{8. How are axes added to a plot created using \code{plot.zoo}?}

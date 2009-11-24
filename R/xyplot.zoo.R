@@ -97,7 +97,7 @@ xyplot.tis <- function(x, data,
   strip = TRUE,
   panel = panel.plot.default, ...)
 {
-  x <- aggregate(as.zoo(x), POSIXct, force)
+  x <- aggregate(as.zoo(x), POSIXct, identity)
   if (length(dim(x)) < 2) x <- zoo(matrix(coredata(x),,1), time(x))
 
   cn <- if (is.null(colnames(x))) paste("V", seq_len(NCOL(x)), sep = "")

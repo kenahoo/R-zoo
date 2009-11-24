@@ -334,10 +334,10 @@ z6 <- zoo(11:15, c(1, 1, 2, 2, 5))
 z6
 
 # fix it up by averaging duplicates
-aggregate(z6, force, mean)
+aggregate(z6, identity, mean)
 
 # or, fix it up by taking last in each set of duplicates
-aggregate(z6, force, tail, 1)
+aggregate(z6, identity, tail, 1)
 
 # fix it up via interpolation of duplicate times
 time(z6) <- na.approx(ifelse(duplicated(time(z6)), NA, time(z6)), na.rm = FALSE)
