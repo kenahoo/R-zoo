@@ -220,22 +220,21 @@ aggregate(zsec, to4sec, tail, 1)
 @
 Here is another example using the same \code{zsec} zoo object but this time
 rather than aggregating we truncate times to the second using the last data
-value for each such second.
+value for each such second. For large objects this will be much faster
+than using \code{aggregate.zoo} .
 
 <<one second grid>>=
 # tmp is zsec with time discretized into one second bins
 tmp <- zsec
 st <- start(tmp)
 Epoch <- st - as.numeric(st)
-time(tmp) <- as.integer(time(tmp) + 0.0001) + Epoch
+time(tmp) <- as.integer(time(tmp) + 1e-7) + Epoch
 
 # find index of last value in each one second interval
 ix <- !duplicated(time(tmp), fromLast = TRUE)
 
-# merge with grid and add back the attributes which were lost when we
-# used as.integer
-range. <- range(time(tmp))
-merge(tmp[ix], zoo(, seq(range.[1], range.[2], "sec")))
+# merge with grid 
+merge(tmp[ix], zoo(, seq(start(tmp), end(tmp), "sec")))
 
 @
 
