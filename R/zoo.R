@@ -9,14 +9,14 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
 
     if(missing(x) || is.null(x)) 
       x <- numeric()
-    else if (is.vector(x)) 
-      x <- rep(x, length.out = length(index))[index]
-    else if (is.factor(x))         
+    else if(is.factor(x))         
       x <- factor(rep(as.character(x), length.out = length(index))[index],
         levels = levels(x), ordered = is.ordered(x))
-    else if (is.matrix(x) || is.data.frame(x)) 
+    else if(is.matrix(x) || is.data.frame(x)) 
       x <- (x[rep(1:NROW(x), length.out = length(index)), , 
         drop = FALSE])[index, , drop = FALSE]
+    else if(is.atomic(x)) 
+      x <- rep(x, length.out = length(index))[index]
     else stop(paste(dQuote("x"), ": attempt to define illegal zoo object"))
     if(is.matrix(x) || is.data.frame(x)) x <- as.matrix(x)
 
