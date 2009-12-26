@@ -10,7 +10,7 @@ Description: An S3 class with methods for totally ordered indexed
 	are independence of a particular index/date/time class and
 	consistency with ts and base R by providing methods to extend
 	standard generics.
-Depends: R (>= 2.4.1), stats
+Depends: R (>= 2.8.0), stats
 Suggests: coda, chron, DAAG, fCalendar, fSeries, fts, its, lattice, strucchange,
 	timeDate, timeSeries, tis, tseries, xts
 Imports: stats, utils, graphics, grDevices, lattice
