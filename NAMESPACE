@@ -54,6 +54,8 @@ export(
   "na.spline.default",
   "na.trim",
   "na.trim.default",
+  "na.aggregate",
+  "na.aggregate.default",
 
 ## new index classes
   "yearmon",
