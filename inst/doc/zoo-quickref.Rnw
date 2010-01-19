@@ -236,6 +236,18 @@ ix <- !duplicated(time(tmp), fromLast = TRUE)
 # merge with grid 
 merge(tmp[ix], zoo(, seq(start(tmp), end(tmp), "sec")))
 
+# Here is a function which generalizes the above:
+
+intraday.discretise <- function(b, Nsec) {
+ st <- start(b)
+ time(b) <- Nsec * as.integer(time(b)+1e-7) %/% Nsec + st -
+ as.numeric(st)
+ ix <- !duplicated(time(b), fromLast = TRUE)
+ merge(b[ix], zoo(, seq(start(b), end(b), paste(Nsec, "sec"))))
+}
+
+intraday.discretise(zsec, 1)
+
 @
 
 \mysection{Query Yahoo! Finance}
