@@ -155,6 +155,32 @@ z <- read.zoo("foo.csv", header = TRUE, sep = ",", format = "\%m-\%d-\%Y")
 ## whitespace separated file with first column of form YYYY-mm-ddTHH:MM:SS
 ## and no headers.  T appears literally.  Requires chron 2.3-22 or later.
 z <- read.zoo("foo.csv", FUN = as.chron)
+
+# We use "NULL" in colClasses for those columns we don't need but in 
+# col.names we still have to include dummy names for them.  Of what 
+# is left the index is the first three columns (1:3) which we convert 
+# to chron class times in FUN and then truncate to 5 seconds in FUN2.  
+# Finally we use aggregate = mean to average over the 5 second intervals.
+
+Lines <- "CVX 20070201 9 30 51 73.25 81400 0
+CVX 20070201 9 30 51 73.25 100 0
+CVX 20070201 9 30 51 73.25 100 0
+CVX 20070201 9 30 51 73.25 300 0
+CVX 20070201 9 30 51 73.25 81400 0
+CVX 20070201 9 40 51 73.25 100 0
+CVX 20070201 9 40 52 73.25 100 0
+CVX 20070201 9 40 53 73.25 300 0"
+
+library(chron)
+
+z <- read.zoo(textConnection(Lines), 
+	colClasses = c("NULL", "NULL", "numeric", "numeric", "numeric", "numeric",
+		"numeric", "NULL"), 
+	col.names = c("V1", "V2", "V3", "V4", "V5", "Price", "Volume", "V8"),
+	index = 1:3, 
+	FUN = function(tt) times(paste(tt[,1], tt[,2], tt[,3], sep = ":")),
+	FUN2 = function(tt) trunc(tt, "00:00:05"),
+	aggregate = mean)
 }
 
 ## omit the read.table() phase and directly supply a data.frame
