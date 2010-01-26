@@ -27,8 +27,11 @@ write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NUL
     of the data. See details.}
   \item{regular}{logical. Should the series be coerced to class \code{"zooreg"}
     (if the series is regular)?}
-  \item{index.column}{integer. The column of the data frame in which the index/time
-    is stored.}
+  \item{index.column}{integer. The column of the data frame in which the 
+index/time is stored.  If the \code{read.table} \code{colClasses} argument
+is used and \code{"NULL"} is among its componennts of then \code{index.column}
+refers to the column numbers after the columns corresponding to \code{"NULL"}
+have been removed.}
   \item{drop}{logical. If the data frame contains just a single data column, should
     the second dimension be dropped?}
   \item{x}{a \code{"zoo"} object.}
