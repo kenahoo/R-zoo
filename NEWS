@@ -2,6 +2,9 @@ Changes in Version 1.6-3 (under development)
 
   o new function na.aggregate.
 
+  o xyplot.zoo rewritten; is now a wrapper around lattice:::xyplot.ts.
+    The help page and examples have been substantially revised.
+
 
 Changes in Version 1.6-2
 

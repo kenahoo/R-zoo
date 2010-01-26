@@ -22,6 +22,7 @@ export(
 ## plotting
   "plot.zoo",
   "make.par.list",
+## *** temporary -- these are Deprecated
   "panel.plot.default", 
   "panel.plot.custom",
 
@@ -69,7 +70,7 @@ export(
   "format.yearqtr",
   "Sys.yearqtr",
 
-# *** temporary -- change these to S3Method when lattice creates generics
+# *** temporary -- these are Deprecated
   "panel.lines.ts",
   "panel.lines.its",
   "panel.lines.tis",
@@ -78,22 +79,19 @@ export(
   "panel.points.its",
   "panel.points.tis",
   "panel.points.zoo",
-  "panel.segments.ts",
-  "panel.segments.its",
-  "panel.segments.tis",
-  "panel.segments.zoo",
   "panel.text.ts",
   "panel.text.its",
   "panel.text.tis",
   "panel.text.zoo",
+# *** are these actually used by anyone?
+  "panel.segments.ts",
+  "panel.segments.its",
+  "panel.segments.tis",
+  "panel.segments.zoo",
   "panel.rect.ts",
   "panel.rect.its",
   "panel.rect.tis",
   "panel.rect.zoo",
-  "panel.arrows.ts",
-  "panel.arrows.its",
-  "panel.arrows.tis",
-  "panel.arrows.zoo",
   "panel.polygon.ts",
   "panel.polygon.its",
   "panel.polygon.tis",
@@ -136,6 +134,9 @@ export(
   S3method("is.regular", "zoo")
   S3method("lag", "zoo")
   S3method("lines", "zoo")
+  S3method("llines", "zoo")
+  S3method("lpoints", "zoo")
+  S3method("ltext", "zoo")
   S3method("na.contiguous", "zoo")
   S3method("names", "zoo")
   S3method("names<-", "zoo")
@@ -181,7 +182,6 @@ export(
   S3method("rollmax", "ts")
   S3method("rollmean", "ts")
   S3method("rollmedian", "ts")
-  S3method("xyplot", "ts")
 
 ## methods for class irts
   S3method("coredata", "irts")
@@ -190,9 +190,15 @@ export(
 ## methods for class its
   S3method("coredata", "its")
   S3method("coredata<-", "its")
+  S3method("llines", "its")
+  S3method("lpoints", "its")
+  S3method("ltext", "its")
   S3method("xyplot", "its")
 
 ## methods for class tis
+  S3method("llines", "tis")
+  S3method("lpoints", "tis")
+  S3method("ltext", "tis")
   S3method("xyplot", "tis")
 
 ## methods for class yearmon
