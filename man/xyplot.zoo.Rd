@@ -220,7 +220,8 @@ xyplot(zm, xlim = xlim, scale = list(relation = "free"))
 # to avoid merging see xyplot.list() in the latticeExtra package.
 
 \dontrun{
-# playwith (>= 0.9)
+## playwith (>= 0.9)
+
 library("playwith")
 z3 <- zoo(cbind(a = rnorm(100), b = rnorm(100) + 1), as.Date(1:100))
 playwith(xyplot(z3), time.mode = TRUE)
@@ -235,6 +236,21 @@ playwith(xyplot(z3, type = "o"), labels = labs)
 # this returns indexes into times of clicked points 
 ids <- playGetIDs()
 z3[ids,]
+
+## another example of using playwith with zoo
+
+# set up data
+
+dat <- zoo(matrix(rnorm(100*100),ncol=100), Sys.Date()+1:100)
+colnames(dat) <- paste("Series", 1:100)
+
+# This will give you a spin button to choose the column to plot,
+# and a button to print out the current series number.
+
+library("playwith")
+playwith(xyplot(dat[,c(1,i)]),  parameters = list(i = 1:100,
+   do_something = function(playState) print(playState$env$i))
+
 }
 
 }
