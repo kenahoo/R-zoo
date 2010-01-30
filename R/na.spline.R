@@ -5,10 +5,11 @@ na.spline <- function(object, ...) UseMethod("na.spline")
 na.spline.default <- function(object, along = index(object), na.rm = TRUE, ...)
 {
 	along <- as.numeric(along)
+	along.index <- as.numeric(time(object))
 	na.spline.0 <- function(y) {
 		na <- is.na(y)
 		if(all(!na)) return(y)
-		y[na] <- splinefun(along[!na], y[!na], ...)(along[na])
+		y[na] <- splinefun(along.index[!na], y[!na], ...)(along[na])
 		return(y)
 	}
 

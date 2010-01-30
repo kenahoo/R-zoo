@@ -5,10 +5,11 @@ na.approx <- function(object, ...) UseMethod("na.approx")
 na.approx.default <- function(object, along = index(object), na.rm = TRUE, ...)
 {
 	along <- as.numeric(along)
+	along.index <- as.numeric(time(object))
 	na.approx.0 <- function(y) {
 		na <- is.na(y)
 		if(all(!na)) return(y)
-		y[na] <- approx(along[!na], y[!na], along[na], ...)$y
+		y[na] <- approx(along.index[!na], y[!na], along[na], ...)$y
 		return(y)
 	}
 
