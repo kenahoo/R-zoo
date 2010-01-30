@@ -53,7 +53,9 @@ print.zoo <- function (x, style = ifelse(length(dim(x)) == 0,
         if (length(colnames(x)) < 1) {
             colnames(y) <- rep("", NCOL(x))
         }
-        rownames(y) <- index2char(index(x), frequency = attr(x, "frequency"))
+		if (NROW(y) > 0) {
+			rownames(y) <- index2char(index(x), frequency = attr(x, "frequency"))
+		}
         print(y, quote = quote, ...)
     }
     else if (style == "horizontal") {

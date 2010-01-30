@@ -4,20 +4,22 @@ na.approx <- function(object, ...) UseMethod("na.approx")
 # along has to be numeric, is otherwise coerced
 na.approx.default <- function(object, along = index(object), na.rm = TRUE, ...)
 {
+	object.0 <- if (missing(along)) object else window(object, index = along)
 	along <- as.numeric(along)
 	along.index <- as.numeric(time(object))
 	na.approx.0 <- function(y) {
 		na <- is.na(y)
 		if(all(!na)) return(y)
-		y[na] <- approx(along.index[!na], y[!na], along[na], ...)$y
+		# y[na] <- approx(along.index[!na], y[!na], along[na], ...)$y
+		y <- approx(along.index[!na], y[!na], along, ...)$y
 		return(y)
 	}
 
-        object[] <- if (length(dim(object)) == 0) na.approx.0(object)
+        object.0[] <- if (length(dim(object)) == 0) na.approx.0(object)
         	else apply(object, 2, na.approx.0)
         if (na.rm) {
-            out <- na.omit(object)
+            out <- na.omit(object.0)
             attr(out, "na.action") <- NULL
             out
-        } else object
+        } else object.0
 }
