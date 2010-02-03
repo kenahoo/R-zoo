@@ -9,7 +9,9 @@ etc.
 }
 \usage{
 na.aggregate(object, \dots)
-\method{na.aggregate}{default}(object, by = 1, \dots, FUN = mean, na.rm = FALSE)
+\method{na.aggregate}{default}(object, by = 1, \dots, FUN = mean,
+             na.rm = FALSE, maxGapFilled = Inf)
+
 }
 \arguments{
   \item{object}{an object.}
@@ -21,6 +23,8 @@ na.aggregate(object, \dots)
   \item{FUN}{function to apply to the non-missing values in each group
     defined by \code{by}.} 
   \item{na.rm}{logical. Should any remaining \code{NA}s be removed?}
+  \item{maxGapFilled}{maximum number of consecutive \code{NA}s to
+    fill. Any longer gaps will be left alone.}
 }
 
 \value{

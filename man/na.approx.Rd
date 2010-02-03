@@ -10,16 +10,20 @@ values.
 }
 \usage{
 na.approx(object, \dots) 
-\method{na.approx}{default}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.approx}{default}(object, along = index(object), na.rm = TRUE,
+          maxGapFilled = Inf, \dots) 
 
 na.spline(object, \dots) 
-\method{na.spline}{default}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.spline}{default}(object, along = index(object), na.rm = TRUE,
+          maxGapFilled = Inf, \dots) 
 }
 \arguments{
   \item{object}{object in which \code{NA}s are to be replaced}
   \item{along}{variable to use for interpolation. Has to be numeric, is
     otherwise coerced to numeric.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
+  \item{maxGapFilled}{maximum number of consecutive \code{NA}s to
+    fill. Any longer gaps will be left alone.}
   \item{\dots}{further arguments passed to methods.}
 }
 
