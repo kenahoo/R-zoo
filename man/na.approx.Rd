@@ -1,7 +1,11 @@
 \name{na.approx}
 \alias{na.approx}
+\alias{na.approx.zoo}
+\alias{na.approx.zooreg}
 \alias{na.approx.default}
 \alias{na.spline}
+\alias{na.spline.zo}
+\alias{na.spline.zooreg}
 \alias{na.spline.default}
 \title{Replace NA by Interpolation}
 \description{

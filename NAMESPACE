@@ -48,10 +48,14 @@ export(
 
 ## NA operations
   "na.approx",
+  "na.approx.zoo",
+  "na.approx.zooreg",
   "na.approx.default",
   "na.locf",
   "na.locf.default",
   "na.spline",
+  "na.spline.zoo",
+  "na.spline.zooreg",
   "na.spline.default",
   "na.trim",
   "na.trim.default",
