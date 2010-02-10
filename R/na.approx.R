@@ -27,8 +27,14 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 		na <- is.na(y)
 		yf <- approx(x[!na], y[!na], along, ...)$y
 		if (maxgap < length(y)) {
-		    yalong <- approx(x, y, along, ...)$y
-		    .fill_short_gaps(yalong, yf, maxgap = maxgap)
+		    ## construct version of y with only gaps > maxgap
+		    ygap <- .fill_short_gaps(y, seq_along(y), maxgap = maxgap)
+		    ## construct y values at 'along', keeping NAs from ygap
+		    ## (approx() does not allow NAs to be propagated)
+		    ialong <- approx(x, seq_along(y), along, ...)$y
+		    yalong <- ifelse(is.na(ygap[floor(ialong)] + ygap[ceiling(ialong)]),
+					NA, yf)
+		    yalong
 		} else {
 		    yf
 		}
