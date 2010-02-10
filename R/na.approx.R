@@ -1,8 +1,13 @@
 na.approx <- function(object, ...) UseMethod("na.approx")
 
 na.approx.zoo <- function(object, along = index(object), na.rm = TRUE, ...) {
-	result <- na.approx.default(object, along = along, na.rm = FALSE, ...)
-	result <- zoo(result, along)
+
+	objectm <- merge(object, zoo(, along))
+	if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
+	result <- window(objectm, index = along)
+	result[] <- na.approx.default(coredata(objectm), along = as.numeric(along), 
+		na.rm = FALSE, ...)
+
     if (na.rm) {
             out <- na.omit(result)
             attr(out, "na.action") <- NULL
@@ -16,27 +21,36 @@ na.approx.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
 		frequency = frequency(object))
 }
 
-# interpolates object along along which defaults to index(object)
-# along has to be numeric, is otherwise coerced
-na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, ...)
-{
-	along.numeric <- as.numeric(along)
-	object.index <- as.numeric(time(object))
-	na.approx.0 <- function(y) {
+na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = 1, ...) {
+
+	na.approx.vec <- function(x, y, along) {
 		na <- is.na(y)
-		if(all(!na)) return(y)
-		# y[na] <- approx(along.index[!na], y[!na], along.numeric[na], ...)$y
-		yf <- approx(object.index[!na], y[!na], along.numeric, ...)$y
-		fillShortGaps(y, yf, maxgap = maxgap)
+		yf <- approx(x[!na], y[!na], along, ...)$y
+        # fillShortGaps(y, yf, maxgap = maxgap)
 	}
 
-        result <- structure(if (length(dim(object)) == 0) na.approx.0(object)
-        	else apply(object, 2, na.approx.0), class = class(object))
-        if (na.rm) {
+	along.numeric <- as.numeric(along)
+	x <- as.numeric(index(object))
+	stopifnot(all(along.numeric %in% x))
+
+	objcore <- coredata(object)
+
+	result <- if (missing(along)) { object
+	} else if (length(dim(objcore)) < 2) {
+		object[x %in% along.numeric]
+	} else object[x %in% along.numeric, ]
+
+	result[] <- if (length(dim(objcore)) < 2) {
+		na.approx.vec(x = x, y = objcore, along = along.numeric)
+	} else {
+		apply(objcore, 2, na.approx.vec, x = x, along = along.numeric)
+	}
+
+    if (na.rm) {
             out <- na.omit(result)
             attr(out, "na.action") <- NULL
             out
-        } else result
+    } else result
 }
 
 fillShortGaps <- function(x, fill, maxgap = 1)
