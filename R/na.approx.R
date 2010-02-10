@@ -21,12 +21,17 @@ na.approx.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
 		frequency = frequency(object))
 }
 
-na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = 1, ...) {
+na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, ...) {
 
-	na.approx.vec <- function(x, y, along) {
+	na.approx.vec <- function(x, y, along, ...) {
 		na <- is.na(y)
 		yf <- approx(x[!na], y[!na], along, ...)$y
-        # fillShortGaps(y, yf, maxgap = maxgap)
+		if (maxgap < length(y)) {
+		    yalong <- approx(x, y, along, ...)$y
+		    fillShortGaps(yalong, yf, maxgap = maxgap)
+		} else {
+		    yf
+		}
 	}
 
 	along.numeric <- as.numeric(along)
@@ -41,9 +46,9 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 	} else object[x %in% along.numeric, ]
 
 	result[] <- if (length(dim(objcore)) < 2) {
-		na.approx.vec(x = x, y = objcore, along = along.numeric)
+		na.approx.vec(x = x, y = objcore, along = along.numeric, ...)
 	} else {
-		apply(objcore, 2, na.approx.vec, x = x, along = along.numeric)
+		apply(objcore, 2, na.approx.vec, x = x, along = along.numeric, ...)
 	}
 
     if (na.rm) {
@@ -53,7 +58,9 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
     } else result
 }
 
-fillShortGaps <- function(x, fill, maxgap = 1)
+## x = series with gaps
+## fill = same series with filled gaps
+fillShortGaps <- function(x, fill, maxgap)
 {
     if (maxgap <= 0)
         return(x)
