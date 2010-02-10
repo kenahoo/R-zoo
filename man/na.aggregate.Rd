@@ -24,7 +24,7 @@ na.aggregate(object, \dots)
     defined by \code{by}.} 
   \item{na.rm}{logical. Should any remaining \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
-    fill. Any longer gaps will be left alone.}
+    fill. Any longer gaps will be left unchanged.}
 }
 
 \value{

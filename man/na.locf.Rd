@@ -22,7 +22,7 @@ na.locf(object, na.rm = TRUE, \dots)
   \item{rev}{Use \code{fromLast} instead.  This argument will
     be eliminated in the future in favor of \code{fromLast}.}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
-    fill. Any longer gaps will be left alone.}
+    fill. Any longer gaps will be left unchanged.}
   \item{\dots}{further arguments passed to methods.}
 }
 

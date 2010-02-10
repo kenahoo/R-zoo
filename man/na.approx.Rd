@@ -27,7 +27,7 @@ na.spline(object, \dots)
     otherwise coerced to numeric.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
-    fill. Any longer gaps will be left alone.}
+    fill. Any longer gaps will be left unchanged.}
   \item{\dots}{further arguments passed to methods.}
 }
 
