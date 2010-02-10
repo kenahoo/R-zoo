@@ -28,7 +28,7 @@ na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxga
 		na <- is.na(y)
 		if(all(!na)) return(y)
 		yf <- splinefun(object.index[!na], y[!na], ...)(along)
-		fillShortGaps(y, yf, maxgap = maxgap)
+		.fill_short_gaps(y, yf, maxgap = maxgap)
 	}
 
         result <- structure(if (length(dim(object)) == 0) na.spline.0(object)

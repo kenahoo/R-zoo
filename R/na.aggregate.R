@@ -10,7 +10,7 @@ na.aggregate.default <- function(object, by = 1, ..., FUN = mean, na.rm = FALSE,
         replace(x, is.na(x), FUN(x[!is.na(x)]))
     na.aggregate.0 <- function(y) {
         yf <- ave(y, by, FUN = f)
-        fillShortGaps(y, yf, maxgap = maxgap)
+        .fill_short_gaps(y, yf, maxgap = maxgap)
     }
     object[] <- if (length(dim(object)) == 0) na.aggregate.0(object)
                 else apply(object, 2, na.aggregate.0)

@@ -18,7 +18,7 @@ na.locf.default <- function(object, na.rm = TRUE, fromLast, rev, maxgap = Inf, .
 	  	x
 	      }
 	      xf <- na.index(x, idx)
-              fillShortGaps(x, xf, maxgap = maxgap)
+              .fill_short_gaps(x, xf, maxgap = maxgap)
 	}
    	if (!missing(rev)) {
 	   warning("na.locf.default: rev= deprecated. Use fromLast= instead.")

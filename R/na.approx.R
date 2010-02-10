@@ -28,7 +28,7 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 		yf <- approx(x[!na], y[!na], along, ...)$y
 		if (maxgap < length(y)) {
 		    yalong <- approx(x, y, along, ...)$y
-		    fillShortGaps(yalong, yf, maxgap = maxgap)
+		    .fill_short_gaps(yalong, yf, maxgap = maxgap)
 		} else {
 		    yf
 		}
@@ -60,7 +60,7 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 
 ## x = series with gaps
 ## fill = same series with filled gaps
-fillShortGaps <- function(x, fill, maxgap)
+.fill_short_gaps <- function(x, fill, maxgap)
 {
     if (maxgap <= 0)
         return(x)
