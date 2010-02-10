@@ -50,16 +50,15 @@
 \usage{
 \method{xyplot}{zoo}(x, data, ...)
 
-## a.k.a. panel.lines, panel.points, panel.text:
 \method{llines}{zoo}(x, y = NULL, ...)
 \method{lpoints}{zoo}(x, y = NULL, ...)
 \method{ltext}{zoo}(x, y = NULL, ...)
 
-## may be removed at some point:
 panel.segments.zoo(x0, x1, ...)
 panel.rect.zoo(x0, x1, ...)
 panel.polygon.zoo(x, ...)
 }
+
 \arguments{
   \item{x, x0, x1}{time series object of class \code{"zoo"}, \code{"its"} or 
   \code{"tis"}.  For \code{panel.plot.default} it should be a numeric
@@ -97,6 +96,7 @@ panel.polygon.zoo(x, ...)
  }
  }
 }
+
 \details{
   \code{xyplot.zoo} plots a \code{"zoo"}, \code{"its"} or \code{"tis"}
   object using \code{\link[lattice]{xyplot.ts}} from
@@ -114,16 +114,25 @@ panel.polygon.zoo(x, ...)
   Note that since \pkg{zoo} 1.6-3 \code{plot.panel.default} and
   \code{plot.panel.custom} are no longer necessary, as normal panel
   functions (\code{\link[lattice]{panel.xyplot}} by default) will work.
+  
+  Similarly \code{panel.lines}, \code{panel.points}, and \code{panel.text}
+  have been replaced by their appropriate \pkg{lattice} counterparts:
+  \code{\link[lattice]{llines}}, \code{\link[lattice]{lpoints}}, and
+  \code{\link[lattice]{ltext}}, respectively. The old interfaces may be
+  removed in future versions along with the other old panel functions
+  (\code{panel.segments}, \code{panel.rect}, \code{panel.polygon}).
 }
+
 \value{
   Invisibly returns a \code{"trellis"} class object. Printing this
   object using \code{print} will display it.
 }
+
 \seealso{\code{\link[lattice]{xyplot.ts}}, \code{\link{zoo}},
   \code{\link{plot.ts}}, \code{\link{barplot}}, \code{\link{plot.zoo}}}
+
 \examples{
-library("lattice")
-library("grid")
+if(require("lattice") & require("grid")) {
 
 # change strip background to levels of grey
 # If you like the defaults, this can be omitted.
@@ -159,7 +168,7 @@ xyplot(z, panel = function(x, y, ...) {
 trellis.focus("panel", 1, 2)
 grid.rect(x = 2, w = 1, default.units = "native", 
   gp = gpar(fill = "light grey"))
-#do.call("panel.xyplot", trellis.panelArgs())
+# do.call("panel.xyplot", trellis.panelArgs())
 do.call("panel.lines", trellis.panelArgs()[1:2])
 trellis.unfocus()
 # a better method is to use a custom panel function.
@@ -219,10 +228,12 @@ xlim <- lapply(zm, function(x) range(time(na.omit(x))))
 xyplot(zm, xlim = xlim, scale = list(relation = "free"))
 # to avoid merging see xyplot.list() in the latticeExtra package.
 
+}
+
 \dontrun{
 ## playwith (>= 0.9)
-
 library("playwith")
+
 z3 <- zoo(cbind(a = rnorm(100), b = rnorm(100) + 1), as.Date(1:100))
 playwith(xyplot(z3), time.mode = TRUE)
 # hold down Shift key and drag to zoom in to a time period.
@@ -238,21 +249,18 @@ ids <- playGetIDs()
 z3[ids,]
 
 ## another example of using playwith with zoo
-
 # set up data
-
 dat <- zoo(matrix(rnorm(100*100),ncol=100), Sys.Date()+1:100)
 colnames(dat) <- paste("Series", 1:100)
 
 # This will give you a spin button to choose the column to plot,
 # and a button to print out the current series number.
-
-library("playwith")
 playwith(xyplot(dat[,c(1,i)]),  parameters = list(i = 1:100,
    do_something = function(playState) print(playState$env$i))
 
 }
 
 }
+
 \keyword{hplot}
 \keyword{ts}

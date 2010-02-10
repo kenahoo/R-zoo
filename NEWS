@@ -1,9 +1,13 @@
-Changes in Version 1.6-3 (under development)
+Changes in Version 1.6-3
 
-  o new function na.aggregate.
+  o new function na.aggregate().
 
-  o xyplot.zoo rewritten; is now a wrapper around lattice:::xyplot.ts.
-    The help page and examples have been substantially revised.
+  o new maxGapFilled argument for na.*() methods.
+
+  o xyplot() method rewritten; is now a wrapper around the xyplot()
+    method for "ts" objects in the "lattice" package (lattice:::xyplot.ts).
+    Accompanying infrastructure (llines(), lpoints(), ltext(), etc.),
+    help page, and examples have been substantially revised and expanded.    
 
 
 Changes in Version 1.6-2

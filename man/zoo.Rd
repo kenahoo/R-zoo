@@ -288,7 +288,8 @@ z$xyz <- zoo(rnorm(3), 2:4)
 z
 
 ## add comments to a zoo object
-comment(x1) <- c("This is a very simple example of a zoo object.", "It can be recreated using this R code: example(zoo)")
+comment(x1) <- c("This is a very simple example of a zoo object.",
+  "It can be recreated using this R code: example(zoo)")
 ## comments are not output by default but are still there
 x1
 comment(x1)
@@ -356,16 +357,14 @@ colnames (x2) <- c ("B", "C", "D", "E")
 both.dates = as.Date (intersect (index (t1), index (t2)))
 both.cols = intersect (colnames (t1), colnames (t2))
 
-x1 [both.dates, both.cols]
-
-##
-## there is "[.zoo" but no "[<-.zoo" however these 4 work
-##
+x1[both.dates, both.cols]
+## there is "[.zoo" but no "[<-.zoo" however four of the following
+## five examples work
 
 ## wrong
 ## x1[both.dates, both.cols] <- x2[both.dates, both.cols]
 
-# 4 correct alternates
+# 4 correct alternatives
 # #1
 window(x1, both.dates)[, both.cols] <- x2[both.dates, both.cols]
 
@@ -380,8 +379,6 @@ x1[time(x1) %in% both.dates, both.cols] <- x2[both.dates, both.cols]
 # #4. restore x1 and show a different way
 x1 <- x1.
 x1[time(x1) %in% both.dates, both.cols] <- x2[time(t2) %in% both.dates, both.cols]
-
-
 
 }
 
