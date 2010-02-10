@@ -1,6 +1,7 @@
 R/fBasics.R
 R/misc.zoo.R
 R/filter.zoo.R
+R/lagts.R
 man/defaultfrequency.Rd
 inst/doc/.*\.log
 inst/doc/.*\.dvi
