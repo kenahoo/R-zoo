@@ -114,13 +114,16 @@ panel.polygon.zoo(x, ...)
   Note that since \pkg{zoo} 1.6-3 \code{plot.panel.default} and
   \code{plot.panel.custom} are no longer necessary, as normal panel
   functions (\code{\link[lattice]{panel.xyplot}} by default) will work.
-  
-  Similarly \code{panel.lines}, \code{panel.points}, and \code{panel.text}
-  have been replaced by their appropriate \pkg{lattice} counterparts:
-  \code{\link[lattice]{llines}}, \code{\link[lattice]{lpoints}}, and
-  \code{\link[lattice]{ltext}}, respectively. The old interfaces may be
-  removed in future versions along with the other old panel functions
-  (\code{panel.segments}, \code{panel.rect}, \code{panel.polygon}).
+
+  Similarly, there are now methods for the generic \pkg{lattice} drawing
+  functions \code{\link[lattice]{llines}},
+  \code{\link[lattice]{lpoints}}, and
+  \code{\link[lattice]{ltext}}. These can also be called as 
+  \code{panel.lines}, \code{panel.points}, and \code{panel.text},
+  respectively. The old interfaces (\code{panel.lines.zoo},
+  \code{panel.points.zoo}, and \code{panel.text.zoo}), will be
+  removed in future versions. \code{panel.polygon.zoo} may also be
+  removed. 
 }
 
 \value{
@@ -147,7 +150,7 @@ z <- zoo(cbind(a = 1:5, b = 11:15, c = 21:25) + rnorm(5))
 # We show two ways to do it. 
 
 # Number 1.  Using trellis.focus.
-xyplot(z)
+print( xyplot(z) )
 trellis.focus("panel", 1, 2, highlight = FALSE)
 # (or just trellis.focus() for interactive use)
 z.mean <- rollmean(z, 3)

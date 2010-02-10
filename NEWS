@@ -2,7 +2,7 @@ Changes in Version 1.6-3
 
   o new function na.aggregate().
 
-  o new maxGapFilled argument for na.*() methods.
+  o new maxgap argument for na.*() methods.
 
   o xyplot() method rewritten; is now a wrapper around the xyplot()
     method for "ts" objects in the "lattice" package (lattice:::xyplot.ts).

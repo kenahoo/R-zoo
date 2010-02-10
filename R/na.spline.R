@@ -20,7 +20,7 @@ na.spline.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
 
 # interpolates object along along which defaults to index(object)
 # along has to be numeric, is otherwise coerced
-na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxGapFilled = Inf, ...)
+na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, ...)
 {
 	along.numeric <- as.numeric(along)
 	object.index <- as.numeric(time(object))
@@ -28,7 +28,7 @@ na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxGa
 		na <- is.na(y)
 		if(all(!na)) return(y)
 		yf <- splinefun(object.index[!na], y[!na], ...)(along)
-		fillShortGaps(y, yf, maxGapFilled = maxGapFilled)
+		fillShortGaps(y, yf, maxgap = maxgap)
 	}
 
         result <- structure(if (length(dim(object)) == 0) na.spline.0(object)

@@ -11,7 +11,7 @@ non-\code{NA} prior to it.
 \usage{
 na.locf(object, na.rm = TRUE, \dots)
 \method{na.locf}{default}(object, na.rm = TRUE, fromLast, rev,
-        maxGapFilled = Inf, \dots)
+        maxgap = Inf, \dots)
 }
 \arguments{
   \item{object}{an object.}
@@ -21,7 +21,7 @@ na.locf(object, na.rm = TRUE, \dots)
     This corresponds to NOCB (next observation carried backward).}
   \item{rev}{Use \code{fromLast} instead.  This argument will
     be eliminated in the future in favor of \code{fromLast}.}
-  \item{maxGapFilled}{maximum number of consecutive \code{NA}s to
+  \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left alone.}
   \item{\dots}{further arguments passed to methods.}
 }
@@ -93,6 +93,6 @@ z.na[idx[as.POSIXlt(time(z.na))$mday == 5]]
 
 ## only fill single-day gaps
 
-merge(z.na, filled1 = na.locf(z.na, maxGapFilled = 1))
+merge(z.na, filled1 = na.locf(z.na, maxgap = 1))
 }
 \keyword{ts}

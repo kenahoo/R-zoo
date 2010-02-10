@@ -18,7 +18,7 @@ na.approx.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
 
 # interpolates object along along which defaults to index(object)
 # along has to be numeric, is otherwise coerced
-na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxGapFilled = Inf, ...)
+na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, ...)
 {
 	along.numeric <- as.numeric(along)
 	object.index <- as.numeric(time(object))
@@ -27,7 +27,7 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxGa
 		if(all(!na)) return(y)
 		# y[na] <- approx(along.index[!na], y[!na], along.numeric[na], ...)$y
 		yf <- approx(object.index[!na], y[!na], along.numeric, ...)$y
-		fillShortGaps(y, yf, maxGapFilled = maxGapFilled)
+		fillShortGaps(y, yf, maxgap = maxgap)
 	}
 
         result <- structure(if (length(dim(object)) == 0) na.approx.0(object)
@@ -39,14 +39,14 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxGa
         } else result
 }
 
-fillShortGaps <- function(x, fill, maxGapFilled = 1)
+fillShortGaps <- function(x, fill, maxgap = 1)
 {
-    if (maxGapFilled <= 0)
+    if (maxgap <= 0)
         return(x)
-    if (maxGapFilled >= length(x))
+    if (maxgap >= length(x))
         return(fill) #return(ifelse(is.na(x), fill, x))
     naruns <- rle(is.na(x))
-    naruns$values[naruns$lengths > maxGapFilled] <- FALSE
+    naruns$values[naruns$lengths > maxgap] <- FALSE
     naok <- inverse.rle(naruns)
     ifelse(naok, fill, x)
 }
