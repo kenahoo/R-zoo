@@ -2,26 +2,33 @@ na.approx <- function(object, ...) UseMethod("na.approx")
 
 na.approx.zoo <- function(object, along = index(object), na.rm = TRUE, ...) {
 
-	objectm <- merge(object, zoo(, along))
-	if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
-	result <- window(objectm, index = along)
-	result[] <- na.approx.default(coredata(objectm), along = as.numeric(along), 
-		na.rm = FALSE, ...)
+	if (missing(along)) {
+		result <- object
+		result[] <- na.approx.default(object, na.rm = FALSE, ...)
+	} else {
+
+		objectm <- merge(object, zoo(, along))
+		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
+
+		result <- window(objectm, index = along)
+		result[] <- na.approx.default(objectm, along = along, na.rm = FALSE, ...)
+	}
 
     if (na.rm) {
-            out <- na.omit(result)
-            attr(out, "na.action") <- NULL
-            out
-    } else result
+            result <- na.omit(result)
+            attr(result, "na.action") <- NULL
+    }
+
+	result
+
 }
 
 na.approx.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
-	object0 <- structure(object, class = setdiff(class(object), "zooreg"))
-	as.zooreg(na.approx(object0, along = along, na.rm = na.rm, ...), 
-		frequency = frequency(object))
+	object. <- structure(object, class = setdiff(class(object), "zooreg"))
+	as.zooreg(na.approx(object., along = along, na.rm = na.rm, ...))
 }
 
-na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, ...) {
+na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, x = time(object), ...) {
 
 	na.approx.vec <- function(x, y, along, ...) {
 		na <- is.na(y)
@@ -40,28 +47,23 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 		}
 	}
 
-	along.numeric <- as.numeric(along)
-	x <- as.numeric(index(object))
-	stopifnot(all(along.numeric %in% x))
+	x. <- as.numeric(x)
+	along. <- as.numeric(along)
+	object. <- coredata(object)
 
-	objcore <- coredata(object)
-
-	result <- if (missing(along)) { object
-	} else if (length(dim(objcore)) < 2) {
-		object[x %in% along.numeric]
-	} else object[x %in% along.numeric, ]
-
-	result[] <- if (length(dim(objcore)) < 2) {
-		na.approx.vec(x = x, y = objcore, along = along.numeric, ...)
+	result <- if (length(dim(object.)) < 2) {
+		na.approx.vec(x., coredata(object.), along = along., ...)
 	} else {
-		apply(objcore, 2, na.approx.vec, x = x, along = along.numeric, ...)
+		apply(coredata(object.), 2, na.approx.vec, x = x., along = along., ...)
 	}
 
     if (na.rm) {
-            out <- na.omit(result)
-            attr(out, "na.action") <- NULL
-            out
-    } else result
+		result <- na.omit(result)
+        attr(result, "na.action") <- NULL
+	}
+
+	result
+
 }
 
 ## x = series with gaps
