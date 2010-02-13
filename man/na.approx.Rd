@@ -2,10 +2,12 @@
 \alias{na.approx}
 \alias{na.approx.zoo}
 \alias{na.approx.zooreg}
+\alias{na.approx.ts}
 \alias{na.approx.default}
 \alias{na.spline}
 \alias{na.spline.zoo}
 \alias{na.spline.zooreg}
+\alias{na.spline.ts}
 \alias{na.spline.default}
 \title{Replace NA by Interpolation}
 \description{
@@ -14,10 +16,22 @@ values.
 }
 \usage{
 na.approx(object, \dots) 
+\method{na.approx}{zoo}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
+\method{na.approx}{zooreg}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
+\method{na.approx}{ts}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
 \method{na.approx}{default}(object, along = index(object), na.rm = TRUE,
           maxgap = Inf, \dots) 
 
 na.spline(object, \dots) 
+\method{na.spline}{zoo}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
+\method{na.spline}{zooreg}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
+\method{na.spline}{ts}(object, along = index(object), na.rm = TRUE,
+          maxgap = Inf, \dots) 
 \method{na.spline}{default}(object, along = index(object), na.rm = TRUE,
           maxgap = Inf, \dots) 
 }

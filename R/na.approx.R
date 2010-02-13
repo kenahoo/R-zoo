@@ -66,6 +66,10 @@ na.approx.default <- function(object, along = index(object), na.rm = TRUE, maxga
 
 }
 
+na.approx.ts <- function(object, ...) {
+	as.ts(na.approx(as.zoo(object), ...))
+}
+
 ## x = series with gaps
 ## fill = same series with filled gaps
 .fill_short_gaps <- function(x, fill, maxgap)

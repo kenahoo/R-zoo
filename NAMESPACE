@@ -50,6 +50,7 @@ export(
   "na.approx",
   "na.approx.zoo",
   "na.approx.zooreg",
+  "na.approx.ts",
   "na.approx.default",
   "na.locf",
   "na.locf.default",
