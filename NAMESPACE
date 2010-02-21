@@ -48,15 +48,10 @@ export(
 
 ## NA operations
   "na.approx",
-  "na.approx.zoo",
-  "na.approx.zooreg",
-  "na.approx.ts",
   "na.approx.default",
   "na.locf",
   "na.locf.default",
   "na.spline",
-  "na.spline.zoo",
-  "na.spline.zooreg",
   "na.spline.default",
   "na.trim",
   "na.trim.default",
@@ -142,7 +137,9 @@ export(
   S3method("llines", "zoo")
   S3method("lpoints", "zoo")
   S3method("ltext", "zoo")
+  S3method("na.approx", "zoo")
   S3method("na.contiguous", "zoo")
+  S3method("na.spline", "zoo")
   S3method("names", "zoo")
   S3method("names<-", "zoo")
   S3method("plot", "zoo")
@@ -173,16 +170,19 @@ export(
   S3method("deltat", "zooreg")
   S3method("frequency", "zooreg")
   S3method("frequency<-", "zooreg")
-  S3method("lag", "zooreg")
-  S3method("time<-", "zooreg")
   S3method("index<-", "zooreg")
   S3method("is.regular", "zooreg")
+  S3method("lag", "zooreg")
+  S3method("na.approx", "zooreg")
+  S3method("na.spline", "zooreg")
+  S3method("time<-", "zooreg")
 
 ## methods for class ts
   S3method("coredata", "ts")
   S3method("coredata<-", "ts")
   S3method("index", "ts")
   S3method("is.regular", "ts")
+  S3method("na.approx", "ts")
   S3method("rollapply", "ts")
   S3method("rollmax", "ts")
   S3method("rollmean", "ts")
