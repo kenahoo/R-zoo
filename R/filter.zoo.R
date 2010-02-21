@@ -81,8 +81,12 @@ napredict.exclude.zoo <- function (omit, x, ...)
 	if (is.null(omit)) x else merge(zoo(, omit), x)
 }
 
-cumsum.zoo <- function (x, na.exclude = FALSE)
+cumsum.zoo <- function (x) 
 {
+
+	# cannot put na.exclude into args due to conflict with generic
+	na.exclude <- FALSE
+
 	# replace NA's with 0's, cumsum and put NA's back
 	# if x is 2d then do that for each column
 

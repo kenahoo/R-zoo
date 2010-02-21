@@ -16,24 +16,18 @@ values.
 }
 \usage{
 na.approx(object, \dots) 
-\method{na.approx}{zoo}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
-\method{na.approx}{zooreg}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
-\method{na.approx}{ts}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
+\method{na.approx}{zoo}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.approx}{zooreg}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.approx}{ts}(object, \dots)
 \method{na.approx}{default}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
+          maxgap = Inf, x = time(object), \dots) 
 
 na.spline(object, \dots) 
-\method{na.spline}{zoo}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
-\method{na.spline}{zooreg}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
-\method{na.spline}{ts}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
+\method{na.spline}{zoo}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.spline}{zooreg}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.spline}{ts}(object, \dots)
 \method{na.spline}{default}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, \dots) 
+          maxgap = Inf, x = time(object), \dots) 
 }
 \arguments{
   \item{object}{object in which \code{NA}s are to be replaced}
@@ -41,7 +35,11 @@ na.spline(object, \dots)
     otherwise coerced to numeric.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
-    fill. Any longer gaps will be left unchanged.}
+    fill. Any longer gaps will be left unchanged. Note that all methods listed
+    above can accept \code{maxgap} as it is ultimately passed to the 
+    \code{default} method.}
+  \item{x}{The time vector for the object. For objects with a \code{time} method
+     the default of \code{time(object)} would normally be used.}
   \item{\dots}{further arguments passed to methods.}
 }
 
@@ -78,6 +76,56 @@ na.approx(z, 1:6)
 zz <- c(NA,9,3,NA,3,2)
 na.approx(zz, na.rm = FALSE)
 na.approx(zz)
+
+z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
+na.approx(z)
+na.approx(z, na.rm = FALSE)
+na.approx(z, Sys.Date() + 1:6)
+na.approx(z, Sys.Date() + 2:5)
+na.approx(z, Sys.Date() + 7)
+na.approx(z, Sys.Date() + 7, na.rm = FALSE)
+na.approx(z, Sys.Date() + 7, rule = 2)
+
+zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
+na.approx(zm, na.rm = FALSE)
+na.approx(zm, Sys.Date() + 1:6)
+na.approx(zm, Sys.Date() + 2:5)
+na.approx(zm, Sys.Date() + 7)
+na.approx(zm, Sys.Date() + 7, na.rm = FALSE)
+na.approx(zm, Sys.Date() + 7, rule = 2)
+
+zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
+na.approx(zm2, na.rm = FALSE)
+na.approx(zm2, Sys.Date() + 1:6)
+na.approx(zm2, Sys.Date() + 2:5)
+na.approx(zm2, Sys.Date() + 7)
+na.approx(zm2, Sys.Date() + 7, na.rm = FALSE)
+na.approx(zm2, Sys.Date() + 7, rule = 2)
+
+z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
+na.spline(z)
+na.spline(z, na.rm = FALSE)
+na.spline(z, Sys.Date() + 1:6)
+na.spline(z, Sys.Date() + 2:5)
+na.spline(z, Sys.Date() + 7)
+na.spline(z, Sys.Date() + 7, na.rm = FALSE)
+na.spline(z, Sys.Date() + 7, rule = 2)
+
+zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
+na.spline(zm, na.rm = FALSE)
+na.spline(zm, Sys.Date() + 1:6)
+na.spline(zm, Sys.Date() + 2:5)
+na.spline(zm, Sys.Date() + 7)
+na.spline(zm, Sys.Date() + 7, na.rm = FALSE)
+na.spline(zm, Sys.Date() + 7, rule = 2)
+
+zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
+na.spline(zm2, na.rm = FALSE)
+na.spline(zm2, Sys.Date() + 1:6)
+na.spline(zm2, Sys.Date() + 2:5)
+na.spline(zm2, Sys.Date() + 7)
+na.spline(zm2, Sys.Date() + 7, na.rm = FALSE)
+na.spline(zm2, Sys.Date() + 7, rule = 2)
 
 }
 \keyword{ts}
