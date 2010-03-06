@@ -1,18 +1,25 @@
+
 na.spline <- function(object, ...) UseMethod("na.spline")
 
-na.spline.zoo <- function(object, along = index(object), na.rm = TRUE, ...) {
+na.spline.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, ...) {
 
-	if (missing(along)) {
-		result <- object
-		result[] <- na.spline.default(object, na.rm = FALSE, ...)
-	} else {
-
-		objectm <- merge(object, zoo(, along))
-		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
-
-		result <- window(objectm, index = along)
-		result[] <- na.spline.default(objectm, along = along, na.rm = FALSE, ...)
+	if (!missing(along)) {
+		warning("along to be deprecated - use x instead")
+		if (missing(x)) x <- along
 	}
+
+	if (missing(xout) || is.null(xout) || identical(xout, index(object))) {
+		result <- object
+	} else {
+		object.x <- object
+		index(object.x) <- x
+		objectm <- merge(object.x, zoo(, xout))
+		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
+		result <- window(objectm, index = xout)
+	}
+	result[] <- na.spline.default(object, x = x, na.rm = FALSE, 
+		xout = xout, ...)
+	if (!missing(order.by) && !is.null(order.by)) index(result) <- order.by
 
     if (na.rm) {
             result <- na.omit(result)
@@ -23,37 +30,48 @@ na.spline.zoo <- function(object, along = index(object), na.rm = TRUE, ...) {
 
 }
 
-na.spline.zooreg <- function(object, along = index(object), na.rm = TRUE, ...) {
+na.spline.zooreg <- function(object, ...) {
 	object. <- structure(object, class = setdiff(class(object), "zooreg"))
-	as.zooreg(na.spline(object., along = along, na.rm = na.rm, ...))
+	as.zooreg(na.spline(object., ...))
 }
 
-na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxgap = Inf, x = time(object), ...) {
 
-	na.spline.vec <- function(x, y, along, ...) {
+na.spline.default <- function(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, ...) {
+
+	if (!missing(along)) {
+		warning("along to be deprecated - use x instead")
+		if (missing(x)) x <- along
+	}
+
+	na.spline.vec <- function(x, y, xout = x, ...) {
 		na <- is.na(y)
-		yf <- approx(x[!na], y[!na], along, ...)$y
+		yf <- splinefun(x[!na], y[!na], ...)(xout)
 		if (maxgap < length(y)) {
 		    ## construct version of y with only gaps > maxgap
 		    ygap <- .fill_short_gaps(y, seq_along(y), maxgap = maxgap)
-		    ## construct y values at 'along', keeping NAs from ygap
-		    ialong <- splinefun(x, seq_along(y), ...)(ialong)
-		    yalong <- ifelse(is.na(ygap[floor(ialong)] + ygap[ceiling(ialong)]),
+		    ## construct y values at 'x', keeping NAs from ygap
+		    ## (spline() does not allow NAs to be propagated)
+		    ix <- spline(x, seq_along(y), ...)(xout)
+		    yx <- ifelse(is.na(ygap[floor(ix)] + ygap[ceiling(ix)]),
 					NA, yf)
-		    yalong
+		    yx
 		} else {
 		    yf
 		}
 	}
 
+	if (!identical(length(x), length(index(object)))) {
+		stop("x and index must have the same length")
+	}
 	x. <- as.numeric(x)
-	along. <- as.numeric(along)
+	if (missing(xout) || is.null(xout)) xout <- x.
+	xout. <- as.numeric(xout)
 	object. <- coredata(object)
 
 	result <- if (length(dim(object.)) < 2) {
-		na.spline.vec(x., coredata(object.), along = along., ...)
+		na.spline.vec(x., coredata(object.), xout = xout., ...)
 	} else {
-		apply(coredata(object.), 2, na.spline.vec, x = x., along = along., ...)
+		apply(coredata(object.), 2, na.spline.vec, x = x., xout = xout., ...)
 	}
 
     if (na.rm) {
@@ -67,19 +85,5 @@ na.spline.default <- function(object, along = index(object), na.rm = TRUE, maxga
 
 na.spline.ts <- function(object, ...) {
 	as.ts(na.spline(as.zoo(object), ...))
-}
-
-## x = series with gaps
-## fill = same series with filled gaps
-.fill_short_gaps <- function(x, fill, maxgap)
-{
-    if (maxgap <= 0)
-        return(x)
-    if (maxgap >= length(x))
-        return(fill) #return(ifelse(is.na(x), fill, x))
-    naruns <- rle(is.na(x))
-    naruns$values[naruns$lengths > maxgap] <- FALSE
-    naok <- inverse.rle(naruns)
-    ifelse(naok, fill, x)
 }
 

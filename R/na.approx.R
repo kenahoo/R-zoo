@@ -32,7 +32,7 @@ na.approx.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, ord
 
 na.approx.zooreg <- function(object, ...) {
 	object. <- structure(object, class = setdiff(class(object), "zooreg"))
-	as.zooreg(na.approx(object., ...)
+	as.zooreg(na.approx(object., ...))
 }
 
 
@@ -48,10 +48,10 @@ na.approx.default <- function(object, x = index(object), na.rm = TRUE, xout = x,
 		yf <- approx(x[!na], y[!na], xout, ...)$y
 		if (maxgap < length(y)) {
 		    ## construct version of y with only gaps > maxgap
-		    ygap <- .fill_short_gaps(y, seq_x(y), maxgap = maxgap)
+		    ygap <- .fill_short_gaps(y, seq_along(y), maxgap = maxgap)
 		    ## construct y values at 'x', keeping NAs from ygap
 		    ## (approx() does not allow NAs to be propagated)
-		    ix <- approx(x, seq_x(y), xout, ...)$y
+		    ix <- approx(x, seq_along(y), xout, ...)$y
 		    yx <- ifelse(is.na(ygap[floor(ix)] + ygap[ceiling(ix)]),
 					NA, yf)
 		    yx

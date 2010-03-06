@@ -16,30 +16,28 @@ values.
 }
 \usage{
 na.approx(object, \dots) 
-\method{na.approx}{zoo}(object, along = index(object), na.rm = TRUE, \dots) 
-\method{na.approx}{zooreg}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.approx}{zoo}(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, \dots)
+\method{na.approx}{zooreg}(object, \dots) 
 \method{na.approx}{ts}(object, \dots)
-\method{na.approx}{default}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, x = time(object), \dots) 
+\method{na.approx}{default}(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, \dots) 
 
 na.spline(object, \dots) 
-\method{na.spline}{zoo}(object, along = index(object), na.rm = TRUE, \dots) 
-\method{na.spline}{zooreg}(object, along = index(object), na.rm = TRUE, \dots) 
+\method{na.spline}{zoo}(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, \dots)
+\method{na.spline}{zooreg}(object, \dots) 
 \method{na.spline}{ts}(object, \dots)
-\method{na.spline}{default}(object, along = index(object), na.rm = TRUE,
-          maxgap = Inf, x = time(object), \dots) 
+\method{na.spline}{default}(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, \dots) 
+
 }
 \arguments{
   \item{object}{object in which \code{NA}s are to be replaced}
-  \item{along}{variable to use for interpolation. Has to be numeric, is
-    otherwise coerced to numeric.}
+  \item{x, xout}{Variables to be used for interpolation as in \code{approx}. Coerced to numeric.  \code{xout} defaults to \code{x} and \code{x} defaults to \code{index(object)}.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left unchanged. Note that all methods listed
     above can accept \code{maxgap} as it is ultimately passed to the 
     \code{default} method.}
-  \item{x}{The time vector for the object. For objects with a \code{time} method
-     the default of \code{time(object)} would normally be used.}
+  \item{order.by}{Same meaning as in \code{zoo} command. The resulting object is given this time index. Defaults to \code{xout} if \code{xout} has the same class as \code{index(object)} and defaults to \code{index(object)} otherwise.}
+  \item{along}{deprecated.}
   \item{\dots}{further arguments passed to methods.}
 }
 
@@ -81,52 +79,64 @@ na.approx(zz)
 z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
 na.approx(z)
 na.approx(z, na.rm = FALSE)
-na.approx(z, Sys.Date() + 1:6)
-na.approx(z, Sys.Date() + 2:5)
-na.approx(z, Sys.Date() + 7)
-na.approx(z, Sys.Date() + 7, na.rm = FALSE)
-na.approx(z, Sys.Date() + 7, rule = 2)
+na.approx(z, xout = Sys.Date() + 1:6)
+na.approx(z, xout = Sys.Date() + 2:5)
+na.approx(z, xout = Sys.Date() + 7)
+na.approx(z, xout = Sys.Date() + 7, na.rm = FALSE)
+na.approx(z, xout = Sys.Date() + 7, rule = 2)
 
 zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
 na.approx(zm, na.rm = FALSE)
-na.approx(zm, Sys.Date() + 1:6)
-na.approx(zm, Sys.Date() + 2:5)
-na.approx(zm, Sys.Date() + 7)
-na.approx(zm, Sys.Date() + 7, na.rm = FALSE)
-na.approx(zm, Sys.Date() + 7, rule = 2)
+na.approx(zm, xout = Sys.Date() + 1:6)
+na.approx(zm, xout = Sys.Date() + 2:5)
+na.approx(zm, xout = Sys.Date() + 7)
+na.approx(zm, xout = Sys.Date() + 7, na.rm = FALSE)
+na.approx(zm, xout = Sys.Date() + 7, rule = 2)
 
 zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
 na.approx(zm2, na.rm = FALSE)
-na.approx(zm2, Sys.Date() + 1:6)
-na.approx(zm2, Sys.Date() + 2:5)
-na.approx(zm2, Sys.Date() + 7)
-na.approx(zm2, Sys.Date() + 7, na.rm = FALSE)
-na.approx(zm2, Sys.Date() + 7, rule = 2)
+na.approx(zm2, xout = Sys.Date() + 1:6)
+na.approx(zm2, xout = Sys.Date() + 2:5)
+na.approx(zm2, xout = Sys.Date() + 7)
+na.approx(zm2, xout = Sys.Date() + 7, na.rm = FALSE)
+na.approx(zm2, xout = Sys.Date() + 7, rule = 2)
 
 z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
 na.spline(z)
 na.spline(z, na.rm = FALSE)
-na.spline(z, Sys.Date() + 1:6)
-na.spline(z, Sys.Date() + 2:5)
-na.spline(z, Sys.Date() + 7)
-na.spline(z, Sys.Date() + 7, na.rm = FALSE)
-na.spline(z, Sys.Date() + 7, rule = 2)
+na.spline(z, xout = Sys.Date() + 1:6)
+na.spline(z, xout = Sys.Date() + 2:5)
+na.spline(z, xout = Sys.Date() + 7)
+na.spline(z, xout = Sys.Date() + 7, na.rm = FALSE)
 
 zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
 na.spline(zm, na.rm = FALSE)
-na.spline(zm, Sys.Date() + 1:6)
-na.spline(zm, Sys.Date() + 2:5)
-na.spline(zm, Sys.Date() + 7)
-na.spline(zm, Sys.Date() + 7, na.rm = FALSE)
-na.spline(zm, Sys.Date() + 7, rule = 2)
+na.spline(zm, xout = Sys.Date() + 1:6)
+na.spline(zm, xout = Sys.Date() + 2:5)
+na.spline(zm, xout = Sys.Date() + 7)
+na.spline(zm, xout = Sys.Date() + 7, na.rm = FALSE)
 
 zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
 na.spline(zm2, na.rm = FALSE)
-na.spline(zm2, Sys.Date() + 1:6)
-na.spline(zm2, Sys.Date() + 2:5)
-na.spline(zm2, Sys.Date() + 7)
-na.spline(zm2, Sys.Date() + 7, na.rm = FALSE)
-na.spline(zm2, Sys.Date() + 7, rule = 2)
+na.spline(zm2, xout = Sys.Date() + 1:6)
+na.spline(zm2, xout = Sys.Date() + 2:5)
+na.spline(zm2, xout = Sys.Date() + 7)
+na.spline(zm2, xout = Sys.Date() + 7, na.rm = FALSE)
 
+# using na.approx to create a daily series from a weekly series
+# zw has 3 points but zd has 21 points
+zw <- zoo(1:3, as.Date("2001-01-01") + seq(0, length = 3, by = 7))
+zd <- na.approx(zw, xout = seq(start(zw), end(zw), by = "day"))
+
+# using na.approx to create regularly spaced series
+# z has points at 10, 20 and 40 minutes while output also has a point at 30
+\dontrun{
+library(chron)
+tt <- as.chron("2000-01-01 10:00:00") + c(1, 2, 4) * as.numeric(times("00:10:00"))
+z <- zoo(1:3, tt)
+tseq <- seq(start(z), end(z), by = times("00:10:00"))
+na.approx(z, xout = tseq)
 }
+}
+
 \keyword{ts}

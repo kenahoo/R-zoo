@@ -528,4 +528,72 @@ with(xm, ifelse(dif > 4, -z, z))
 ifelse(diff(z, na.pad = TRUE) > 4, -z, z)
 @
 
+
+\mysection[13. In a series which is regular except for a few missing times and values how does one fill in those missing items?]{In a series which is regular except for a few missing times and values does one fill in those missing items?}
+
+There are three approaches:
+
+\begin{itemize}
+\item{ts}. Convert the series to a ts series.  
+That automatically makes it regularly
+spaced filling in the missing times together with NA for the missing values.
+Then convert it back to zoo.  Since ts series is limited in how it represents
+the index class it may be necessary to fix up the class as shown here:
+
+<<fillin-ts>>=
+# 2009-01-09 05:50:00 is missing
+Lines <- "Time,Value
+2009-10-09 5:00:00,210
+2009-10-09 5:10:00,207
+2009-10-09 5:20:00,250
+2009-10-09 5:30:00,193
+2009-10-09 5:40:00,205
+2009-10-09 6:00:00,185"
+
+library(zoo)
+library(chron)
+
+z <- read.zoo(textConnection(Lines), FUN = as.chron, sep = ",", header = TRUE)
+zz <- as.zoo(as.ts(z))
+# fixup times as converting to ts loses the time class but not the time values
+time(zz) <- as.chron(time(zz))
+
+# zz has the original times and also the missing 05:50:00 is filled in
+zz
+@
+
+\item{na.approx.zoo}  
+In this approach we fill in the missing values with linear
+approximations rather than NAs:
+
+<<fillin-approx>>=
+# using z from above
+tseq <- seq(start(z), end(z), by = times("00:10:00"))
+na.approx(z, xout = tseq)
+@
+
+\item{merge.zoo}  
+This approach also fills in the missing spots with NAs.  It
+uses the same tseq we defined in the last example.  This approach requires
+a bit of care in case the tseq values are slightly different than the 
+index values of z since the matching will then not work.   Using the
+example data above the following does NOT work as intended:
+
+<<fillin-merge-bad>>=
+# does not work properly!!!
+# since index(z) values not all in tseq due to small differences
+merge(z, zoo(, tseq))
+@
+
+Although the merge approach cannot be used in the above situation when the times
+match exactly it can be used. For example, the following uses integral times
+which match exactly:
+
+<<fillin-merge-ok>>=
+z3 <- zoo(11:13, c(1L, 2L, 4L))
+tseq3 <- seq(start(z3), end(z3), by = 1L)
+merge(z3, zoo(, tseq3))
+@
+\end{itemize}
+
 \end{document}

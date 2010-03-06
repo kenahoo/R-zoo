@@ -10,6 +10,10 @@ Changes in Version 1.6-3
     Accompanying infrastructure (llines(), lpoints(), ltext(), etc.),
     help page, and examples have been substantially revised and expanded.    
 
+  o na.approx and na.spline reworked and expanded
+
+  o new question #13 added to zoo-faq vignette
+
 
 Changes in Version 1.6-2
 
