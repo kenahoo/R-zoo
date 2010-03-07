@@ -10,7 +10,7 @@ reduced \code{"zoo"} object.
 }
 
 \usage{
-\method{aggregate}{zoo}(x, by, FUN, \dots, regular = NULL, frequency = NULL)
+\method{aggregate}{zoo}(x, by, FUN = sum, \dots, regular = NULL, frequency = NULL)
 }
 
 \arguments{
