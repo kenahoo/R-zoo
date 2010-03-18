@@ -603,8 +603,28 @@ cat("*** Wrong due to slight differences in time(z) and tseq ***\n")
 merge(z, zoo(, tseq))
 @
 
-although using either the \code{as.ts} approach or the \code{na.approx} 
-approach does work here:
+We can fix this up by rounding off the values to the nearest second:
+<<fillin-merge-2>>=
+Rnd <- function(x) {
+       time(x) <- chron(trunc(time(x), "sec"))
+       x
+}
+merge(Rnd(z), Rnd(zoo(, tseq)))
+@
+
+or by adding a \code{MATCH.times} method which redefines matching so that 
+values within 1 second are regarded as the same.
+
+<<fillin-merge-3>>=
+# rnd function is from above
+MATCH.times <- function(x, table, nomatch = NA, ...) {
+       match(trunc(x, "sec"), trunc(table, "sec"), nomatch = nomatch, ...)
+}
+merge(z, zoo(, tseq))
+@
+
+The \code{as.ts} approach or the \code{na.approx} 
+approach work here without any special measures at all:
 
 <<fillin-ok>>=
 zz <- as.zoo(as.ts(z))
