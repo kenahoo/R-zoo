@@ -538,18 +538,27 @@ ifelse(diff(z, na.pad = TRUE) > 4, -z, z)
 There are three approaches:
 
 \begin{itemize}
+\item{\code{merge.zoo}}  
+This approach fills in the missing spots with \code{NA}s.  It
+uses the same \code{tseq} we defined in the last example.  We simply merge the
+original series with a zero width series having the required times.
+
+<<fillin-merge>>=
+# April is missing
+zym <- zoo(1:5, as.yearmon("2000-01-01") + c(0, 1, 2, 4, 5)/12)
+tseq <- seq(start(zym), end(zym), by = 1/12)
+merge(zym, zoo(, tseq))
+@
+
 \item{\code{as.ts}}. Convert the series to a \code{ts} series.  
 That automatically creates a regularly
-spaced series filling in the missing times and
+spaced series filling in the missing times
 using \code{NA} for the missing values.  
 Then convert it back to \code{zoo}.  Since \code{ts} series is limited in how it represents
 the index class, it is typically necessary to fix up the class after converting 
-back to zoo as shown here:
+back to zoo as shown in the \code{class(...) <- ...} line here:
 
 <<fillin-ts>>=
-# April is missing
-zym <- zoo(1:5, as.yearmon("2000-01-01") + c(0, 1, 2, 4, 5)/12)
-
 zymreg <- as.zoo(as.ts(zym))
 class(time(zymreg)) <- class(time(zym))
 
@@ -557,23 +566,15 @@ zymreg
 @
 
 \item{\code{na.approx.zoo}}  
-In this approach we fill in the missing values with linear
+Unlike the above two approaches, 
+in this approach we fill in the missing values with linear
 approximations rather than \code{NA}s:
 
 <<fillin-approx>>=
 # using z from above
-tseq <- seq(start(zym), end(zym), by = 1/12)
 na.approx(zym, xout = tseq)
 @
 
-\item{\code{merge.zoo}}  
-This approach also fills in the missing spots with \code{NA}s.  It
-uses the same \code{tseq} we defined in the last example.  We simply merge the
-original series with a zero width series having the required times.
-
-<<fillin-merge>>=
-merge(zym, zoo(, tseq))
-@
 
 
 \end{itemize}
