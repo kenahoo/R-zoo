@@ -26,7 +26,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   else {
     ix <- rval[,index.column]
 	split.values <- if (!is.null(split)) {
-		if (is.finite(split)) rval[, split]
+		if (is.character(split) || is.finite(split)) rval[, split]
 		else {
 			s <- split
 			split <- 0
@@ -35,7 +35,12 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 			else ix
 		}
 	}
-    rval <- rval[,-c(split, index.column), drop = drop]
+    split. <- if (is.character(split)) match(split, colnames(rval), nomatch = 0)
+	else split
+	if (split. == 0) {
+		stop(paste("split:", split, "not found in colnames:", colnames(rval)))
+	}
+    rval <- rval[,-c(split., index.column), drop = drop]
   }
   if(is.factor(ix)) ix <- as.character(ix)
   if(is.data.frame(rval)) rval <- as.matrix(rval)
@@ -124,9 +129,11 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
     if(regular) {
 		rval <- lapply(rval, function(x) if (is.regular(x)) as.zooreg(x) else x)
 	}
-	if (!is.null(agg.fun)) rval <-
-		lapply(seq_along(rval), function(z) aggregate(z, time(z), agg.fun))
-	rval <- do.call(merge, rval)
+	if (!is.null(agg.fun)) {
+		f.ag <- function(z) aggregate(z, time(z), agg.fun)
+		rval <- lapply(seq_along(rval), f.ag)
+		rval <- do.call(merge, rval)
+	}
   }
 	
   return(rval)
