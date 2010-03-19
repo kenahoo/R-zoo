@@ -17,6 +17,8 @@ Changes in Version 1.6-3
   o FUN argument of aggregate.zoo now defaults to sum for consistency with
     aggregate.ts.  Previously it had no default.
 
+  o new MATCH.times method
+
 
 Changes in Version 1.6-2
 
