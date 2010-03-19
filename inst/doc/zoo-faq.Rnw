@@ -543,7 +543,8 @@ That automatically creates a regularly
 spaced series filling in the missing times and
 using \code{NA} for the missing values.  
 Then convert it back to \code{zoo}.  Since \code{ts} series is limited in how it represents
-the index class, it is typically necessary to fix up the class as shown here:
+the index class, it is typically necessary to fix up the class after converting 
+back to zoo as shown here:
 
 <<fillin-ts>>=
 # April is missing
@@ -574,16 +575,12 @@ original series with a zero width series having the required times.
 merge(zym, zoo(, tseq))
 @
 
-This approach requires
-a bit of care in case the tseq values are slightly different than the 
-index values of \code{z} since the matching will then not work.   For example,
-with \pkg{chron} times this approach has problems since the times in the data
-and the times in the sequence produced are slightly off.  That is the
-following does NOT work as intended:
 
-<<fillin-merge-bad>>=
-# does not work properly!!!
-# since index(z) values not all in tseq due to small differences
+\end{itemize}
+
+We give a \code{chron} example of these approaches as well.  First via merge:
+
+<<fillin-merge>>=
 
 # 2009-01-09 05:50:00 is missing
 Lines <- "Time,Value
@@ -599,42 +596,21 @@ library(chron)
 
 z <- read.zoo(textConnection(Lines), FUN = as.chron, sep = ",", header = TRUE)
 tseq <- seq(start(z), end(z), by = times("00:10:00"))
-cat("*** Wrong due to slight differences in time(z) and tseq ***\n")
 merge(z, zoo(, tseq))
 @
 
-We can fix this up by rounding off the values to the nearest second:
-<<fillin-merge-2>>=
-Rnd <- function(x) {
-       time(x) <- chron(trunc(time(x), "sec"))
-       x
-}
-merge(Rnd(z), Rnd(zoo(, tseq)))
-@
-
-or by adding a \code{MATCH.times} method which redefines matching so that 
-values within 1 second are regarded as the same.
-
-<<fillin-merge-3>>=
-# rnd function is from above
-MATCH.times <- function(x, table, nomatch = NA, ...) {
-       match(trunc(x, "sec"), trunc(table, "sec"), nomatch = nomatch, ...)
-}
-merge(z, zoo(, tseq))
-@
-
-The \code{as.ts} approach or the \code{na.approx} 
-approach work here without any special measures at all:
+And now via \code{as.ts} 
 
 <<fillin-ok>>=
 zz <- as.zoo(as.ts(z))
 time(zz) <- as.chron(time(zz))
 zz
 @
+
+and finally via the \code{na.approx}:
 <<fillin-approx-ok>>=
 tseq <- seq(start(z), end(z), by = times("00:10:00"))
 na.approx(z, xout = tseq)
 @
-\end{itemize}
 
 \end{document}

@@ -100,6 +100,7 @@ export(
 ## auxiliary generics/methods
   "MATCH",
   "MATCH.default",
+  "MATCH.times",
   "ORDER",
   "ORDER.default")
 
@@ -268,6 +269,7 @@ export(
   S3method("index2char", "numeric")
   S3method("na.contiguous", "data.frame")
   S3method("na.contiguous", "list")
+  S3method("MATCH", "times")
   S3method("ORDER", "chron")
   S3method("ORDER", "dates")
   S3method("ORDER", "times")
