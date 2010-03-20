@@ -29,7 +29,7 @@ write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NUL
     (if the series is regular)?}
   \item{index.column}{integer. The column of the data frame in which the 
 index/time is stored.  If the \code{read.table} \code{colClasses} argument
-is used and \code{"NULL"} is among its componennts of then \code{index.column}
+is used and \code{"NULL"} is among its componennts then \code{index.column}
 refers to the column numbers after the columns corresponding to \code{"NULL"}
 have been removed.}
   \item{drop}{logical. If the data frame contains just a single data column, should
@@ -178,8 +178,9 @@ CVX 20070201 9 40 53 73.25 300 0"
 z <- read.zoo(textConnection(Lines), 
 	colClasses = c("NULL", "NULL", "numeric", "numeric", "numeric", "numeric",
 		"numeric", "NULL"), 
-	col.names = c("V1", "V2", "V3", "V4", "V5", "Price", "Volume", "V8"),
-	index = 1:3, 
+	col.names = c("Symbol", "Date", "Hour", "Minute", "Second", "Price", 
+		"Volume", "junk"),
+	index = 1:3,  # do not count columns that are "NULL" in colClasses
 	FUN = function(tt) times(paste(tt[,1], tt[,2], tt[,3], sep = ":")),
 	FUN2 = function(tt) trunc(tt, "00:00:05"),
 	aggregate = mean)
