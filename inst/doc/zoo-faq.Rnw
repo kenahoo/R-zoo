@@ -452,7 +452,7 @@ detach("package:timeDate")
 
 \mysection[11. What other packages use zoo?]{11. What other packages use \pkg{zoo}?}
 
-There are 52 other packages that depend on, suggest, can use with or 
+There are 53 other packages that depend on, suggest, can use with or 
 are otherwise used with \pkg{zoo} that we have located:
 
 \begin{tabular}{|l|p{10cm}|} \hline
@@ -479,6 +479,7 @@ are otherwise used with \pkg{zoo} that we have located:
 \pkg{StreamMetabollism} & Calculating single station metabolism from diurnal Oxygen curves \\
 \pkg{strucchange} & Testing, monitoring, and dating structural changes \\
 \pkg{tawny} & Provides various portfolio optimization strategies including random matrix theory and shrinkage estimators \\
+\pkg{tgram} & Functions to compute and plot tracheidograms \\
 \pkg{tis} & Regular time series package, previously part of fame package \\
 \pkg{tripEstimation} & Metropolis sampler and supporting functions for
   estimating animal movement from archival tags and satellite fixes \\
