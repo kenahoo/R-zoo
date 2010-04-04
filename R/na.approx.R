@@ -1,25 +1,35 @@
 
 na.approx <- function(object, ...) UseMethod("na.approx")
 
-na.approx.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, ...) {
+# na.approx.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, ...) {
+na.approx.zoo <- function(object, x = index(object), xout = x, ..., na.rm = TRUE, along) {
 
 	if (!missing(along)) {
 		warning("along to be deprecated - use x instead")
 		if (missing(x)) x <- along
 	}
 
+	if (is.function(x)) x <- x(index(object))
+	if (is.function(xout)) xout <- xout(index(object))
+	order.by <- xout
+
 	if (missing(xout) || is.null(xout) || identical(xout, index(object))) {
 		result <- object
 	} else {
 		object.x <- object
-		index(object.x) <- x
-		objectm <- merge(object.x, zoo(, xout))
+		objectm <- if (!identical(class(x), class(xout))) {
+			index(object.x) <- as.numeric(x)
+			merge(object.x, zoo(, as.numeric(xout)))
+		} else {
+			index(object.x) <- x
+			merge(object.x, zoo(, xout))
+		}
 		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
 		result <- window(objectm, index = xout)
 	}
-	result[] <- na.approx.default(object, x = x, na.rm = FALSE, 
-		xout = xout, ...)
-	if (!missing(order.by) && !is.null(order.by)) index(result) <- order.by
+	result[] <- na.approx.default(object, x = x, xout = xout, na.rm = FALSE, ...)
+	if ((!missing(order.by) && !is.null(order.by)) ||
+	    (!missing(xout) && !is.null(xout))) index(result) <- order.by
 
     if (na.rm) {
             result <- na.omit(result)
@@ -36,7 +46,7 @@ na.approx.zooreg <- function(object, ...) {
 }
 
 
-na.approx.default <- function(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, ...) {
+na.approx.default <- function(object, x = index(object), xout = x, ..., na.rm = TRUE, maxgap = Inf, along) {
 
 	if (!missing(along)) {
 		warning("along to be deprecated - use x instead")

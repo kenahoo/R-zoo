@@ -246,6 +246,7 @@ rev.zoo <- function(x) {
 }
 
 ifelse.zoo <- function(test, yes, no) {
+	if(!is.zoo(test)) test <- zoo(test, index(yes))
 	merge(test, yes, no, retclass = NULL)
 	ifelse(test, yes, no)
 }

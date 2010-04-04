@@ -16,27 +16,26 @@ values.
 }
 \usage{
 na.approx(object, \dots) 
-\method{na.approx}{zoo}(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, \dots)
+\method{na.approx}{zoo}(object, x = index(object), xout = x, \dots, na.rm = TRUE, \dots)
 \method{na.approx}{zooreg}(object, \dots) 
 \method{na.approx}{ts}(object, \dots)
-\method{na.approx}{default}(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, \dots) 
+\method{na.approx}{default}(object, x = index(object), xout = x, \dots, na.rm = TRUE, maxgap = Inf, along) 
 
 na.spline(object, \dots) 
-\method{na.spline}{zoo}(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, \dots)
+\method{na.spline}{zoo}(object, x = index(object), xout = x, \dots, na.rm = TRUE, along)
 \method{na.spline}{zooreg}(object, \dots) 
 \method{na.spline}{ts}(object, \dots)
-\method{na.spline}{default}(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, \dots) 
+\method{na.spline}{default}(object, x = index(object), xout = x, \dots, na.rm = TRUE, maxgap = Inf, along) 
 
 }
 \arguments{
   \item{object}{object in which \code{NA}s are to be replaced}
-  \item{x, xout}{Variables to be used for interpolation as in \code{approx}. Coerced to numeric.  \code{xout} defaults to \code{x} and \code{x} defaults to \code{index(object)}.}
+  \item{x, xout}{Variables to be used for interpolation as in \code{approx}. Coerced to numeric if they have different classes.  \code{xout} defaults to \code{x} and \code{x} defaults to \code{index(object)}. If either are functions then they are applied to \code{index(object)}.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left unchanged. Note that all methods listed
     above can accept \code{maxgap} as it is ultimately passed to the 
     \code{default} method.}
-  \item{order.by}{Same meaning as in \code{zoo} command. The resulting object is given this time index. Defaults to \code{xout} if \code{xout} has the same class as \code{index(object)} and defaults to \code{index(object)} otherwise.}
   \item{along}{deprecated.}
   \item{\dots}{further arguments passed to methods.}
 }
@@ -123,10 +122,22 @@ na.spline(zm2, xout = Sys.Date() + 2:5)
 na.spline(zm2, xout = Sys.Date() + 7)
 na.spline(zm2, xout = Sys.Date() + 7, na.rm = FALSE)
 
-# using na.approx to create a daily series from a weekly series
-# zw has 3 points but zd has 21 points
-zw <- zoo(1:3, as.Date("2001-01-01") + seq(0, length = 3, by = 7))
-zd <- na.approx(zw, xout = seq(start(zw), end(zw), by = "day"))
+## using na.approx for disaggregation
+
+zy <- zoo(1:3,  2000:2001)
+
+# yearly to monthly series
+
+zmo <- na.approx(zy, xout = as.yearmon(2000+0:13/12)); zmo
+
+# monthly to daily series
+
+sq <- seq(as.Date(start(zmo)), as.Date(end(zmo), frac = 1), by = "day")
+zd <- na.approx(zmo, x = as.Date, xout = sq); head(z3)
+
+# weekly to daily series
+zww <- zoo(1:3, as.Date("2001-01-01") + seq(0, length = 3, by = 7)); zww
+zdd <- na.approx(zw, xout = seq(start(zw), end(zw), by = "day")); zdd
 
 # using na.approx to create regularly spaced series
 # z has points at 10, 20 and 40 minutes while output also has a point at 30
