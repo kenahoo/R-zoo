@@ -17,13 +17,13 @@ na.approx.zoo <- function(object, x = index(object), xout = x, ..., na.rm = TRUE
 		result <- object
 	} else {
 		object.x <- object
-		objectm <- if (!identical(class(x), class(xout))) {
+		if (!identical(class(x), class(xout))) {
 			index(object.x) <- as.numeric(x)
-			merge(object.x, zoo(, as.numeric(xout)))
+			xout <- as.numeric(xout)
 		} else {
 			index(object.x) <- x
-			merge(object.x, zoo(, xout))
 		}
+		objectm <- merge(object.x, zoo(, xout))
 		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
 		result <- window(objectm, index = xout)
 	}
