@@ -55,6 +55,7 @@ export(
   "na.spline.default",
   "na.trim",
   "na.trim.default",
+  "na.trim.ts",
   "na.aggregate",
   "na.aggregate.default",
 
