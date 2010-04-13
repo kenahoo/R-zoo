@@ -13,10 +13,9 @@
 \usage{
 xblocks(x, ...)
 
-\S3method{xblocks}{default}(x, y, ..., gaps = FALSE,
+\S3method{xblocks}{default}(x, y, ..., col = NULL, border = NA, 
         ybottom = par("usr")[3], ytop = ybottom + height,
         height = diff(par("usr")[3:4]),
-        col = NULL, border = NA, 
         last.step = median(diff(tail(x))))
 
 \S3method{xblocks}{ts}(x, y = NULL, ...)
@@ -24,16 +23,16 @@ xblocks(x, ...)
 \arguments{
   \item{x, y}{
     In the default method, \code{x} gives the ordinates along the x axis and
-    must be in increasing order. \code{y} gives the colour values to plot as
+    must be in increasing order. \code{y} gives the color values to plot as
     contiguous blocks. If \code{y} is numeric, data coverage is plotted,
     by converting it into a logical (\code{!is.na(y)}). In this case, or
-    when a logical \code{y} is given, the default block color is
-    taken from the current theme: \code{trellis.par.get("plot.line")$col}.
+    when a logical \code{y} is given, the default block color is taken
+    from \code{palette()[1]}. 
     
     If \code{y} has character (or factor) values, these are interpreted
-    as colors -- and should therefore be colour names or hex
-    codes. Missing values in \code{y} are not plotted. 
-    If \code{col} is given, this over-rides the block colors.
+    as colors -- and should therefore be color names or hex
+    codes. Missing values in \code{y} are not plotted.  If \code{col} is
+    given, this over-rides the block colors given as \code{y}.
 
     The \code{ts} method plots values against their \code{time()},
     unless \code{y} is specified, when it acts just like
@@ -43,24 +42,19 @@ xblocks(x, ...)
     In the default method, further arguments are graphical parameters
     passed on to \code{\link[grid]{gpar}}.
   }
-  \item{gaps}{
-    highlights missing values in the data only. This is similar to
-    passing \code{y = is.na(y)}, but one cannot do that to a
-    time series object without losing the time frame attributes.
+  \item{col}{
+    if \code{col} is specified, it determines the colors of the blocks
+    defined by \code{y}. If multiple colors are specified they will be
+    repeated to cover the total number of blocks.
+  }
+  \item{border}{
+    border color.
   }
   \item{ybottom, ytop, height}{
     y axis position of the blocks. The default it to fill the whole plot
     region, but by setting these values one can draw blocks along the
     top of bottom of the plot. Note that \code{height} is not used
     directly, it only sets the default value of \code{ytop}.
-  }
-  \item{col}{
-    if \code{col} is specified, it determines the colors of the blocks
-    defined by \code{y}. If multiple colours are specified they will be
-    repeated to cover the total number of blocks.
-  }
-  \item{border}{
-    border colour.
   }
   \item{last.step}{
     width (in native units) of the final block. Defaults to the median of
@@ -85,7 +79,7 @@ set.seed(0)
 flow <- ts(filter(rlnorm(200, mean = 1), 0.8, method = "r"))
 
 ## highlight values above and below thresholds.
-## this draws on top using semi-transparent colours.
+## this draws on top using semi-transparent colors.
 plot(flow)
 xblocks(flow > 30, col = "#ff000044") ## high values red
 xblocks(flow < 15, col = "#0000ff44") ## low value blue
@@ -119,9 +113,9 @@ xblocks(flow)
 
 ## can also show gaps:
 plot(flow, type = "s")
-xblocks(flow, gaps = TRUE, col = "hotpink")
+xblocks(time(flow), is.na(flow), col = "hotpink")
 
-## Example of alternating colours, here showing calendar months
+## Example of alternating colors, here showing calendar months
 flowdates <- Sys.Date() + as.vector(time(flow))
 flowz <- zoo(coredata(flow), flowdates)
 plot(flowz)
@@ -131,18 +125,15 @@ lines(flowz)
 
 ## Example of multiple series.
 ## set up example data
-z <- ts(matrix(1:18-1, ncol = 3))
-colnames(z) <- c("A","B","C")
-z[3:4, "B"] <- NA
-z[1, "C"] <- NA
-z
+z <- ts(cbind(A = 0:5, B = c(6:7, NA, NA, 10:11), C = c(NA, 13:17)))
+
 ## show data coverage only (highlighting gaps)
 plot(z, panel = function(x, ...)
   xblocks(x, col = "darkgrey"))
 
 ## draw gaps in red
 plot(z, type = "s", panel = function(x, ...) {
-  xblocks(x, gaps = TRUE, col = "red")
+  xblocks(time(x), is.na(x), col = "red")
   lines(x, ...); points(x)
 })
 

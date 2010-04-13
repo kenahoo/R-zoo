@@ -3,10 +3,9 @@ xblocks <- function(x, ...)
     UseMethod("xblocks")
 
 xblocks.default <-
-    function (x, y, ..., gaps = FALSE,
+    function (x, y, ..., col = NULL, border = NA, 
               ybottom = par("usr")[3], ytop = ybottom + height,
               height = diff(par("usr")[3:4]),
-              col = NULL, border = NA, 
               last.step = median(diff(tail(x))))
 {
     x <- as.numeric(x)
@@ -17,10 +16,6 @@ xblocks.default <-
         last.step <- 0
     ## this will convert factor to character:
     y <- as.vector(y)
-    ## gaps: can't just call is.na() on the input because
-    ## zoo and ts objects lose their time attributes.
-    if (gaps)
-        y <- is.na(y)
     ## Three cases:
     ## (1) If y is character, assume it gives the block colours
     ## -- unless 'col' is given, which over-rides it.
@@ -71,7 +66,7 @@ xblocks.ts <-
     function(x, y = NULL, ...)
 {
     if (!is.null(y)) {
-        xblocks.default(x, y, ...)
+        xblocks.default(as.vector(time(x)), y, ...)
     } else {
         xblocks.default(as.vector(time(x)), as.vector(x), ...)
     }
