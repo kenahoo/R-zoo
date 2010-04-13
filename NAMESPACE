@@ -22,6 +22,8 @@ export(
 ## plotting
   "plot.zoo",
   "make.par.list",
+  "xblocks",
+  "xblocks.default",
 ## *** temporary -- these are Deprecated
   "panel.plot.default", 
   "panel.plot.custom",
@@ -165,6 +167,7 @@ export(
   S3method("window", "zoo")
   S3method("window<-", "zoo")
   S3method("with", "zoo")
+  S3method("xblocks", "zoo")
   S3method("xyplot", "zoo")
 
 ## methods for class zooreg
@@ -189,6 +192,7 @@ export(
   S3method("rollmax", "ts")
   S3method("rollmean", "ts")
   S3method("rollmedian", "ts")
+  S3method("xblocks", "ts")
 
 ## methods for class irts
   S3method("coredata", "irts")

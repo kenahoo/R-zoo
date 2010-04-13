@@ -19,6 +19,8 @@ Changes in Version 1.6-3
 
   o new MATCH.times method
 
+  o new (generic) base graphics function xblocks().
+
 
 Changes in Version 1.6-2
 
