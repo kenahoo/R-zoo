@@ -1,8 +1,8 @@
 \name{xblocks}
 \alias{xblocks}
 \alias{xblocks.default}
-\alias{xblocks.ts}
 \alias{xblocks.zoo}
+\alias{xblocks.ts}
 \title{
   Plot contiguous blocks along x axis.
 }
@@ -18,7 +18,9 @@ xblocks(x, ...)
         height = diff(par("usr")[3:4]),
         last.step = median(diff(tail(x))))
 
-\S3method{xblocks}{ts}(x, y = NULL, ...)
+\S3method{xblocks}{zoo}(x, y = x, ...)
+
+\S3method{xblocks}{ts}(x, y = x, ...)
 }
 \arguments{
   \item{x, y}{
@@ -34,9 +36,9 @@ xblocks(x, ...)
     codes. Missing values in \code{y} are not plotted. The default color
     is taken from \code{palette()[1]}. If \code{col} is given, this
     over-rides the block colors given as \code{y}.
-
-    The \code{ts} method plots values against their \code{time()},
-    or \code{y} against \code{time(x)} if \code{y} is given.
+    
+    The \code{ts} and \code{zoo} methods plot the \code{coredata(y)}
+    values against the time index \code{index(x)}. 
   }
   \item{\dots}{
     In the default method, further arguments are graphical parameters
@@ -80,27 +82,27 @@ flow <- ts(filter(rlnorm(200, mean = 1), 0.8, method = "r"))
 
 ## highlight values above and below thresholds.
 ## this draws on top using semi-transparent colors.
+rgb <- hcl(c(0, 0, 260), c = c(100, 0, 100), l = c(50, 90, 50), alpha = 0.3)
 plot(flow)
-xblocks(flow > 30, col = "#ff000044") ## high values red
-xblocks(flow < 15, col = "#0000ff44") ## low value blue
-xblocks(flow >= 15 & flow <= 30, col = "#88888844") ## grey
+xblocks(flow > 30, col = rgb[1]) ## high values red
+xblocks(flow < 15, col = rgb[3]) ## low value blue
+xblocks(flow >= 15 & flow <= 30, col = rgb[2]) ## the rest gray
 
 ## same thing:
 plot(flow)
-xblocks(time(flow), cut(flow, c(0,15,30,Inf),
-  labels = c("#0000ff44", "#88888844", "#ff000044")))
+xblocks(time(flow), cut(flow, c(0,15,30,Inf), labels = rev(rgb)))
 
 ## another approach is to plot blocks underneath without transparency.
 plot(flow)
 ## note that 'ifelse' keeps its result as class 'ts'
-xblocks(ifelse(flow < mean(flow), "grey", "yellow"))
+xblocks(ifelse(flow < mean(flow), hcl(0, 0, 90), hcl(0, 80, 70)))
 ## need to redraw data series on top:
 lines(flow)
 box()
 
 ## for single series only: plot.default has a panel.first argument
 plot(time(flow), flow, type = "l",
-  panel.first = xblocks(flow > 20, col = "lightgrey"))
+  panel.first = xblocks(flow > 20, col = "lightgray"))
 ## (see also the 'panel' argument for use with multiple series, below)
 
 ## insert some missing values
@@ -113,14 +115,14 @@ xblocks(flow)
 
 ## can also show gaps:
 plot(flow, type = "s")
-xblocks(time(flow), is.na(flow), col = "hotpink")
+xblocks(time(flow), is.na(flow), col = "gray")
 
 ## Example of alternating colors, here showing calendar months
 flowdates <- Sys.Date() + as.vector(time(flow))
 flowz <- zoo(coredata(flow), flowdates)
 plot(flowz)
 xblocks(flowz, months, ## i.e. months(time(flowz)),
-  col = c("lightgrey", "#e6e6e6"), border = "darkgrey")
+  col = gray.colors(2, start = 0.7), border = "slategray")
 lines(flowz)
 
 ## Example of multiple series.
@@ -129,11 +131,11 @@ z <- ts(cbind(A = 0:5, B = c(6:7, NA, NA, 10:11), C = c(NA, 13:17)))
 
 ## show data coverage only (highlighting gaps)
 plot(z, panel = function(x, ...)
-  xblocks(x, col = "darkgrey"))
+  xblocks(x, col = "darkgray"))
 
-## draw gaps in red
+## draw gaps in darkgray
 plot(z, type = "s", panel = function(x, ...) {
-  xblocks(time(x), is.na(x), col = "red")
+  xblocks(time(x), is.na(x), col = "darkgray")
   lines(x, ...); points(x)
 })
 
@@ -141,6 +143,6 @@ plot(z, type = "s", panel = function(x, ...) {
 ## Are US presidential approval ratings linked to sunspot activity?
 ## Set block height to plot blocks along the bottom.
 plot(presidents)
-xblocks(sunspot.year > 50, height = 3)
+xblocks(sunspot.year > 50, height = 2)
 }
 \keyword{ dplot }

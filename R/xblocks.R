@@ -71,11 +71,9 @@ xblocks.default <-
 
 xblocks.zoo <-
 xblocks.ts <-
-    function(x, y = NULL, ...)
+    function(x, y = x, ...)
 {
-    if (!is.null(y)) {
-        xblocks.default(time(x), y, ...)
-    } else {
-        xblocks.default(time(x), as.vector(x), ...)
-    }
+    if (!is.function(y))
+        y <- coredata(y)
+    xblocks(index(x), y, ...)
 }
