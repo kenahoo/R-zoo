@@ -25,18 +25,18 @@ xblocks(x, ...)
     In the default method, \code{x} gives the ordinates along the x axis and
     must be in increasing order. \code{y} gives the color values to plot as
     contiguous blocks. If \code{y} is numeric, data coverage is plotted,
-    by converting it into a logical (\code{!is.na(y)}). In this case, or
-    when a logical \code{y} is given, the default block color is taken
-    from \code{palette()[1]}. 
+    by converting it into a logical (\code{!is.na(y)}). Finally, if
+    \code{y} is a function, it is applied to \code{x} (\code{time(x)} in
+    the time series methods). 
     
     If \code{y} has character (or factor) values, these are interpreted
     as colors -- and should therefore be color names or hex
-    codes. Missing values in \code{y} are not plotted.  If \code{col} is
-    given, this over-rides the block colors given as \code{y}.
+    codes. Missing values in \code{y} are not plotted. The default color
+    is taken from \code{palette()[1]}. If \code{col} is given, this
+    over-rides the block colors given as \code{y}.
 
     The \code{ts} method plots values against their \code{time()},
-    unless \code{y} is specified, when it acts just like
-    the default method.
+    or \code{y} against \code{time(x)} if \code{y} is given.
   }
   \item{\dots}{
     In the default method, further arguments are graphical parameters
@@ -119,7 +119,7 @@ xblocks(time(flow), is.na(flow), col = "hotpink")
 flowdates <- Sys.Date() + as.vector(time(flow))
 flowz <- zoo(coredata(flow), flowdates)
 plot(flowz)
-xblocks(time(flowz), months(time(flowz)),
+xblocks(flowz, months, ## i.e. months(time(flowz)),
   col = c("lightgrey", "#e6e6e6"), border = "darkgrey")
 lines(flowz)
 
