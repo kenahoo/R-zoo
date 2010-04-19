@@ -13,7 +13,7 @@ lagts.default <- function(x, k = 1, na.pad = TRUE, ...)
 
     ## handling of multiple lags
     if(length(k) > 1) {
-        ## first align everything along original index (i.e., na.pdf = TRUE)
+        ## first align everything along original index (i.e., na.pad = TRUE)
         if(is.null(names(k))) names(k) <- paste("lag", k, sep = "")
         rval <- do.call("cbind", lapply(k, lagts.default, x = x, na.pad = TRUE))
 
@@ -43,17 +43,17 @@ lagts.default <- function(x, k = 1, na.pad = TRUE, ...)
     if(abs(k) > nr) k <- nr
 
     ## do subsetting first
-    if(k > 0)  {
+    if(k < 0)  {
         rval <- if(length(dim(x)) == 0) {
-            x[-seq(1, length = k)]
+            x[-seq(1, length = -k)]
         } else {
-	    x[-seq(1, length = k),, drop = FALSE]
+	    x[-seq(1, length = -k),, drop = FALSE]
 	}
     } else {
         rval <- if(length(dim(x)) == 0) {
-	    x[-seq(to = nr, length = -k)]
+	    x[-seq(to = nr, length = k)]
 	} else {
-  	    x[-seq(to = nr, length = -k),, drop = FALSE]
+  	    x[-seq(to = nr, length = k),, drop = FALSE]
 	}
     }
    
