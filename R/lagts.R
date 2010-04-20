@@ -122,3 +122,15 @@ lagts.ts <- function(x, k = 1, na.pad = TRUE, ...)
     }
     x
 }
+
+lagts.zoo <- function(x, k = 1, na.pad = TRUE, ...)
+{
+  if(length(k) > 1) {
+    if(is.null(names(k)))
+      names(k) <- paste("lagts",k,sep="")
+    return(do.call("merge.zoo", lapply(k, lagts.zoo, x=x, na.pad=na.pad)))
+  }
+  if(abs(k) > NROW(x))
+    return(zoo(,))
+  .Call("zoo_lagts", x, as.integer(k), as.logical(na.pad))
+}
