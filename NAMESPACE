@@ -1,5 +1,13 @@
 ## load C symbols
-#useDynLib(zoo)
+# useDynLib("zoo")
+#
+## export new functionality
+# export("lagts", "lagts.default", "lagts.ts", "lagts.zoo")
+# export("leadts")
+# export("listindex",
+#   "c.listindex", "length.listindex", "MATCH.listindex", "ORDER.listindex", "[.listindex",
+#   "as.character.listindex", "as.numeric.listindex", "as.vector.listindex",
+#   "print.listindex", "xtfrm.listindex")
 
 ## name spaces needed for S3 methods
 import("stats", "utils", "graphics", "lattice", "grDevices")
