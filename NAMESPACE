@@ -4,6 +4,7 @@
 ## export new functionality
 # export("lagts", "lagts.default", "lagts.ts", "lagts.zoo")
 # export("leadts")
+# export(".coredata.zoo")
 # export("listindex",
 #   "c.listindex", "length.listindex", "MATCH.listindex", "ORDER.listindex", "[.listindex",
 #   "as.character.listindex", "as.numeric.listindex", "as.vector.listindex",
