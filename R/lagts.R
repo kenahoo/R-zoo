@@ -132,5 +132,5 @@ lagts.zoo <- function(x, k = 1, na.pad = TRUE, ...)
   }
   if(abs(k) > NROW(x))
     return(zoo(,))
-  .Call("zoo_lagts", x, as.integer(k), as.logical(na.pad))
+  .Call("zoo_lagts", x, as.integer(k), as.logical(na.pad), PACKAGE = "zoo")
 }

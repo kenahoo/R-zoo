@@ -14,7 +14,7 @@ coredata.zoo <- function(x, ...)
 .coredata.zoo <- function(x, ...) {
   if(length(x) == 0)
     return(vector(storage.mode(x)))
-  .Call("zoo_coredata", x, TRUE)  # second arg is to copy most attr, for compat with xts
+  .Call("zoo_coredata", x, TRUE, PACKAGE = "zoo")  # second arg is to copy most attr, for compat with xts
 }
 
 coredata.ts <- function(x, ...)
