@@ -30,20 +30,22 @@ na.spline(object, \dots)
 }
 \arguments{
   \item{object}{object in which \code{NA}s are to be replaced}
-  \item{x, xout}{Variables to be used for interpolation as in \code{approx}. Coerced to numeric if they have different classes.  \code{xout} defaults to \code{x} and \code{x} defaults to \code{index(object)}. If either are functions then they are applied to \code{index(object)}.}
+  \item{x, xout}{Variables to be used for interpolation as in \code{\link{approx}}.}
   \item{na.rm}{logical. Should leading \code{NA}s be removed?}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left unchanged. Note that all methods listed
     above can accept \code{maxgap} as it is ultimately passed to the 
     \code{default} method.}
   \item{along}{deprecated.}
-  \item{\dots}{further arguments passed to methods.}
+  \item{\dots}{further arguments passed to methods. The \code{n} argument of \code{\link{approx}} is currently not supported.}
 }
 
 \details{
   Missing values (\code{NA}s) are replaced by linear interpolation via
   \code{\link{approx}} or cubic spline interpolation via \code{\link{spline}},
   respectively.  
+
+  It can also be used for series disaggregation by specifying \code{xout}.
 
   By default the index associated with \code{object} is used
   for interpolation. Note, that if this calls \code{index.default}
@@ -53,10 +55,19 @@ na.spline(object, \dots)
 }
 
 \value{
-An object in which each \code{NA} in the input object is replaced
-by interpolating the non-\code{NA} values before and after it.
-Leading or trailing \code{NA}s are omitted (if \code{na.rm = TRUE})
-or not replaced (if \code{na.rm = FALSE}). 
+If \code{obj} is a plain vector then \code{na.approx(obj, x, y, xout, ...)} 
+returns
+\code{approx(x = x[!na], y = coredata(obj)[!na], xout = xout, ...)}
+such that xout defaults to x.
+If \code{obj} is a \code{zoo}, \code{zooreg} or \code{ts} 
+object its \code{coredata} value is as described and
+its time index is \code{xout} if specified and \code{index(obj)} otherwise.
+If \code{obj} is two dimensional then the above is applied to each column
+separately.  
+If \code{obj} is two dimensional the above is applied to each column.
+
+Leading or trailing \code{NA}s are omitted if \code{na.rm = TRUE}
+or not replaced if \code{na.rm = FALSE}. 
 }
 
 \seealso{\code{\link{zoo}}, \code{\link{approx}}, \code{\link{na.contiguous}}, \code{\link{na.locf}}, \code{\link{na.omit}}, \code{\link{na.trim}}, \code{\link{spline}}, \code{\link[stinepack]{stinterp}}} 
@@ -75,52 +86,32 @@ zz <- c(NA,9,3,NA,3,2)
 na.approx(zz, na.rm = FALSE)
 na.approx(zz)
 
-z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
+d0 <- as.Date("2000-01-01")
+z <- zoo(c(11, NA, 13, NA, 15, NA), d0 + 1:6)
+
+# NA fill, drop leading/traling NAs
 na.approx(z)
+
+# NA fill, keep leading/traling NAs
 na.approx(z, na.rm = FALSE)
-na.approx(z, xout = Sys.Date() + 1:6)
-na.approx(z, xout = Sys.Date() + 2:5)
-na.approx(z, xout = Sys.Date() + 7)
-na.approx(z, xout = Sys.Date() + 7, na.rm = FALSE)
-na.approx(z, xout = Sys.Date() + 7, rule = 2)
 
-zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
-na.approx(zm, na.rm = FALSE)
-na.approx(zm, xout = Sys.Date() + 1:6)
-na.approx(zm, xout = Sys.Date() + 2:5)
-na.approx(zm, xout = Sys.Date() + 7)
-na.approx(zm, xout = Sys.Date() + 7, na.rm = FALSE)
-na.approx(zm, xout = Sys.Date() + 7, rule = 2)
+# extrapolate to point outside of range of time points
+na.approx(z, xout = d0 + 7)
 
-zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
-na.approx(zm2, na.rm = FALSE)
-na.approx(zm2, xout = Sys.Date() + 1:6)
-na.approx(zm2, xout = Sys.Date() + 2:5)
-na.approx(zm2, xout = Sys.Date() + 7)
-na.approx(zm2, xout = Sys.Date() + 7, na.rm = FALSE)
-na.approx(zm2, xout = Sys.Date() + 7, rule = 2)
+# same but keep NAs
+na.approx(z, xout = d0 + 7, na.rm = FALSE)
 
-z <- zoo(c(11, NA, 13, NA, 15, NA), Sys.Date() + 1:6)
+# same but use rule=2 from approx for extrapolation
+na.approx(z, xout = d0 + 7, rule = 2)
+
+# use splines - extrapolation handled differently
+z <- zoo(c(11, NA, 13, NA, 15, NA), d0 + 1:6)
 na.spline(z)
 na.spline(z, na.rm = FALSE)
-na.spline(z, xout = Sys.Date() + 1:6)
-na.spline(z, xout = Sys.Date() + 2:5)
-na.spline(z, xout = Sys.Date() + 7)
-na.spline(z, xout = Sys.Date() + 7, na.rm = FALSE)
-
-zm <- zoo(cbind(a = coredata(z), b = coredata(z)), Sys.Date() + 1:3)
-na.spline(zm, na.rm = FALSE)
-na.spline(zm, xout = Sys.Date() + 1:6)
-na.spline(zm, xout = Sys.Date() + 2:5)
-na.spline(zm, xout = Sys.Date() + 7)
-na.spline(zm, xout = Sys.Date() + 7, na.rm = FALSE)
-
-zm2 <- zoo(cbind(coredata(z), coredata(z)), Sys.Date() + 1:3)
-na.spline(zm2, na.rm = FALSE)
-na.spline(zm2, xout = Sys.Date() + 1:6)
-na.spline(zm2, xout = Sys.Date() + 2:5)
-na.spline(zm2, xout = Sys.Date() + 7)
-na.spline(zm2, xout = Sys.Date() + 7, na.rm = FALSE)
+na.spline(z, xout = d0 + 1:6)
+na.spline(z, xout = d0 + 2:5)
+na.spline(z, xout = d0 + 7)
+na.spline(z, xout = d0 + 7, na.rm = FALSE)
 
 ## using na.approx for disaggregation
 
@@ -133,11 +124,16 @@ zmo <- na.approx(zy, xout = as.yearmon(2000+0:13/12)); zmo
 # monthly to daily series
 
 sq <- seq(as.Date(start(zmo)), as.Date(end(zmo), frac = 1), by = "day")
-zd <- na.approx(zmo, x = as.Date, xout = sq); head(z3)
+zd <- na.approx(zmo, x = as.Date, xout = sq); head(zd)
 
 # weekly to daily series
 zww <- zoo(1:3, as.Date("2001-01-01") + seq(0, length = 3, by = 7)); zww
-zdd <- na.approx(zw, xout = seq(start(zw), end(zw), by = "day")); zdd
+zdd <- na.approx(zww, xout = seq(start(zww), end(zww), by = "day")); zdd
+
+# The lines do not show up because of the NAs
+plot(cbind(z, z), type = c("p", "l"), screen = 1)
+# use na.approx to force lines to appear
+plot(cbind(z, na.approx(z)), type = c("p", "l"), screen = 1)
 
 # using na.approx to create regularly spaced series
 # z has points at 10, 20 and 40 minutes while output also has a point at 30

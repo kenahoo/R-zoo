@@ -2,18 +2,20 @@
 na.approx <- function(object, ...) UseMethod("na.approx")
 
 # na.approx.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, ...) {
-na.approx.zoo <- function(object, x = index(object), xout = x, ..., na.rm = TRUE, along) {
+na.approx.zoo <- function(object, x = index(object), xout, ..., na.rm = TRUE, along) {
 
 	if (!missing(along)) {
 		warning("along to be deprecated - use x instead")
 		if (missing(x)) x <- along
 	}
 
+	missing.xout <- missing(xout) || is.null(xout)
 	if (is.function(x)) x <- x(index(object))
-	if (is.function(xout)) xout <- xout(index(object))
-	order.by <- xout
+	if (!missing.xout && is.function(xout)) xout <- xout(index(object))
+	order.by <- if (missing.xout) index(object) else xout
+	xout <- if (missing.xout) x else xout
 
-	if (missing(xout) || is.null(xout) || identical(xout, index(object))) {
+	if (missing.xout || identical(xout, index(object))) {
 		result <- object
 	} else {
 		object.x <- object
@@ -28,8 +30,9 @@ na.approx.zoo <- function(object, x = index(object), xout = x, ..., na.rm = TRUE
 		result <- window(objectm, index = xout)
 	}
 	result[] <- na.approx.default(object, x = x, xout = xout, na.rm = FALSE, ...)
-	if ((!missing(order.by) && !is.null(order.by)) ||
-	    (!missing(xout) && !is.null(xout))) index(result) <- order.by
+	if ((!missing(order.by) && !is.null(order.by)) || !missing.xout) {
+		index(result) <- order.by
+	}
 
     if (na.rm) {
             result <- na.omit(result)

@@ -1,25 +1,37 @@
 
 na.spline <- function(object, ...) UseMethod("na.spline")
 
-na.spline.zoo <- function(object, x = index(object), na.rm = TRUE, xout = x, order.by = if (missing(xout) || is.null(xout)) x else if (identical(class(xout), class(index(object)))) xout else index(object), along, ...) {
+na.spline.zoo <- function(object, x = index(object), xout, ..., na.rm = TRUE, along) {
 
 	if (!missing(along)) {
 		warning("along to be deprecated - use x instead")
 		if (missing(x)) x <- along
 	}
 
-	if (missing(xout) || is.null(xout) || identical(xout, index(object))) {
+	missing.xout <- missing(xout) || is.null(xout)
+	if (is.function(x)) x <- x(index(object))
+	if (!missing.xout && is.function(xout)) xout <- xout(index(object))
+	order.by <- if (missing.xout) index(object) else xout
+	xout <- if (missing.xout) x else xout
+
+	if (missing.xout || identical(xout, index(object))) {
 		result <- object
 	} else {
 		object.x <- object
-		index(object.x) <- x
+		if (!identical(class(x), class(xout))) {
+			index(object.x) <- as.numeric(x)
+			xout <- as.numeric(xout)
+		} else {
+			index(object.x) <- x
+		}
 		objectm <- merge(object.x, zoo(, xout))
 		if (length(dim(objectm)) == 2) colnames(objectm) <- colnames(object)
 		result <- window(objectm, index = xout)
 	}
-	result[] <- na.spline.default(object, x = x, na.rm = FALSE, 
-		xout = xout, ...)
-	if (!missing(order.by) && !is.null(order.by)) index(result) <- order.by
+	result[] <- na.spline.default(object, x = x, xout = xout, na.rm = FALSE, ...)
+	if ((!missing(order.by) && !is.null(order.by)) || !missing.xout) {
+		index(result) <- order.by
+	}
 
     if (na.rm) {
             result <- na.omit(result)
@@ -36,7 +48,7 @@ na.spline.zooreg <- function(object, ...) {
 }
 
 
-na.spline.default <- function(object, x = index(object), na.rm = TRUE, xout = x, maxgap = Inf, along, ...) {
+na.spline.default <- function(object, x = index(object), xout = x, ..., na.rm = TRUE, maxgap = Inf, along) {
 
 	if (!missing(along)) {
 		warning("along to be deprecated - use x instead")
@@ -86,4 +98,5 @@ na.spline.default <- function(object, x = index(object), na.rm = TRUE, xout = x,
 na.spline.ts <- function(object, ...) {
 	as.ts(na.spline(as.zoo(object), ...))
 }
+
 
