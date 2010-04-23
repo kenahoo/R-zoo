@@ -1,3 +1,8 @@
+Changes in Version 1.7-0
+
+  o started migration to C code for internal computations...
+  
+
 Changes in Version 1.6-3
 
   o new generic function xblocks() for plotting contiguous blocks along
