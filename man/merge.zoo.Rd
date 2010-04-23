@@ -126,5 +126,14 @@ Data <- do.call(merge, lapply(split(DF, DF$site), tozoo))
 plot(Data, screen = 1, col = 1:n, pch = 1:n, type = "o", xlab = "")
 legend("bottomleft", legend = sites, lty = 1, pch = 1:n, col = 1:n)
 
+## for each index value in x merge it with the closest index value in y
+## but retaining x's times.
+x<-zoo(1:3,as.Date(c("1992-12-13", "1997-05-12", "1997-07-13")))
+y<-zoo(1:5,as.Date(c("1992-12-15", "1992-12-16", "1997-05-10","1997-05-19", "1997-07-13")))
+f <- function(u) which.min(abs(as.numeric(index(y)) - as.numeric(u)))
+ix <- sapply(index(x), f)
+cbind(x, y = coredata(y)[ix])
+
+
 }
 \keyword{ts}
