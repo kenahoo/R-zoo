@@ -134,6 +134,11 @@ f <- function(u) which.min(abs(as.numeric(index(y)) - as.numeric(u)))
 ix <- sapply(index(x), f)
 cbind(x, y = coredata(y)[ix])
 
+## this merges each element of x with the closest time point in y at or
+## after x's time point (whereas in previous example it could be before
+## or after)
+window(na.locf(merge(x, y), fromLast = TRUE), index(x))
+
 
 }
 \keyword{ts}
