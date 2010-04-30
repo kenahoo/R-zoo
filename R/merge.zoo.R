@@ -2,7 +2,7 @@ rbind.zoo <- function(..., deparse.level = 1)
 {  
 
   args <- Filter(Negate(is.null), list(...))
-  indexes <- do.call("c", lapply(args, index))
+  indexes <- do.call("c", unname(lapply(args, index)))
 
   my.table <- function(x) {
     x <- x[ORDER(x)]
@@ -170,7 +170,7 @@ merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, retclass = c(
            x <- x[ORDER(x)]
            table(MATCH(x, x))
 	}
-	union <- do.call("c", list)
+	union <- do.call("c", unname(list))
 	sort.unique(union)[which(my.table(union) == length(list))]
     }
     indexintersect <- intersect.list(indexlist)
@@ -178,7 +178,7 @@ merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, retclass = c(
     # get the indexes of the final answer which is the union of
     # all indexes of args corresponding to all=TRUE with the intersection
     # of all indexes
-    indexunion <- do.call("c", indexlist[all])
+    indexunion <- do.call("c", unname(indexlist[all]))
     
     indexes <-  if(is.null(indexunion)) indexintersect
       else sort.unique(c(indexunion, indexintersect))
