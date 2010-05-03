@@ -137,6 +137,12 @@ plot(cbind(z, z), type = "b", screen = 1)
 # use na.approx to force lines to appear
 plot(cbind(z, na.approx(z)), type = "b", screen = 1)
 
+# Workaround where less than 2 NAs can appear in a column
+za <- zoo(cbind(1:5, NA, c(1:3, NA, 5), NA)); za
+
+ix <- colSums(!is.na(za)) > 0
+za[, ix] <- na.approx(za[, ix]); za
+
 # using na.approx to create regularly spaced series
 # z has points at 10, 20 and 40 minutes while output also has a point at 30
 if(require("chron")) {
