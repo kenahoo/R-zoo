@@ -94,5 +94,16 @@ z.na[idx[as.POSIXlt(time(z.na))$mday == 5]]
 ## only fill single-day gaps
 
 merge(z.na, filled1 = na.locf(z.na, maxgap = 1))
+
+## fill NAs in first column by inflating the most recent non-NA
+## by the growth in second column.  Note that elements of x-x
+## are NA if the corresponding element of x is NA and zero else
+
+m <- zoo(cbind(c(1, 2, NA, NA, 5, NA, NA), seq(7)^2), as.Date(1:7))
+
+r <- replace(m[,1], TRUE, 
+	na.locf(m[,1]) * m[,2] / na.locf(m[,2] + (m[,1]-m[,1])))
+cbind(V1 = r, V2 = m[,2])
+
 }
 \keyword{ts}
