@@ -29,7 +29,7 @@ na.locf.default <- function(object, na.rm = TRUE, fromLast, rev, maxgap = Inf, .
 		na.locf.0(object)
 	else
 		apply(object, length(dim(object)), na.locf.0)
-	if (na.rm) na.omit(object) else object
+	if (na.rm) na.trim(object) else object
 }
 
 na.contiguous.data.frame <-
