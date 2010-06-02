@@ -136,7 +136,9 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	split.matrix <- split.data.frame
 	rval4 <- split(rval3, split.values)
 	ix <- split(ix, split.values)
-	rval5 <- mapply(zoo, rval4, ix)
+	# rval5 <- mapply(zoo, rval4, ix)
+	rval5 <- lapply(seq_along(rval4), function(i) zoo(rval4[[i]], ix[[i]]))
+	names(rval5) <- names(rval4)
     rval6 <- if(regular) {
 		lapply(rval5, function(x) if (is.regular(x)) as.zooreg(x) else x)
 	} else rval5
@@ -145,7 +147,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 		f.ag <- function(z) aggregate(z, time(z), agg.fun)
 		rval7 <- lapply(seq_along(rval6), f.ag)
 		do.call(merge, rval7)
-    } else rval6
+    } else do.call(merge, rval6)
 
   }
 	
