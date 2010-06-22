@@ -59,6 +59,19 @@ z <- zoo(c(0.007306621, 0.007659046, 0.007681013,
 dd <- seq(start(z), end(z), "day")
 na.locf(merge(z, zoo(, dd)))
 
+# in prior example all points in z were also points on grid whereas
+# in this example not all points are on grid so perform same steps
+# but after that pick off only grid points.
+# Here we take a grid of every 2 seconds.  Note that not every time is even.
+
+z <- zoo(1:9, as.POSIXct(c("2010-01-04 09:30:02", "2010-01-04 09:30:06",
+ "2010-01-04 09:30:07", "2010-01-04 09:30:08", "2010-01-04 09:30:09", 
+ "2010-01-04 09:30:10", "2010-01-04 09:30:11", "2010-01-04 09:30:13",
+ "2010-01-04 09:30:14")))
+
+g <- seq(start(z), end(z), by = "2 sec")
+na.locf(merge(z, zoo(, g)))[g]
+
 ## get 5th of every month or most recent date prior to 5th if 5th missing.
 ## Result has index of the date actually used.
 
