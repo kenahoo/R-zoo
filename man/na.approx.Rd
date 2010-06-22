@@ -95,7 +95,7 @@ na.approx(zz)
 d0 <- as.Date("2000-01-01")
 z <- zoo(c(11, NA, 13, NA, 15, NA), d0 + 1:6)
 
-# NA fill, drop or keep leading/traling NAs
+# NA fill, drop or keep leading/trailing NAs
 na.approx(z)
 na.approx(z, na.rm = FALSE)
 
@@ -104,6 +104,16 @@ na.approx(z, na.rm = FALSE)
 na.approx(z, xout = d0 + 7)
 na.approx(z, xout = d0 + 7, na.rm = FALSE)
 na.approx(z, xout = d0 + 7, rule = 2)
+
+# align z to a grid of every 2 seconds
+# carrying the last observation forward to the grid.
+# (Also see examples at end of ?na.locf for another way to do this.)
+z <- zoo(1:9, as.POSIXct(c("2010-01-04 09:30:02", "2010-01-04 09:30:06",
+ "2010-01-04 09:30:07", "2010-01-04 09:30:08", "2010-01-04 09:30:09", 
+ "2010-01-04 09:30:10", "2010-01-04 09:30:11", "2010-01-04 09:30:13",
+ "2010-01-04 09:30:14")))
+g <- seq(start(z), end(z), by = "2 sec")
+na.approx(z, xout = g, method = "constant", rule = 2)
 
 # use splines - extrapolation handled differently
 z <- zoo(c(11, NA, 13, NA, 15, NA), d0 + 1:6)

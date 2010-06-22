@@ -63,6 +63,7 @@ na.locf(merge(z, zoo(, dd)))
 # in this example not all points are on grid so perform same steps
 # but after that pick off only grid points.
 # Here we take a grid of every 2 seconds.  Note that not every time is even.
+# (Also see examples at end of ?na.approx for another way to do this.)
 
 z <- zoo(1:9, as.POSIXct(c("2010-01-04 09:30:02", "2010-01-04 09:30:06",
  "2010-01-04 09:30:07", "2010-01-04 09:30:08", "2010-01-04 09:30:09", 

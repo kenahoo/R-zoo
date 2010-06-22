@@ -567,13 +567,13 @@ zymreg
 @
 
 \item{\code{na.approx.zoo}}  
-Unlike the above two approaches, 
-in this approach we fill in the missing values with linear
-approximations rather than \code{NA}s:
+This method can also be extended to using linear interpoloation instead of
+carrying the last observation forward.  To use linear approximation just
+omit the \code{method} and \code{rule} arguments.
 
 <<fillin-approx>>=
 # using z from above
-na.approx(zym, xout = tseq)
+na.approx(zym, xout = tseq, method = "constant", rule = 2)
 @
 
 
@@ -612,7 +612,7 @@ zz
 and finally via the \code{na.approx}:
 <<fillin-approx-ok>>=
 tseq <- seq(start(z), end(z), by = times("00:10:00"))
-na.approx(z, xout = tseq)
+na.approx(z, xout = tseq, method = "constant", rule = 2)
 @
 
 \end{document}
