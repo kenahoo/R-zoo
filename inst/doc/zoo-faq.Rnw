@@ -574,6 +574,25 @@ omit the \code{method} and \code{rule} arguments.
 <<fillin-approx>>=
 # using z from above
 na.approx(zym, xout = tseq, method = "constant", rule = 2)
+
+# we can package that into a function:
+align.zoo <- function(obj, by, start. = start(obj), end. = end(obj), 
+    method = c("constant", "linear"), rule = 2, ...) {
+ method <- match.arg(method)
+ tseq <- seq(start., end., by = by)
+ na.approx(obj, xout = tseq, method = method, rule = rule, ...)
+}
+
+align.zoo(zym, by = 1/12)
+
+# Here is an example where we place the points on a monthly grid. The
+# added aspect here is that the grid is defined in terms of "yearmon" class
+# whereas the original time series is defined in terms of "Date" class.
+
+z <- zoo(1:3, as.Date(c("2000-01-15", "2000-03-3", "2000-04-29")))
+align.zoo(z, start = as.yearmon(start(z)), end = as.yearmon(end(z)), by = 1/12,
+	x = as.yearmon)
+
 @
 
 

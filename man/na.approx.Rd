@@ -108,6 +108,7 @@ na.approx(z, xout = d0 + 7, rule = 2)
 # align z to a grid of every 2 seconds
 # carrying the last observation forward to the grid.
 # (Also see examples at end of ?na.locf for another way to do this.)
+
 z <- zoo(1:9, as.POSIXct(c("2010-01-04 09:30:02", "2010-01-04 09:30:06",
  "2010-01-04 09:30:07", "2010-01-04 09:30:08", "2010-01-04 09:30:09", 
  "2010-01-04 09:30:10", "2010-01-04 09:30:11", "2010-01-04 09:30:13",
@@ -115,6 +116,15 @@ z <- zoo(1:9, as.POSIXct(c("2010-01-04 09:30:02", "2010-01-04 09:30:06",
 g <- seq(start(z), end(z), by = "2 sec")
 na.approx(z, xout = g, method = "constant", rule = 2)
 
+# we can package that into a function:
+align.zoo <- function(obj, by, start. = start(obj), end. = end(obj), 
+    method = c("constant", "linear"), rule = 2, ...) {
+ method <- match.arg(method)
+ tseq <- seq(start., end., by = by)
+ na.approx(obj, xout = tseq, method = method, rule = rule, ...)
+}
+
+align.zoo(z, "2 sec")
 # use splines - extrapolation handled differently
 z <- zoo(c(11, NA, 13, NA, 15, NA), d0 + 1:6)
 na.spline(z)
