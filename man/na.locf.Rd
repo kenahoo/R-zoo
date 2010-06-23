@@ -11,7 +11,7 @@ non-\code{NA} prior to it.
 \usage{
 na.locf(object, na.rm = TRUE, \dots)
 \method{na.locf}{default}(object, na.rm = TRUE, fromLast, rev,
-        maxgap = Inf, \dots)
+        maxgap = Inf, rule = 2, \dots)
 }
 \arguments{
   \item{object}{an object.}
@@ -26,6 +26,7 @@ na.locf(object, na.rm = TRUE, \dots)
     be eliminated in the future in favor of \code{fromLast}.}
   \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left unchanged.}
+  \item{rule}{See \code{\link{approx}}.}
   \item{\dots}{further arguments passed to methods.}
 }
 
@@ -60,7 +61,7 @@ z <- zoo(c(0.007306621, 0.007659046, 0.007681013,
 	0.007817548, 0.007847579, 0.007867313),
 	as.Date(c("1993-01-01", "1993-01-09", "1993-01-16",
 	"1993-01-23", "1993-01-30", "1993-02-06")))
-dd <- seq(start(z), end(z), "day")
+g <- seq(start(z), end(z), "day")
 na.locf(z, xout = g)
 
 # similar but use a 2 second grid

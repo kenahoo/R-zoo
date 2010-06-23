@@ -534,19 +534,29 @@ ifelse(diff(z, na.pad = TRUE) > 4, -z, z)
 @
 
 
-\mysection[13. In a series which is regular except for a few missing times or for which we wish to align to a grid how is it filled in or aligned?}
+\mysection[13. In a series which is regular except for a few missing times or for which we wish to align to a grid how is it filled in or aligned?]{13. In a series which is regular except for a few missing times or for which we wish to align to a grid how is it filled or aligned?}
 
-<<fillin-merge>>=
+<<fillin>>=
 # April is missing
 zym <- zoo(1:5, as.yearmon("2000-01-01") + c(0, 1, 2, 4, 5)/12)
 g <- seq(start(zym), end(zym), by = 1/12)
 na.locf(zym, xout = g)
 @
 
+A variation of this is where the grid is of a different date/time class than
+the original series.  In that case use the \code{x} argument.  In the example
+that follows the series \code{z} is of \code{"Date"} class whereas the grid
+is of \code{"yearmon"} class:
+
+<<fillin-2>>=
+z <- zoo(1:3, as.Date(c("2000-01-15", "2000-03-3", "2000-04-29")))
+g <- seq(as.yearmon(start(z)), as.yearmon(end(z)), by = 1/12)
+na.locf(z, x = as.yearmon, xout = g)
+@
+
 Here is a \code{chron} example where we wish to create a 10 minute grid:
 
-<<fillin-merge>>=
-
+<<fillin-3>>=
 # 2009-01-09 05:50:00 is missing
 Lines <- "Time,Value
 2009-10-09 5:00:00,210
@@ -556,9 +566,7 @@ Lines <- "Time,Value
 2009-10-09 5:41:00,205
 2009-10-09 6:00:00,185"
 
-library(zoo)
 library(chron)
-
 z <- read.zoo(textConnection(Lines), FUN = as.chron, sep = ",", header = TRUE)
 g <- seq(start(z), end(z), by = times("00:10:00"))
 na.locf(z, xout = g)
