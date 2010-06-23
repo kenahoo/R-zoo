@@ -78,18 +78,14 @@ cbind.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL)
   merge.zoo(..., all = all, fill = fill, suffixes = suffixes, retclass = "zoo")
 }
 
-merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, retclass = c("zoo", "list", "data.frame"))
+
+merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, check.names = TRUE, retclass = c("zoo", "list", "data.frame"))
 {
     if (!is.null(retclass)) retclass <- match.arg(retclass)
     # cl are calls to the args and args is a list of the arguments
     cl <- as.list(match.call())
-    cl[[1]] <- cl$all <- cl$fill <- cl$retclass <- cl$suffixes <- NULL
+    cl[[1]] <- cl$all <- cl$fill <- cl$retclass <- cl$suffixes <- cl$check.names <- NULL
     args <- list(...)
-
-	# remove NULL args
-	isnull <- sapply(args, is.null)
-	cl <- cl[!isnull]
-	args <- args[!isnull]
 
     parent <- parent.frame()
 
@@ -344,7 +340,6 @@ merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, retclass = c(
             suffixes[i], sep = "."), zoocolnames[[i]])
         if (any(duplicated(unlist(zoocolnames)))) 
             zoocolnames <- lapply(seq_along(args), f)
-        colnames(rval) <- make.unique(unlist(zoocolnames))
     } else {
         fixcolnames <- function(a) {
             if (length(a) == 0) 
@@ -354,16 +349,18 @@ merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, retclass = c(
             else return(paste(".", 1:NCOL(a), sep = ""))
         }
         zoocolnames <- lapply(args, fixcolnames)
-        zoocolnames <- unlist(lapply(seq_along(args), function(i) 
+        zoocolnames <- lapply(seq_along(args), function(i) 
 		if (!is.null(zoocolnames[[i]])) # NULL returned if false
 			paste(suffixes[i], zoocolnames[[i]], sep = ""))
-	)
-        colnames(rval) <- make.unique(zoocolnames)
     }
+	zoocolnames <- unlist(zoocolnames)
+	colnames(rval) <- if (check.names) make.unique(zoocolnames)
+		else zoocolnames
     # rval <- zoo(rval, indexes)
     rval <- zoo(coredata(rval), indexes)
     attr(rval, "frequency") <- freq
     if(!is.null(freq)) class(rval) <- c("zooreg", class(rval))
     return(rval)
 }
+
 

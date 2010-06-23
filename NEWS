@@ -6,6 +6,12 @@ Changes in Version 1.7-1
   o diff can have a negative lag argument (for forward diffs).  Previously
     only positive was allowed.
 
+  o na.locf now calls na.approx with method = "constant" unless fromLast = TRUE.
+    In particular, arguments x and xout can be passed to na.locf which is used
+    in alignment applications.
+
+  o merge has check.names argument.
+
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...

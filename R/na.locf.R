@@ -1,8 +1,18 @@
 na.locf <- function(object, na.rm = TRUE, ...)
 	UseMethod("na.locf")
 
-na.locf.default <- function(object, na.rm = TRUE, fromLast, rev, maxgap = Inf, ...)
-{
+na.locf.default <- function(object, na.rm = TRUE, fromLast, rev, maxgap = Inf, rule = 2, ...) {
+
+	L <- list(...)
+	if ("x" %in% names(L) || "xout" %in% names(L)) {
+
+		if (!missing(fromLast)) {
+			stop("fromLast not supported if x or xout is specified")
+		}
+		return(na.approx(object, na.rm = na.rm, 
+			maxgap = maxgap, method = "constant", rule = rule, ...))
+	}
+
 	na.locf.0 <- function(x) {
 	      L <- !is.na(x)
 	      idx <- if (fromLast)
