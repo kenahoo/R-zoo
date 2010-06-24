@@ -10,7 +10,8 @@ Changes in Version 1.7-1
     In particular, arguments x and xout can be passed to na.locf which is used
     in alignment applications.
 
-  o merge has check.names argument.
+  o merge has check.names argument.  If check.names = TRUE (the default)
+    then column names will be valid syntactic names.
 
 Changes in Version 1.7-0
 

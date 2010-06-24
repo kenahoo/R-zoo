@@ -354,7 +354,7 @@ merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, check.names =
 			paste(suffixes[i], zoocolnames[[i]], sep = ""))
     }
 	zoocolnames <- unlist(zoocolnames)
-	colnames(rval) <- if (check.names) make.unique(zoocolnames)
+	colnames(rval) <- if (check.names) make.names(make.unique(zoocolnames))
 		else zoocolnames
     # rval <- zoo(rval, indexes)
     rval <- zoo(coredata(rval), indexes)
