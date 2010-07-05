@@ -13,6 +13,9 @@ Changes in Version 1.7-1
   o merge has check.names argument.  If check.names = TRUE (the default)
     then column names will be valid syntactic names.
 
+  o read.zoo's index.column argument can be a list such that FUN is called via
+    do.call(FUN, index.column) .
+
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...

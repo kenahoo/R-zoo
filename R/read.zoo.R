@@ -2,13 +2,21 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   regular = FALSE, index.column = 1, drop = TRUE, FUN2 = NULL, 
   split = NULL, aggregate = FALSE, ...)
 {
+
+
   ## read data
   rval <- if (is.data.frame(file)) file else read.table(file, ...)
+
+  is.index.column <- seq_along(rval) %in% unname(unlist(index.column))
+
+  ## convert factor columns in index to character
+  is.fac <- sapply(rval[is.index.column], is.factor)
+  if (length(is.fac) > 0) rval[is.fac] <- lapply(rval[is.fac], as.character)
 
   ## if `file' does not contain data
   if(NROW(rval) < 1) {
     if(is.data.frame(rval)) rval <- as.matrix(rval)
-    if(NCOL(rval) > 1) rval <- rval[,-index.column, drop = drop]
+    if(NCOL(rval) > 1) rval <- rval[, ! is.index.column, drop = drop]
     rval2 <- zoo(rval)
     return(rval2)
   }
@@ -17,15 +25,17 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   if(NCOL(rval) < 1) stop("data file must specify at least one column")
   
   ## extract index, retain rest of the data
-  ix <- if (NCOL(rval) == 1) ix <- seq_len(NROW(rval))
-  else rval[,index.column]
+  ix <- if (NCOL(rval) == 1 || length(index.column) == 0) seq_len(NROW(rval))
+  else if (is.list(index.column)) {
+	sapply(index.column, function(j) rval[,j], simplify = FALSE)
+  } else rval[,index.column]
 
   # split. is col number of split column (or Inf, -Inf or NULL)
   split. <- if (is.character(split)) match(split, colnames(rval), nomatch = 0)
   else split
 
   rval2 <- if (is.null(split.)) {
-	 rval[ , - index.column, drop = drop]
+	 rval[ , ! is.index.column, drop = drop]
   } else {
 
      split.values <- if (is.character(split) || is.finite(split)) rval[, split]
@@ -86,13 +96,19 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
         else toDefault
   }
   FUN <- match.fun(FUN)
+
+  processFUN <- function(...) {
+	if (is.data.frame(..1)) FUN(...)
+	else if (is.list(..1)) do.call(FUN, c(...))
+	else FUN(...)
+  }
   
   ## compute index from (former) first column
   ix <- if (missing(format)) {
-    if (missing(tz)) FUN(ix) else FUN(ix, tz = tz)
+    if (missing(tz)) processFUN(ix) else processFUN(ix, tz = tz)
   } else {
-    if (missing(tz)) FUN(ix, format = format) 
-    else FUN(ix, format = format, tz = tz)
+    if (missing(tz)) processFUN(ix, format = format) 
+    else processFUN(ix, format = format, tz = tz)
   }
 
   if (!is.null(FUN2)) {
