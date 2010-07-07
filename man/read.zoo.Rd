@@ -18,7 +18,8 @@ write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NUL
   \item{file}{character giving the name of the file which the data
     are to be read from/written to. See \code{\link{read.table}} and
     \code{\link{write.table}} for more information. Alternatively,
-    in \code{read.zoo}, \code{file} can be a \code{data.frame} (e.g.,
+    in \code{read.zoo}, \code{file} can be a \code{connection}.  It can
+	also be a \code{data.frame} (e.g.,
     resulting from a previous \code{read.table} call) that
     is subsequently processed to a \code{"zoo"} series.}
   \item{format}{date format argument passed to \code{FUN}.}

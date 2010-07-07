@@ -14,7 +14,7 @@ Changes in Version 1.7-1
     then column names will be valid syntactic names.
 
   o read.zoo's index.column argument can be a list such that FUN is called via
-    do.call(FUN, index.column) .
+    do.call(FUN, L) where i in list L is replaced with x[,i].
 
 Changes in Version 1.7-0
 
