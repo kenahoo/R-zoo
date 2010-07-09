@@ -18,6 +18,8 @@ Changes in Version 1.7-1
 
   o added a median.zoo method
 
+  o added workaround in Ops.zoo to circumvent rare bug in R
+
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...
