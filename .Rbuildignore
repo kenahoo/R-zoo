@@ -4,3 +4,6 @@ R/filter.zoo.R
 man/defaultfrequency.Rd
 inst/doc/.*\.log
 inst/doc/.*\.dvi
+R/lagts.R
+R/listindex.R
+src
