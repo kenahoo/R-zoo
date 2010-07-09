@@ -10,8 +10,11 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   is.index.column <- seq_along(rval) %in% unname(unlist(index.column))
 
   ## convert factor columns in index to character
-  is.fac <- sapply(rval[is.index.column], is.factor)
-  if (length(is.fac) > 0) rval[is.fac] <- lapply(rval[is.fac], as.character)
+  # is.fac <- sapply(rval[is.index.column], is.factor)
+  is.fac <- sapply(rval, is.factor)
+  is.fac.index <- is.fac & is.index.column
+  if (any(is.fac.index)) rval[is.fac.index] <- 
+	lapply(rval[is.fac.index], as.character)
 
   ## if `file' does not contain data
   if(NROW(rval) < 1) {
