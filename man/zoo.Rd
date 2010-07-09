@@ -29,6 +29,7 @@
 \alias{names.zoo}
 \alias{names<-.zoo}
 \alias{rev.zoo}
+\alias{median.zoo}
 
 \alias{index2char}
 \alias{index2char.default}
