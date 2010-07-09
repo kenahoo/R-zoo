@@ -25,6 +25,7 @@ export(
   "rbind.zoo",
   "ifelse.zoo",
   "is.zoo",
+  "median.zoo",
   "merge.zoo",
   "read.zoo",
   "rev.zoo",
