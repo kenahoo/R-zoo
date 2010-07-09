@@ -28,6 +28,7 @@ export(
   "median.zoo",
   "merge.zoo",
   "read.zoo",
+  "quantile.zoo",
   "rev.zoo",
   "write.zoo",
   "xtfrm.zoo",

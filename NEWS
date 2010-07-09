@@ -20,6 +20,8 @@ Changes in Version 1.7-1
 
   o added workaround in Ops.zoo to circumvent rare bug in R
 
+  o added a quantile.zoo method
+
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...
