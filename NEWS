@@ -16,6 +16,8 @@ Changes in Version 1.7-1
   o read.zoo's index.column argument can be a list such that FUN is called via
     do.call(FUN, L) where i in list L is replaced with x[,i].
 
+  o added a median.zoo method
+
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...
