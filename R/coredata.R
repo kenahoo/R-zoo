@@ -10,6 +10,13 @@ coredata.zoo <- function(x, ...)
   return(x)
 }
 
+# experimental coredata.zoo to take advantage of new C code contributed from xts
+.coredata.zoo <- function(x, ...) {
+  if(length(x) == 0)
+    return(vector(storage.mode(x)))
+  .Call("zoo_coredata", x, TRUE, PACKAGE = "zoo")  # second arg is to copy most attr, for compat with xts
+}
+
 coredata.ts <- function(x, ...)
 {
   x <- unclass(x)

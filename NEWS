@@ -1,3 +1,8 @@
+Changes in Version 1.7-0
+
+  o started migration to C code for internal computations...
+  
+
 Changes in Version 1.6-4
 
   o names were automatically added to indexes in some cases hugely increasing
