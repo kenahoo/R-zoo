@@ -147,14 +147,15 @@ str.zoo <- function(object, ...)
 
 "$<-.zoo" <- function(object, x, value) {
   if(length(dim(object)) != 2) stop("not possible for univariate zoo series")
-  if(is.null(colnames(object))) stop("only possible for zoo series with column names")
+  if(NCOL(object) > 0 & is.null(colnames(object))) stop("only possible for zoo series with column names")
   wi <- match(x, colnames(object))
   if(is.na(wi)) {
     object <- cbind(object, value)
+    if(is.null(dim(object))) dim(object) <- c(length(object), 1)
     colnames(object)[NCOL(object)] <- x  
   } else {
     if(is.null(value)) {
-      object <- object[, -wi, drop=FALSE]
+      object <- object[, -wi, drop = FALSE]
     } else {   
       object[, wi] <- value
     }
