@@ -77,6 +77,17 @@ attribute. In the creation of \code{"zooreg"} objects (via \code{\link{zoo}},
 \code{\link{zooreg}}, or coercion functions) it is always check whether the
 index specified complies with the frequency specified.
 
+If \code{frequency} (or \code{deltat}) 
+is negative and \code{data} has nonzero length
+then the absolute value of \code{frequency} (or \code{deltat}) is used
+and the data argument is regarded to be as if it were \code{rev(data)} 
+or \code{data[NROW(data):1,]}
+according to the dimensionality of \code{data}.
+
+\code{data[NROW(data):1, ]} in the case of 2d data (with nonzero length)
+an \code{rev(data)}
+in the case 
+
 The class \code{"zooreg"} offers two advantages over code \code{"ts"}: 1. The
 index does not have to be plain numeric (although that is the default), it just
 must be coercible to numeric, thus printing and plotting can be customized.
