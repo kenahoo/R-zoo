@@ -4,11 +4,6 @@ zooreg <- function(data, start = 1, end = numeric(), frequency = 1,
     ## choose frequency/deltat
     if (missing(frequency)) frequency <- 1/deltat
     	else if(missing(deltat)) deltat <- 1/frequency
-	ofrequency <- frequency
-	if (frequency < 0) {
-		frequency <- - frequency
-		deltat <- - deltat
-	}
     if (frequency > 1 && abs(frequency - round(frequency)) < ts.eps)
     	frequency <- round(frequency)
 
@@ -17,11 +12,6 @@ zooreg <- function(data, start = 1, end = numeric(), frequency = 1,
     if(!(is.vector(data) || is.factor(data) || is.matrix(data) || is.data.frame(data)))
       stop(paste(dQuote("data"), ": attempt to define illegal zoo object"))
     if(is.matrix(data) || is.data.frame(data)) data <- as.matrix(data)
-
-	if (ofrequency < 0 && length(data) > 0) {
-		data <- if (length(dim(data)) == 2) data[NROW(data):1, ]
-		else rev(data)
-	}
 
     ## if no index (i.e., order.by) is specified: behave as ts()
     ## else: behave as zoo()

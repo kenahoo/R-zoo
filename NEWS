@@ -1,10 +1,6 @@
 Changes in Version 1.7-0
 
   o started migration to C code for internal computations...
-
-  o if frequency or deltat is negative in zooreg then its as if the
-    absolute value of the frequency or deltat were specified and the data
-    argument is reversed.
   
 
 Changes in Version 1.6-4
