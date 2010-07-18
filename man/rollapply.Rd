@@ -35,12 +35,16 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   \code{mean}, \code{max} or \code{median} and \code{by.column} is 
   \code{TRUE} and there are no extra arguments
   then special purpose code is used to enhance performance.
+  Also in the case of \code{mean} such special purpose code is only 
+  invoked if the
+  \code{data} argument has no \code{NA} values.
   See \code{\link{rollmean}}, \code{\link{rollmax}} and \code{\link{rollmedian}}
   for more details.
   
   Currently, there are methods for \code{"zoo"} and \code{"ts"} series.
   
-  In previous versions, this function was called \code{rapply}. It was renamed
+  In much older versions of the zoo package, 
+  this function was called \code{rapply}. It was renamed
   because from R 2.4.0 on, base R provides a different function \code{rapply}
   for recursive (and not rolling) application of functions.
 }

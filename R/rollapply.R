@@ -29,8 +29,9 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
 
     if (by.column && by == 1 && ascending && length(list(...)) < 1 &&
 		length(sw <- deparse(substitute(FUN))) == 1) {
-	switch(sw,
-		mean = return(rollmean(data, width, na.pad = na.pad, align = align)),
+    if (sw == "mean" && all(!is.na(data))) {
+		return(rollmean(data, width, na.pad = na.pad, align = align))
+	} else switch(sw,
 		max = return(rollmax(data, width, na.pad = na.pad, align = align)),
 		median = return(rollmedian(data, width, na.pad = na.pad, align = align)))
 	}
