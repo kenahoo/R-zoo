@@ -7,7 +7,8 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   ## read data
   rval <- if (is.data.frame(file)) file else read.table(file, ...)
 
-  is.index.column <- seq_along(rval) %in% unname(unlist(index.column))
+  is.index.column <- seq_along(rval) %in% unname(unlist(index.column)) |
+	names(rval) %in% unname(unlist(index.column))
 
   ## convert factor columns in index to character
   # is.fac <- sapply(rval[is.index.column], is.factor)
@@ -53,7 +54,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	 if (split. == 0) {
 		stop(paste("split:", split, "not found in colnames:", colnames(rval)))
 	 }
-	 rval[,-c(split., index.column), drop = drop]
+	 rval[,-c(split., which(is.index.column)), drop = drop]
   }
 
   if(is.factor(ix)) ix <- as.character(ix)
