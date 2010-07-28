@@ -13,6 +13,11 @@ as.zoo.factor <- function(x, ...)
   zoo(x, ...)
 }
 
+as.zoo.matrix <- function(x, ...) 
+{
+  zoo(x, ...)
+}
+
 as.zoo.fts <- function(x, ...) 
 {
 	stopifnot(require("fts"))

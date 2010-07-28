@@ -4,6 +4,7 @@
 \alias{as.zoo.fts}
 \alias{as.zoo.its}
 \alias{as.zoo.irts}
+\alias{as.zoo.matrix}
 \alias{as.zoo.mcmc}
 \alias{as.zoo.tis}
 \alias{as.zoo.xts}

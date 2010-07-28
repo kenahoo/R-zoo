@@ -2,8 +2,11 @@ Changes in Version 1.7-0
 
   o started migration to C code for internal computations...
 
-  o rollapply with FUN=mean will no longer call rollmean if the data has
+  o rollapply with FUN = mean will no longer call rollmean if the data has
     any NA values
+  
+  o Added a new as.zoo() method for "matrix" objects in order to preserve
+    column names.
   
 
 Changes in Version 1.6-4
