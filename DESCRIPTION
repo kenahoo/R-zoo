@@ -11,7 +11,7 @@ Description: An S3 class with methods for totally ordered indexed
 	consistency with ts and base R by providing methods to extend
 	standard generics.
 Depends: R (>= 2.10.0), stats
-Suggests: coda, chron, DAAG, fCalendar, fSeries, fts, its, lattice, strucchange,
+Suggests: coda, chron, DAAG, fts, its, lattice, strucchange,
 	timeDate, timeSeries, tis, tseries, xts
 Imports: stats, utils, graphics, grDevices, lattice (>= 0.18-1)
 LazyLoad: yes
