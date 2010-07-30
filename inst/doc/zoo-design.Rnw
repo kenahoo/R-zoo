@@ -1,0 +1,71 @@
+\documentclass[article,nojss]{jss}
+\DeclareGraphicsExtensions{.pdf,.eps}
+%%\newcommand{\mysection}[2]{\subsubsection[#2]{\textbf{#1}}}
+\let\mysection=\subsubsection
+\renewcommand{\jsssubsubsec}[2][default]{\vskip \preSskip%
+  \pdfbookmark[3]{#1}{Subsubsection.\thesubsubsection.#1}%
+  \refstepcounter{subsubsection}%
+  {\large \textbf{\textit{#2}}} \nopagebreak
+  \vskip \postSskip \nopagebreak}
+
+%% need no \usepackage{Sweave}
+
+\title{\pkg{zoo} Design}
+\Plaintitle{zoo Design}
+
+\Keywords{irregular time series, daily data, weekly data, returns}
+
+\Abstract{
+  This is a set of design principles that have guided the development of the
+  \pkg{R} \pkg{zoo} package but had not before been explicitly set out.
+}
+
+\begin{document}
+
+\SweaveOpts{engine=R,eps=FALSE}
+%\VignetteIndexEntry{zoo FAQ}
+%\VignetteDepends{zoo,tseries}
+%\VignetteKeywords{irregular time series, daily data, weekly data, returns}
+%\VignettePackage{zoo}
+
+
+<<preliminaries, echo=FALSE, results=hide>>=
+library("zoo")
+@
+
+
+\emph{\pkg{zoo} works with any ordered index class} having the prescribed
+methods.  Specific index classes are not hard coded in functions (with
+a few exceptions necessitated by external interfaces such as reading
+and interfacing with ts) but rather all index operations are only done
+via the allowed methods.
+
+\emph{\pkg{zoo} is invisible}.  As far as possible new names are not introduced.
+New functionality is added as methods to generics from the R core
+allowing reuse of those names. When names are added thought is put
+into the name since zoo is so miserly about adding them.  For example,
+the read.zoo name is obviously derived from read.table and the name
+na.locf is clearly derived from the core na.* routine names.
+
+\emph{\pkg{zoo} is consistent with the core of R}.  The idea is to make the use
+of zoo completely natural to someone who knows R.   Extensions to R
+are ok but core functionality should be consistent.
+
+\emph{\pkg{zoo} is infrastructure}.  zoo does not try to do everything but 
+rather encourages addon packages.  (A list appears in the zoo FAQ.) zoo tries
+to do basic things well.
+
+\emph{\pkg{zoo} interfaces to all other time series packages} on CRAN (or at
+least all of the more popular ones and some of the relatively unknown
+ones as well).
+
+\emph{\pkg{zoo} includes extensive documentation}
+
+\emph{\pkg{zoo} has no bug list since all bugs are fixed immediately}.  This is
+currently not the case (the \pkg{zoo} R-Forge bug list is non-empty as this is
+written) but for several years prior to this it was the situation.
+
+\emph{\pkg{zoo} includes formal regression testing}.  This is not currently
+the case but work is underway to rectify this.
+
+\end{document}
