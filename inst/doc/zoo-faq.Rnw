@@ -10,11 +10,11 @@
 
 %% need no \usepackage{Sweave}
 
-\author{\pkg{zoo} \proglang{R}-Forge Development Team}
-\Plainauthor{zoo R-Forge Development Team}
+\author{\pkg{zoo} Development Team}
+\Plainauthor{zoo Development Team}
 
 \Address{
-  \pkg{zoo} \proglang{R}-Forge Development Team\\
+  \pkg{zoo} Development Team\\
   \proglang{R}-Forge: \url{http://R-Forge.R-project.org/projects/zoo/}\\
   Comprehensive \proglang{R} Archive Network: \url{http://CRAN.R-project.org/package=zoo}
 }
