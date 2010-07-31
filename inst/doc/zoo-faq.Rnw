@@ -10,36 +10,32 @@
 
 %% need no \usepackage{Sweave}
 
-\author{Gabor Grothendieck\\GKX Associates Inc. \And
-        Achim Zeileis\\Wirtschaftsuniversit\"at Wien}
-\Plainauthor{Achim Zeileis, Gabor Grothendieck}
+\author{\pkg{zoo} \proglang{R}-Forge Development Team}
+\Plainauthor{zoo R-Forge Development Team}
+
+\Address{
+  \pkg{zoo} \proglang{R}-Forge Development Team\\
+  \proglang{R}-Forge: \url{http://R-Forge.R-project.org/projects/zoo/}\\
+  Comprehensive \proglang{R} Archive Network: \url{http://CRAN.R-project.org/package=zoo}
+}
 
 \title{\pkg{zoo} FAQ}
 \Plaintitle{zoo FAQ}
 
-\Keywords{irregular time series, daily data, weekly data, returns}
+\Keywords{irregular time series, ordered observations, time index, daily data, weekly data, returns}
 
 \Abstract{
   This is a collection of frequently asked questions (FAQ) about the
   \pkg{zoo} package together with their answers.
 }
 
-\Address{
-  Gabor Grothendieck\\
-  GKX Associates Inc.\\
-  E-mail: \email{ggrothendieck@gmail.com}\\
-  
-  Achim Zeileis\\
-  Wirtschaftsuniversit\"at Wien\\
-  E-mail: \email{Achim.Zeileis@R-project.org}\\  
-}
   
 \begin{document}
 
 \SweaveOpts{engine=R,eps=FALSE}
 %\VignetteIndexEntry{zoo FAQ}
-%\VignetteDepends{zoo,tseries}
-%\VignetteKeywords{irregular time series, daily data, weekly data, returns}
+%\VignetteDepends{zoo,chron,timeDate,timeSeries}
+%\VignetteKeywords{irregular time series, ordered observations, time index, daily data, weekly data, returns}
 %\VignettePackage{zoo}
 
 
@@ -566,7 +562,7 @@ Lines <- "Time,Value
 2009-10-09 5:41:00,205
 2009-10-09 6:00:00,185"
 
-library(chron)
+library("chron")
 z <- read.zoo(textConnection(Lines), FUN = as.chron, sep = ",", header = TRUE)
 g <- seq(start(z), end(z), by = times("00:10:00"))
 na.locf(z, xout = g)

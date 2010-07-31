@@ -4,3 +4,5 @@ R/filter.zoo.R
 man/defaultfrequency.Rd
 inst/doc/.*\.log
 inst/doc/.*\.dvi
+tests/doRUnit.R
+inst/unitTests

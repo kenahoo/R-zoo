@@ -3,7 +3,7 @@
 
 %% need no \usepackage{Sweave}
 
-\author{Achim Zeileis\\Wirtschaftsuniversit\"at Wien \And
+\author{Achim Zeileis\\Universit\"at Innsbruck \And
         Gabor Grothendieck\\GKX Associates Inc.}
 \Plainauthor{Achim Zeileis, Gabor Grothendieck}
 
@@ -39,7 +39,7 @@
 
 \Address{
   Achim Zeileis\\
-  Wirtschaftsuniversit\"at Wien\\
+  Universit\"at Innsbruck\\
   E-mail: \email{Achim.Zeileis@R-project.org}\\
   
   Gabor Grothendieck\\
