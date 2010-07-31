@@ -69,7 +69,7 @@ functionalities are facilitated.
 
 \emph{\pkg{zoo} includes extensive documentation}. In addition to the standard \code{help()}
 pages, \pkg{zoo} provides a set of vignettes, see \code{vignette(package = "zoo")} for a list.
-Furthermore, the \pkg{zoo} \proglang{R}-Forge Development Team members also post frequently
+Furthermore, the \pkg{zoo} Development Team members also post frequently
 on the mailing lists (especially ``\proglang{R}-help'', ``\proglang{R}-devel'', and 
 ``\proglang{R}-SIG-Finance'') whose archives hence contain many useful code snippets etc.
 
