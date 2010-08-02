@@ -140,10 +140,12 @@ str.zoo <- function(object, ...)
 
 "[<-.zoo" <- function (x, i, j, value) 
 {
-  if(!is.zoo(x)) stop("method is only for zoo objects")
+  ## x[,j] <- value and x[] <- value can be handled by default method
+  if(missing(i)) return(NextMethod("[<-"))
+
+  ## otherwise do the necessary processing on i
   x.index <- index(x)
   n <- NROW(coredata(x))
-  if(missing(i)) i <- 1:n
   value2 <- NULL
   
   if (all(class(i) == "logical")) {
