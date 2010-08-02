@@ -140,8 +140,10 @@ str.zoo <- function(object, ...)
 
 "[<-.zoo" <- function (x, i, j, value) 
 {
+  if(!is.zoo(x)) stop("method is only for zoo objects")
   x.index <- index(x)
-  n <- NROW(x)
+  n <- NROW(coredata(x))
+  if(missing(i)) i <- 1:n
   value2 <- NULL
   
   if (all(class(i) == "logical")) {
@@ -156,8 +158,8 @@ str.zoo <- function(object, ...)
         value2 <- value[!i.ok]
         value <- value[i.ok]
       } else {
-        value2 <- value[!i.ok,]
-        value <- value[i.ok,]      
+        value2 <- value[!i.ok,, drop = FALSE]
+        value <- value[i.ok,, drop = FALSE]      
       }
       i2 <- i[!i.ok]
       i <- i[i.ok]
@@ -166,7 +168,16 @@ str.zoo <- function(object, ...)
   }
   if(any(i > n) | any(i < 1)) stop("Out-of-range assignment not possible.")
   rval <- NextMethod("[<-")
-  if(!is.null(value2)) rval <- c(rval, zoo(value2, i2))
+
+  if(!is.null(value2)) {
+    rval2 <- if(missing(j)) zoo(value2, i2) else {
+      value2a <- matrix(NA, nrow = length(i2), ncol = NCOL(rval))
+      colnames(value2a) <- colnames(rval)
+      value2a[, j] <- value2
+      zoo(value2a, i2)
+    }
+    rval <- c(rval, rval2)
+  }
   return(rval)
 }
 
