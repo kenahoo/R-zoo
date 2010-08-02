@@ -119,7 +119,7 @@ str.zoo <- function(object, ...)
   else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
     i <- which(coredata(merge(zoo(,time(x)), i)))
   } else if(!((all(class(i) == "numeric") || all(class(i) == "integer")))) 
-    i <- which(MATCH(x.index, i, nomatch = 0) > 0)
+    i <- which(MATCH(x.index, i, nomatch = 0L) > 0L)
   
   if(length(dim(rval)) == 2) {
 	drop. <- if (length(i) == 1) FALSE else drop
@@ -135,6 +135,38 @@ str.zoo <- function(object, ...)
   attr(rval, "frequency") <- attr(x, "frequency")
   if(!is.null(attr(rval, "frequency"))) class(rval) <- c("zooreg", class(rval))
 
+  return(rval)
+}
+
+"[<-.zoo" <- function (x, i, j, value) 
+{
+  x.index <- index(x)
+  n <- NROW(x)
+  value2 <- NULL
+  
+  if (all(class(i) == "logical")) {
+    i <- which(i)
+  } else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
+    i <- which(coredata(merge(zoo(,time(x)), i)))
+  } else if(!((all(class(i) == "numeric") || all(class(i) == "integer")))) {
+    ## all time indexes in x.index?
+    i.ok <- MATCH(i, x.index, nomatch = 0L) > 0L
+    if(any(!i.ok)) {
+      if(is.null(dim(value))) {
+        value2 <- value[!i.ok]
+        value <- value[i.ok]
+      } else {
+        value2 <- value[!i.ok,]
+        value <- value[i.ok,]      
+      }
+      i2 <- i[!i.ok]
+      i <- i[i.ok]
+    }
+    i <- which(MATCH(x.index, i, nomatch = 0L) > 0L)
+  }
+  if(any(i > n) | any(i < 1)) stop("Out-of-range assignment not possible.")
+  rval <- NextMethod("[<-")
+  if(!is.null(value2)) rval <- c(rval, zoo(value2, i2))
   return(rval)
 }
 
