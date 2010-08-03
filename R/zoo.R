@@ -7,6 +7,7 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
     index <- ORDER(order.by)
     order.by <- order.by[index]
 
+    if(is.matrix(x) || is.data.frame(x)) x <- as.matrix(x)
     if(missing(x) || is.null(x)) 
       x <- numeric()
     else if(is.factor(x))         
@@ -18,7 +19,6 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
     else if(is.atomic(x)) 
       x <- rep(x, length.out = length(index))[index]
     else stop(paste(dQuote("x"), ": attempt to define illegal zoo object"))
-    if(is.matrix(x) || is.data.frame(x)) x <- as.matrix(x)
 
     if(!is.null(frequency)) {
       delta <- suppressWarnings(try(diff(as.numeric(order.by)), silent = TRUE))
