@@ -1,5 +1,5 @@
 ##***********************************************************************
-## $Id: runit.augment.R 12 2010-07-14 15:10:17Z mariotomo $
+## $Id$
 ##
 ## this file is part of the R library zoo.  zoo is free software: you
 ## can redistribute it and/or modify it under the terms of the GNU
