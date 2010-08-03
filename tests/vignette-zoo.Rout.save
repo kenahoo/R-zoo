@@ -558,7 +558,7 @@ R> library("strucchange")
 R> library("DAAG")
 Loading required package: rpart
 Loading required package: randomForest
-randomForest 4.5-35
+randomForest 4.5-36
 Type rfNews() to see new features/changes/bug fixes.
 
 Attaching package: 'randomForest'
