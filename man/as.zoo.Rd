@@ -1,6 +1,7 @@
 \name{as.zoo}
 \alias{as.zoo}
 \alias{as.zoo.default}
+\alias{as.zoo.data.frame}
 \alias{as.zoo.fts}
 \alias{as.zoo.its}
 \alias{as.zoo.irts}

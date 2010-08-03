@@ -8,6 +8,7 @@
 \alias{str.zoo}
 \alias{is.zoo}
 \alias{[.zoo}
+\alias{[<-.zoo}
 \alias{$.zoo}
 \alias{$<-.zoo}
 \alias{subset.zoo}

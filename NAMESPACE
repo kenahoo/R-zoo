@@ -124,6 +124,7 @@ export(
 ## methods for class zoo
   S3method("Ops", "zoo")
   S3method("[", "zoo")
+  S3method("[<-", "zoo")
   S3method("$", "zoo")
   S3method("$<-", "zoo")
   S3method("aggregate", "zoo")
@@ -318,6 +319,7 @@ export(
   S3method("as.yearqtr", "integer")
   S3method("as.yearqtr", "numeric")
   S3method("as.yearqtr", "factor")
+  S3method("as.zoo", "data.frame")
   S3method("as.zoo", "factor")
   S3method("as.zoo", "fts")
   S3method("as.zoo", "irts")

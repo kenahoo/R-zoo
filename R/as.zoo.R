@@ -18,6 +18,11 @@ as.zoo.matrix <- function(x, ...)
   zoo(x, ...)
 }
 
+as.zoo.data.frame <- function(x, ...) 
+{
+  zoo(as.matrix(x), ...)
+}
+
 as.zoo.fts <- function(x, ...) 
 {
 	stopifnot(require("fts"))
