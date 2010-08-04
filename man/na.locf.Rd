@@ -120,5 +120,12 @@ r <- replace(m[,1], TRUE,
 	na.locf(m[,1]) * m[,2] / na.locf(m[,2] + (m[,1]-m[,1])))
 cbind(V1 = r, V2 = m[,2])
 
+## repeat a quarterly value every month
+## preserving NAs
+zq <- zoo(c(1, NA, 3, 4), as.yearqtr(2000) + 0:3/4)
+tt <- as.yearmon(start(zz)) + seq(0, len = 3 * length(zz))/12
+na.locf(zq, xout = tt, maxgap = 0)
+
+
 }
 \keyword{ts}
