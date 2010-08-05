@@ -42,8 +42,8 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   See \code{\link{rollmean}}, \code{\link{rollmax}} and \code{\link{rollmedian}}
   for more details.
   
-  Currently, there are methods for \code{"zoo"} and \code{"ts"} series.
-  A method for \code{"default"} cases is also available.
+  Currently, there are methods for \code{"zoo"} and \code{"ts"} series
+  and \code{"default"} method for ordinary vectors and matrices.
   
   In much older versions of the zoo package, 
   this function was called \code{rapply}. It was renamed
