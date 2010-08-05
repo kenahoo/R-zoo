@@ -12,6 +12,29 @@ rollapply <- function(data, width, FUN, ..., by = 1, ascending = TRUE,
 ##     UseMethod("rollapply")
 ## }
 
+rollapply.default <- function(data, width, FUN, ...) {
+  ## returns the rolling application of `FUN` to data (nth element in
+  ## returned vector is `FUN` of width elements in data from n-width
+  ## to n.)
+
+  apply.na.action <- function(data, na.action=na.pass, ...) na.action(data)
+  data <- apply.na.action(data, ...)
+
+  ## width must be positive.
+  ## result is same length as data (starts with `width-1` NA).
+
+  len <- length(data)
+  if(width < 1) {
+    ## Only positive width allowed
+    return(rep(NA, len))
+  }
+  if(width > len) {
+    rep(NA, len)
+  } else {
+    c( rep(NA, width - 1) , apply(embed(data, width), 1, FUN) )
+  }
+}
+
 rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.column = TRUE, na.pad = FALSE,
   align = c("center", "left", "right")) {
     itt <- 0

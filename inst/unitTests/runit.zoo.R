@@ -23,6 +23,41 @@ require(RUnit)
   current <- zoo(matrix(1:24, 6))
   current[] <- 3
   target <- zoo(matrix(rep(3, 24), 6))
-  checkEquals(target, current)
+  checkIdentical(target, current)
 }
 
+test.zoo.empty <- function() {
+  target <- structure(numeric(0), index = 1:6, class = "zoo")
+  current <- zoo(order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.data.frame.from.empty <- function() {
+  target <- zoo(order.by=1:6)
+  current <- zoo(data.frame(), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.matrix.from.empty <- function() {
+  target <- zoo(order.by=1:6)
+  current <- zoo(matrix(nrow=6, ncol=0), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.vector <- function() {
+  target <- structure(1:6, .Dim = c(6L, 1L), index = 1:6, class = "zoo")
+  current <- zoo(1:6, order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.matrix <- function() {
+  target <- structure(1:6, .Dim = c(6L, 1L), index = 1:6, class = "zoo")
+  current <- zoo(cbind(1:6), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.data.frame <- function() {
+  target <- structure(1:6, .Dim = c(6L, 1L), .Dimnames = list(NULL, "a"), index = 1:6, class = "zoo")
+  current <- zoo(data.frame(1:6), order.by=1:6)
+  checkIdentical(target, current)
+}

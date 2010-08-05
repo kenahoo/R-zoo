@@ -1,5 +1,6 @@
 \name{rollapply}
 \alias{rollapply}
+\alias{rollapply.default}
 \alias{rollapply.zoo}
 \alias{rollapply.ts}
 \title{Apply Rolling Functions}
@@ -42,6 +43,7 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   for more details.
   
   Currently, there are methods for \code{"zoo"} and \code{"ts"} series.
+  A method for \code{"default"} cases is also available.
   
   In much older versions of the zoo package, 
   this function was called \code{rapply}. It was renamed

@@ -289,6 +289,7 @@ export(
   S3method("index2char", "numeric")
   S3method("na.contiguous", "data.frame")
   S3method("na.contiguous", "list")
+  S3method("rollapply", "default")
   S3method("MATCH", "times")
   S3method("ORDER", "chron")
   S3method("ORDER", "dates")
