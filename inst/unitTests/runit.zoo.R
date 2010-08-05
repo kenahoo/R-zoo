@@ -27,37 +27,101 @@ require(RUnit)
 }
 
 test.zoo.empty <- function() {
+  ## this is the model
   target <- structure(numeric(0), index = 1:6, class = "zoo")
   current <- zoo(order.by=1:6)
   checkIdentical(target, current)
 }
 
 test.zoo.data.frame.from.empty <- function() {
+  ## follows the model
   target <- zoo(order.by=1:6)
   current <- zoo(data.frame(), order.by=1:6)
   checkIdentical(target, current)
 }
 
 test.zoo.matrix.from.empty <- function() {
+  ## follows the model
   target <- zoo(order.by=1:6)
   current <- zoo(matrix(nrow=6, ncol=0), order.by=1:6)
   checkIdentical(target, current)
 }
 
-test.zoo.vector <- function() {
+test.zoo.vector.1.nameless.col <- function() {
+  ## this is the model
   target <- structure(1:6, .Dim = c(6L, 1L), index = 1:6, class = "zoo")
   current <- zoo(1:6, order.by=1:6)
   checkIdentical(target, current)
 }
 
-test.zoo.matrix <- function() {
-  target <- structure(1:6, .Dim = c(6L, 1L), index = 1:6, class = "zoo")
+test.zoo.matrix.1.nameless.col <- function() {
+  ## follows the model
+  target <- zoo(1:6, order.by=1:6)
   current <- zoo(cbind(1:6), order.by=1:6)
   checkIdentical(target, current)
 }
 
-test.zoo.data.frame <- function() {
-  target <- structure(1:6, .Dim = c(6L, 1L), .Dimnames = list(NULL, "a"), index = 1:6, class = "zoo")
-  current <- zoo(data.frame(1:6), order.by=1:6)
+test.zoo.data.frame.1.nameless.col <- function() {
+  ## I think it is not really possible to have a data.frame where
+  ## columns have no name
+}
+
+test.zoo.vector.2.nameless.cols <- function() {
+  ## you can't pass more than one vector to the zoo creator.
+  ## current <- zoo(1:6, 6:1, order.by=1:6)
+}
+
+test.zoo.matrix.2.nameless.cols <- function() {
+  ## this is the model
+  target <- structure(c(1:6, 6:1), .Dim = c(6L, 2L), index = 1:6, class = "zoo")
+  current <- zoo(cbind(1:6, 6:1), order.by=1:6)
   checkIdentical(target, current)
 }
+
+test.zoo.data.frame.2.nameless.cols <- function() {
+  ## I think it is not really possible to have a data.frame where
+  ## columns have no name
+}
+
+test.zoo.vector.1.named.col <- function() {
+  ## zoo does not accept named vectors
+  ## current <- zoo(a=1:6, order.by=1:6)
+}
+
+test.zoo.matrix.1.named.col <- function() {
+  ## this is the model
+  target <- structure(1:6, .Dim = c(6L, 1L), .Dimnames = list(NULL, "b"), index = 1:6, class = "zoo")
+  current <- zoo(cbind(b=1:6), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.data.frame.1.named.col <- function() {
+  ## this follows the model
+  target <- zoo(cbind(b=1:6), order.by=1:6)
+  current <- zoo(data.frame(b=1:6), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.vector.2.cols <- function() {
+  ## zoo does not accept neither named nor multiple vectors
+  ## current <- zoo(a=1:6, b=6:1, order.by=1:6)
+}
+
+test.zoo.matrix.2.cols <- function() {
+  ## this is the model
+  target <- structure(c(1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3),
+                      .Dim = c(6L, 2L),
+                      .Dimnames = list(NULL, c("a", "b")),
+                      index = 1:6,
+                      class = "zoo") 
+  current <- zoo(cbind(a=rep(1,6), b=3), order.by=1:6)
+  checkIdentical(target, current)
+}
+
+test.zoo.data.frame.2.cols <- function() {
+  ## this follows the model
+  target <- zoo(cbind(a=rep(1,6), b=3), order.by=1:6)
+  current <- zoo(data.frame(a=1, b=3), order.by=1:6)
+  checkIdentical(target, current)
+}
+
