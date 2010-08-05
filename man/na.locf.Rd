@@ -24,8 +24,17 @@ na.locf(object, na.rm = TRUE, \dots)
   }
   \item{rev}{Use \code{fromLast} instead.  This argument will
     be eliminated in the future in favor of \code{fromLast}.}
-  \item{maxgap}{maximum number of consecutive \code{NA}s to
-    fill. Any longer gaps will be left unchanged.}
+  \item{maxgap}{Runs of more than \code{maxgap} 
+\code{NA}s
+are retained,
+other \code{NA}s are removed and the last occurrence in the resulting series
+prior to each time point in \code{xout} is used as that time point's
+output value.
+(If \code{xout} is not specified this
+reduces to retaining runs of more than \code{maxgap} \code{NA}s 
+while filling other \code{NA}s
+with the last occurrence of a non-\code{NA}.)
+}
   \item{rule}{See \code{\link{approx}}.}
   \item{\dots}{further arguments passed to methods.}
 }
