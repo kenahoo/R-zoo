@@ -7,12 +7,9 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
     index <- ORDER(order.by)
     order.by <- order.by[index]
 
-    if(is.data.frame(x))
-      if(all(dim(x)==0)) 
-        x <- NULL
-      else
-        x <- as.matrix(x)
-    if(missing(x) || is.null(x)) 
+    if(is.matrix(x) || is.data.frame(x)) x <- as.matrix(x)
+    if(is.matrix(x) && sum(dim(x)) < 1L) x <- NULL
+    if(missing(x) || is.null(x))
       x <- numeric()
     else if(is.factor(x))         
       x <- factor(rep(as.character(x), length.out = length(index))[index],
