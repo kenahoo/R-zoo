@@ -16,4 +16,4 @@ Suggests: coda, chron, DAAG, fCalendar, fSeries, fts, its, lattice, strucchange,
 Imports: stats, utils, graphics, grDevices, lattice (>= 0.18-1)
 LazyLoad: yes
 License: GPL-2
-URL: http://R-Forge.R-project.org/projects/zoo/
+URL: http://zoo.r-forge.r-project.org
