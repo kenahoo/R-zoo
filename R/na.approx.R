@@ -63,7 +63,7 @@ na.approx.default <- function(object, x = index(object), xout = x, ..., na.rm = 
             ## construct y values at 'xout', keeping NAs from ygap
             ## (using indexing, as approx() does not allow NAs to be propagated)
             ix <- approx(x, seq_along(y), xout, ...)$y
-            yx <- ifelse(any(is.na(ygap[floor(ix):ceiling(ix)])),
+            yx <- ifelse(is.na(ygap[floor(ix)] + ygap[ceiling(ix)]),
                          NA, yf)
             yx
         } else {
