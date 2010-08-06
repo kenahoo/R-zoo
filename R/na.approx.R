@@ -33,7 +33,7 @@ na.approx.zoo <- function(object, x = index(object), xout, ..., na.rm = TRUE, al
     }
 
     if (na.rm) {
-        result <- na.trim(result)
+        result <- na.trim(result, is.na = "all")
     }
 
     result
@@ -86,7 +86,7 @@ na.approx.default <- function(object, x = index(object), xout = x, ..., na.rm = 
     }
 
     if (na.rm) {
-        result <- na.trim(result)
+        result <- na.trim(result, is.na = "all")
     }
 
     result
