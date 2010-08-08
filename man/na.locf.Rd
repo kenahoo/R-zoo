@@ -132,7 +132,7 @@ cbind(V1 = r, V2 = m[,2])
 ## repeat a quarterly value every month
 ## preserving NAs
 zq <- zoo(c(1, NA, 3, 4), as.yearqtr(2000) + 0:3/4)
-tt <- as.yearmon(start(zz)) + seq(0, len = 3 * length(zz))/12
+tt <- as.yearmon(start(zq)) + seq(0, len = 3 * length(zq))/12
 na.locf(zq, xout = tt, maxgap = 0)
 
 

@@ -67,11 +67,10 @@ print.zoo <- function (x, style = ifelse(length(dim(x)) == 0,
         print(y, quote = quote, ...)
     }
     else {
-        x.index <- index(x)
         cat("Data:\n")
         print(coredata(x))
         cat("\nIndex:\n")
-        print(x.index)
+        print(index(x))
     }
     invisible(x)
 }
@@ -109,7 +108,6 @@ str.zoo <- function(object, ...)
 "[.zoo" <- function(x, i, j, drop = TRUE, ...)
 {
   if(!is.zoo(x)) stop("method is only for zoo objects")
-  x.index <- index(x)
   rval <- coredata(x)
   if(missing(i)) i <- 1:NROW(rval)
 
@@ -120,16 +118,16 @@ str.zoo <- function(object, ...)
   else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
     i <- which(coredata(merge(zoo(,time(x)), i)))
   } else if(!((all(class(i) == "numeric") || all(class(i) == "integer")))) 
-    i <- which(MATCH(x.index, i, nomatch = 0L) > 0L)
+    i <- which(MATCH(index(x), i, nomatch = 0L) > 0L)
   
   if(length(dim(rval)) == 2) {
 	drop. <- if (length(i) == 1) FALSE else drop
         rval <- if (missing(j)) rval[i, , drop = drop., ...]
 		else rval[i, j, drop = drop., ...]
 	if (drop && length(rval) == 1) rval <- c(rval)
-	rval <- zoo(rval, x.index[i])
+	rval <- zoo(rval, index(x)[i])
   } else
-	rval <- zoo(rval[i], x.index[i])
+	rval <- zoo(rval[i], index(x)[i])
 
   attr(rval, "oclass") <- attr(x, "oclass")
   attr(rval, "levels") <- attr(x, "levels")
@@ -145,17 +143,21 @@ str.zoo <- function(object, ...)
   if(missing(i)) return(NextMethod("[<-"))
 
   ## otherwise do the necessary processing on i
-  x.index <- index(x)
   n <- NROW(coredata(x))
+  n2 <- length(as.vector(coredata(x)))
+  n.ok <- TRUE
   value2 <- NULL
   
+  if (all(class(i) == "matrix")) i <- as.vector(i)
   if (all(class(i) == "logical")) {
     i <- which(i)
+    n.ok <- all(i <= n2)
   } else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
     i <- which(coredata(merge(zoo(,time(x)), i)))
+    n.ok <- all(i <= n2)
   } else if(!((all(class(i) == "numeric") || all(class(i) == "integer")))) {
-    ## all time indexes in x.index?
-    i.ok <- MATCH(i, x.index, nomatch = 0L) > 0L
+    ## all time indexes in index(x)?
+    i.ok <- MATCH(i, index(x), nomatch = 0L) > 0L
     if(any(!i.ok)) {
       if(is.null(dim(value))) {
         value2 <- value[!i.ok]
@@ -167,9 +169,10 @@ str.zoo <- function(object, ...)
       i2 <- i[!i.ok]
       i <- i[i.ok]
     }
-    i <- which(MATCH(x.index, i, nomatch = 0L) > 0L)
+    i <- which(MATCH(index(x), i, nomatch = 0L) > 0L)
+    n.ok <- all(i <= n)
   }
-  if(any(i > n) | any(i < 1)) stop("Out-of-range assignment not possible.")
+  if(!n.ok | any(i < 1)) stop("Out-of-range assignment not possible.")
   rval <- NextMethod("[<-")
 
   if(!is.null(value2)) {
