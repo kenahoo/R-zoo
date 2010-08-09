@@ -109,12 +109,14 @@ str.zoo <- function(object, ...)
 {
   if(!is.zoo(x)) stop("method is only for zoo objects")
   rval <- coredata(x)
-  if(missing(i)) i <- 1:NROW(rval)
+  n <- NROW(rval)
+  n2 <- if(nargs() == 1) length(as.vector(rval)) else n
+  if(missing(i)) i <- 1:n
 
   ## also support that i can be index:
   ## if i is not numeric/integer/logical, it is interpreted to be the index
   if (all(class(i) == "logical"))
-    i <- which(i)
+    i <- which(rep(i, length.out = n2))
   else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
     i <- which(coredata(merge(zoo(,time(x)), i)))
   } else if(!((all(class(i) == "numeric") || all(class(i) == "integer")))) 
@@ -144,13 +146,13 @@ str.zoo <- function(object, ...)
 
   ## otherwise do the necessary processing on i
   n <- NROW(coredata(x))
-  n2 <- length(as.vector(coredata(x)))
+  n2 <- if(nargs() == 1) length(as.vector(coredata(x))) else n
   n.ok <- TRUE
   value2 <- NULL
   
   if (all(class(i) == "matrix")) i <- as.vector(i)
   if (all(class(i) == "logical")) {
-    i <- which(i)
+    i <- which(rep(i, length.out = n2))
     n.ok <- all(i <= n2)
   } else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
     i <- which(coredata(merge(zoo(,time(x)), i)))
