@@ -16,7 +16,7 @@ Methods for computing lags and differences of \code{"zoo"} objects.
   \item{k, lag}{For \code{lag} the number of lags (in units of observations).
     Note the sign of \code{k} behaves as in \code{\link[stats]{lag}}.
  	For \code{diff} it is the number of backward lags used (or if negative the
-	number of forward lags).}
+	number of forward lags.}
   \item{differences}{an integer indicating the order of the difference.}
   \item{arithmetic}{logical. Should arithmetic (or geometric) differences be computed?}
   \item{na.pad}{logical. If \code{TRUE} it adds any times that would not otherwise have been in
@@ -32,15 +32,6 @@ as part of the dots.
 Also, \code{"k"} can be a vector of lags in which case the names of
 \code{"k"}, if any, are used in naming the result.
 
-Suppose \code{x} is a zoo or zooreg series 
-representing the log of price at times
-1, 2, 3, ... .  Then 
-at time \code{i}
-both \code{diff(x, 1)} (and also \code{diff(x)} which
-equals it) is the the one step return from time \code{i-1} to \code{i}
-and \code{diff(x, -1)} is the one step return from time \code{i} to 
-code{i+1}.   Thus \code{diff(x, 1)} and \code{diff(x, -1)} are shifted
-versions of one another.
 
 }
 
