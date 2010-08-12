@@ -7,6 +7,8 @@ Changes in Version 1.7-0
     column names.
 
   o rollapply.default now available
+
+  o merge.zoo's check.names argument now defaults to FALSE
   
 
 Changes in Version 1.6-4

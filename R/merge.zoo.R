@@ -79,7 +79,7 @@ cbind.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL)
 }
 
 
-merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, check.names = TRUE, retclass = c("zoo", "list", "data.frame"))
+merge.zoo <- function(..., all = TRUE, fill = NA, suffixes = NULL, check.names = FALSE, retclass = c("zoo", "list", "data.frame"))
 {
     if (!is.null(retclass)) retclass <- match.arg(retclass)
     # cl are calls to the args and args is a list of the arguments
