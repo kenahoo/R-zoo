@@ -66,7 +66,7 @@ R> plain <- coredata(z)
 R> str(plain)
  num [1:20, 1:2] 2063 2082 2098 2090 2062 ...
  - attr(*, "dimnames")=List of 2
-  ..$ : chr [1:20] "1" "2" "3" "4" ...
+  ..$ : NULL
   ..$ : chr [1:2] "Nifty" "Junior"
 R> 
 R> 

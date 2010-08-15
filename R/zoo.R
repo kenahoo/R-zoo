@@ -123,13 +123,13 @@ str.zoo <- function(object, ...)
     i <- which(MATCH(index(x), i, nomatch = 0L) > 0L)
   
   if(length(dim(rval)) == 2) {
-	drop. <- if (length(i) == 1) FALSE else drop
-        rval <- if (missing(j)) rval[i, , drop = drop., ...]
-		else rval[i, j, drop = drop., ...]
-	if (drop && length(rval) == 1) rval <- c(rval)
-	rval <- zoo(rval, index(x)[i])
+    drop. <- if (length(i) == 1) FALSE else drop
+    rval <- if (missing(j)) rval[i, , drop = drop., ...]
+      else rval[i, j, drop = drop., ...]
+    if (drop && length(rval) == 1) rval <- c(rval)
+    rval <- zoo(rval, index(x)[i])
   } else
-	rval <- zoo(rval[i], index(x)[i])
+    rval <- zoo(rval[i], index(x)[i])
 
   attr(rval, "oclass") <- attr(x, "oclass")
   attr(rval, "levels") <- attr(x, "levels")

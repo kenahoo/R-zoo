@@ -1,14 +1,18 @@
 Changes in Version 1.7-0
 
+  o A [<- method was added and the behaviour is now consistent with the
+    [ method.
+
   o rollapply with FUN = mean will no longer call rollmean if the data has
     any NA values
   
   o Added a new as.zoo() method for "matrix" objects in order to preserve
-    column names.
+    column names. Also, a new "data.frame" method leverages the "matrix"
+    method.
 
-  o rollapply.default now available
+  o New default method for rollapply().
 
-  o merge.zoo's check.names argument now defaults to FALSE
+  o check.names argument of merge() method now defaults to FALSE.
   
 
 Changes in Version 1.6-4
