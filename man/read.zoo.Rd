@@ -37,7 +37,8 @@ then one argument will be passed to argument \code{FUN} per component so that,
 for example, \code{index.column = list(1, 2)} will cause 
 \code{FUN(x[,1], x[,2], ...)} to be called whereas 
 \code{index.column = list(1:2)} will cause 
-\code{FUN(x[,1:2], ...)} to be called. Here \code{...} refers to \code{format}
+\code{FUN(x[,1:2], ...)} to be called where \code{x} is a data frame of 
+characters data.  Here \code{...} refers to \code{format}
 and/or \code{tz}, if they specified as arguments.}
   \item{drop}{logical. If the data frame contains just a single data column, should
     the second dimension be dropped?}
