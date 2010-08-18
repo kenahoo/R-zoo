@@ -219,6 +219,15 @@ The \code{zoo} package has an \code{as.Date} \code{numeric} method
 which is similar to the one in the core of \code{R} except that the
 \code{origin} argument defaults to January 1, 1970 (whereas the one
 in the core of \code{R} has no default).
+
+Note that since zoo uses date and time classes from R and elsewhere, bugs in
+those classes will affect zoo calculations even if there is no bug in zoo
+itself.  Although there are no known bugs in most of the common date and
+time classes in \code{R},
+there is one known problem with \code{POSIXct} in \code{R}.
+If \code{x} and \code{y} are \code{POSIXct} objects then 
+\code{c(x, y)} will drop the \code{tzone} attribute.  A workaround is shown in
+\url{https://stat.ethz.ch/pipermail/r-devel/2010-August/058112.html}.
 }
 
 \references{
