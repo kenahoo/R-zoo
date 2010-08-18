@@ -84,9 +84,14 @@ rollmax.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right
   }
   if (length(dim(x)) == 0) 
     return(zoo(rollmax.default(coredata(x), k, na.pad, align), index.x, attr(x, "frequency")))
-  else
-    return(zoo(apply(coredata(x), 2, rollmax.default, k=k, na.pad = na.pad, align=align), index.x,
-       attr(x, "frequency")))
+  else {
+    s <- apply(coredata(x), 2, rollmax.default, k=k, na.pad = na.pad, align=align)
+	if (length(s) > 1 && length(index.x) == 1) {
+		s <- matrix(s, 1)
+		colnames(s) <- colnames(x)
+	}
+    return(zoo(s, index.x, attr(x, "frequency")))
+  }
 }
 
 rollmax.ts <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
@@ -147,9 +152,14 @@ rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "ri
   if (length(dim(x)) == 0)
     return(zoo(rollmedian0(coredata(x), k, na.pad = na.pad, ...), index.x,
       attr(x, "frequency")))
-  else
-    return(zoo(apply(coredata(x), 2, rollmedian0, k = k, na.pad = na.pad, ...), 
-      index.x, attr(x, "frequency")))
+  else {
+    s <- apply(coredata(x), 2, rollmedian0, k = k, na.pad = na.pad, ...)
+	if (length(s) > 1 && length(index.x) == 1) {
+		s <- matrix(s, 1)
+		colnames(s) <- colnames(x)
+	}
+    return(zoo(s, index.x, attr(x, "frequency")))
+  }
 }
 
 rollmedian.ts <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)

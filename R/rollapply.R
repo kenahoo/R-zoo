@@ -59,10 +59,10 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
 	   zoo(xx, tt, if (by == 1) attr(data, "frequency"))
     } else if (by.column) {
 	    # e <- embedi(nr, width, by, ascending)
-	    zoo( sapply( 1:ncol(cdata), function(i)
-			apply( e, 1, function(st) FUN(cdata[st,i], ...) ) ),
-			tt, if (by == 1) attr(data, "frequency")
-	    )
+	    s <- sapply( 1:ncol(cdata), 
+			function(i) apply( e, 1, function(st) FUN(cdata[st,i], ...) ) )
+		if (length(s) > 1 && length(tt) == 1) s <- matrix(s, 1)
+		zoo(s, tt, if (by == 1) attr(data, "frequency"))
     } else {
            rval <- apply(embedi(nr, width, by, ascending), 1, function(st) FUN(cdata[st,], ...))
 	   if(!is.null(dim(rval))) rval <- t(rval)
