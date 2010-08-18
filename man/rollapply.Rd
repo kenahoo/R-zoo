@@ -47,7 +47,7 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   
   In much older versions of the zoo package, 
   this function was called \code{rapply}. It was renamed
-  because from R 2.4.0 on, base R provides a different function \code{rapply}
+  because from \R 2.4.0 on, base \R provides a different function \code{rapply}
   for recursive (and not rolling) application of functions.
 }
 \value{

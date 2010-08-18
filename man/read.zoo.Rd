@@ -53,7 +53,7 @@ and/or \code{tz}, if they specified as arguments.}
     \code{FUN} and before \code{aggregate}.}
   \item{split}{NULL or column number or name or vector of numbers or 
    names. If not NULL then the data is assumed to be in long format and is 
-   split according to the indicated columns.  See the R 
+   split according to the indicated columns.  See the \R 
    \code{\link[stats]{reshape}} command for description of long data.
    If \code{split=Inf} then the first of each run are made into a separate
    series, the second of each run and so on.  If \code{split= -Inf} then

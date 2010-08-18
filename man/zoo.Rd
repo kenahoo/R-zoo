@@ -89,7 +89,7 @@ vectors/matrices, but it also supports regular time series (i.e.,
 series with a certain \code{frequency}).
 \code{zoo}'s key design goals are independence of a particular
 index/date/time class and consistency 
-with \code{ts} and base R by providing methods to standard generics. Therefore,
+with \code{ts} and base \R by providing methods to standard generics. Therefore,
 standard functions can be used to work with \code{"zoo"} objects and 
 memorization of new commands is reduced.
 
@@ -215,19 +215,20 @@ provides this functionality for arbitrary functions and more efficient versions
 \code{\link{rollmean}}, \code{\link{rollmax}}, \code{\link{rollmedian}} are
 available for the mean, maximum and median respectively.
 
-The \code{zoo} package has an \code{as.Date} \code{numeric} method
-which is similar to the one in the core of \code{R} except that the
+The \pkg{zoo} package has an \code{as.Date} \code{numeric} method
+which is similar to the one in the core of \R except that the
 \code{origin} argument defaults to January 1, 1970 (whereas the one
-in the core of \code{R} has no default).
+in the core of \R has no default).
 
-Note that since zoo uses date and time classes from R and elsewhere, bugs in
-those classes will affect zoo calculations even if there is no bug in zoo
-itself.  Although there are no known bugs in most of the common date and
-time classes in \code{R},
-there is one known problem with \code{POSIXct} in \code{R}.
-If \code{x} and \code{y} are \code{POSIXct} objects then 
-\code{c(x, y)} will drop the \code{tzone} attribute.  A workaround is shown in
-\url{https://stat.ethz.ch/pipermail/r-devel/2010-August/058112.html}.
+Note that since \code{zoo} uses date/time classes from base \R and 
+other packages, it may inherit bugs or problems with those date/time classes.
+Currently, there is one such known problem with the \code{c} method for
+the \code{POSIXct} class in base \R:
+If \code{x} and \code{y} are \code{POSIXct} objects with \code{tzone}
+attributes, the attribute will always be dropped in \code{c(x, y)}, even
+if it is the same across both \code{x} and \code{y}. Although this is documented
+at \code{\link[base]{c.POSIXct}}, one may want to employ a workaround
+as shown at \url{https://stat.ethz.ch/pipermail/r-devel/2010-August/058112.html}.
 }
 
 \references{
