@@ -66,6 +66,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
     FUN <- match.fun(FUN)
 	e <- embedi(nr, which, by, ascending)
 	idx <- if (partial) rep(TRUE, nr) else apply(e > 0, 1, all) 
+	idx <- idx & apply(e > 0, 1, any)
 	idx <- seq_along(idx)[idx]
     res <- if (is.null(dim(cdata))) {
            xx <- sapply(idx, function(i) FUN(cdata[e[i,]], ...))
