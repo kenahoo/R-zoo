@@ -9,7 +9,7 @@
 }
 \usage{
 rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
- na.pad = FALSE, align = c("center", "left", "right"))
+ na.pad = FALSE, align = c("center", "left", "right"), which, partial = FALSE)
 }
 \arguments{
   \item{data}{the data to be used (representing a series of observations).}
@@ -21,7 +21,9 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   \item{by}{calculate FUN for trailing width points at every by-th time
     point.}
   \item{ascending}{logical. If TRUE then points are passed to \code{FUN} in
-    ascending order of time; otherwise, they are passed in descending order.}
+    ascending order of time; otherwise, they are passed in descending order.
+    This argument is deprecated and will be removed in a future version of
+    \code{zoo}.  Use \code{which} instead.}
   \item{by.column}{logical. If \code{TRUE}, \code{FUN} is applied to each column separately.}
   \item{na.pad}{logical. If \code{TRUE} 
     then additional elements or rows of \code{NA}s are added so that 
@@ -29,6 +31,20 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   \item{align}{character specifying whether the index of the result
     should be left- or right-aligned or centered (default) compared
     to the rolling window of observations.}
+  \item{which}{Sequence of relative indexes. Using \code{which} is a more
+    flexible alternative to using \code{width} and \code{align}.  For
+    example, \code{which=seq(-1, 1)} is the same as \code{width=3)} with
+	\code{align="center")} and 
+    example, \code{which=seq(-2, 0)} is the same as \code{width=3)} with
+	\code{align="right")}.}
+  \item{partial}{Logical value. If \code{FALSE} (the default) then if
+    the span of values extends past the end of the series then no value
+    is output for that point whereas if \code{TRUE} then the appropriate subset
+    is output.  
+	For example, \code{rollapply(zoo(c(5,6,7,8)), 3, sum, partial = TRUE)}
+    returns \code{zoo(c(5+6, 5+6+7, 6+7+8, 7+8))} where the same command 
+    but with \code{partial=FALSE} only returns the components made of three
+    term sums: \code{zoo(c(5+6+7, 6+7+8), 2:3)}.}
 }
 \details{
   Groups time points in successive sets of \code{width} time points and 
@@ -71,6 +87,9 @@ rollapply(z2, 3, mean)   # uses rollmean which is optimized for mean
 rollmean(z2, 3)          # same
 rollapply(z2, 3, (mean)) # does not use rollmean
 
+## use of which - same as last one
+rollapply(z2, FUN = mean, which = seq(-1, 1))
+
 ## rolling regression:
 ## set up multivariate zoo series with
 ## number of UK driver deaths and lags 1 and 12
@@ -89,6 +108,7 @@ fm <- rollapply(seat, width = 36,
 plot(fm)
 ## showing the shifts after the oil crisis in Oct 1973
 ## and after the seatbelt legislation change in Jan 1983
+
 }
 \keyword{iteration}
 \keyword{array}

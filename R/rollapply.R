@@ -1,5 +1,6 @@
 rollapply <- function(data, width, FUN, ..., by = 1, ascending = TRUE,
-  by.column = TRUE, na.pad = FALSE, align = c("center", "left", "right"))
+  by.column = TRUE, na.pad = FALSE, align = c("center", "left", "right"), 
+  which, partial = FALSE)
     UseMethod("rollapply")
 
 ## up to zoo 1.2-0 rollapply was called rapply(), it was deprecated
@@ -14,21 +15,30 @@ rollapply <- function(data, width, FUN, ..., by = 1, ascending = TRUE,
 
 
 rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.column = TRUE, na.pad = FALSE,
-  align = c("center", "left", "right")) {
+  align = c("center", "left", "right"), 
+  which, partial = FALSE) {
     itt <- 0
-    embedi <- function(n, k, by = 1, ascending = FALSE) {
+
+    embedi <- function(n, which, by = 1, ascending = TRUE) {
     # n = no of time points, k = number of columns
     # by = increment. normally = 1 but if = b calc every b-th point 
     # ascending If TRUE, points passed in ascending order else descending.
     # Note that embed(1:n, k) corresponds to embedi(n, k, by = 1, rev = TRUE)
     # e.g. embedi(10, 3)
-    	    s <- seq(1, n-k+1, by)
+			k <- length(which)
+    	    s <- seq(1, n, by)
+    	    s <- seq_len(n)
     	    lens <- length(s)
-    	    cols <- if (ascending) 1:k else k:1
-    	    matrix(s + rep(cols, rep(lens,k))-1, lens)
+    	    cols <- if (ascending) which else rev(which)
+    	    mat <- matrix(s + rep(cols, rep(lens,k)), lens)
+			withzero <- replace(mat, TRUE, ifelse(mat < 1 | mat > n, 0, mat))
+			if (by > 1) withzero[seq(1, nrow(withzero), by), ] else withzero
     }
 
-    if (by.column && by == 1 && ascending && length(list(...)) < 1 &&
+
+	if (!missing(ascending)) warning("'ascending' argument deprecated.  Use 'which' argument.")
+
+    if (missing(which) && by.column && by == 1 && ascending && length(list(...)) < 1 &&
 		length(sw <- deparse(substitute(FUN))) == 1) {
     if (sw == "mean" && all(!is.na(data))) {
 		return(rollmean(data, width, na.pad = na.pad, align = align))
@@ -40,33 +50,37 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
     ## evaluate FUN only on coredata(data)
     cdata <- coredata(data)
     nr <- NROW(cdata)
-    width <- as.integer(width)[1]
-    stopifnot( width > 0, width <= nr )
+	if (!missing(width) && !is.null(width)) width <- as.integer(width)[1]
     
     ## process alignment
-    align <- match.arg(align)
-    n1 <- switch(align,    
-      "left" = { width - 1},
-      "center" = { floor(width/2) },
-      "right" = { 0 })    
-    tt <- index(data)[seq((width-n1), (nr-n1), by)]
+    tt <- index(data)
+
+	if (missing(which) || is.null(which)) {
+		align <- match.arg(align)
+		which <- switch(align,
+		  "left" = { seq(from = 0, length = width) },
+		  "center" = { seq(from = -floor(width/2), length = width) },
+		  "right" = { seq(to= 0, length = width) })    
+	}
 
     FUN <- match.fun(FUN)
-    e <- embedi(nr, width, by, ascending)
+	e <- embedi(nr, which, by, ascending)
+	idx <- if (partial) rep(TRUE, nr) else apply(e > 0, 1, all) 
+	idx <- seq_along(idx)[idx]
     res <- if (is.null(dim(cdata))) {
-           xx <- sapply(1:nrow(e), function(i) FUN(cdata[e[i,]], ...))
+           xx <- sapply(idx, function(i) FUN(cdata[e[i,]], ...))
 	   if (! is.null(dim(xx))) xx <- t(xx)
-	   zoo(xx, tt, if (by == 1) attr(data, "frequency"))
+	   zoo(xx, tt[idx], if (by == 1 || na.pad) attr(data, "frequency"))
     } else if (by.column) {
 	    # e <- embedi(nr, width, by, ascending)
-	    s <- sapply( 1:ncol(cdata), 
-			function(i) apply( e, 1, function(st) FUN(cdata[st,i], ...) ) )
+	    s <- sapply( seq_len(ncol(cdata)), 
+			function(i) apply( e[idx,], 1, function(st) FUN(cdata[st,i], ...) ) )
 		if (length(s) > 1 && length(tt) == 1) s <- matrix(s, 1)
-		zoo(s, tt, if (by == 1) attr(data, "frequency"))
+		zoo(s, tt[idx], if (by == 1 || na.pad) attr(data, "frequency"))
     } else {
-           rval <- apply(embedi(nr, width, by, ascending), 1, function(st) FUN(cdata[st,], ...))
+           rval <- apply(e[idx,], 1, function(st) FUN(cdata[st,], ...))
 	   if(!is.null(dim(rval))) rval <- t(rval)
-	   zoo(rval, tt, if (by == 1) attr(data, "frequency"))
+	   zoo(rval, tt[idx], if (by == 1) attr(data, "frequency"))
     }	   
     res <- if (na.pad) merge(res, zoo(,index(data), attr(data, "frequency"))) else res
     if(by.column && !is.null(dim(cdata))) colnames(res) <- colnames(cdata)
