@@ -79,7 +79,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
 		if (length(s) > 1 && length(tt) == 1) s <- matrix(s, 1)
 		zoo(s, tt[idx], if (by == 1 || na.pad) attr(data, "frequency"))
     } else {
-           rval <- apply(e[idx,], 1, function(st) FUN(cdata[st,], ...))
+           rval <- apply(e[idx,], 1, function(st) FUN(cdata[st,,drop=FALSE], ...))
 	   if(!is.null(dim(rval))) rval <- t(rval)
 	   zoo(rval, tt[idx], if (by == 1) attr(data, "frequency"))
     }	   
