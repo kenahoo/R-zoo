@@ -35,8 +35,8 @@ make.par.list <- function(nams, x, n, m, def, recycle = sum(unnamed) > 0) {
 
 plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines, 
   xlab = "Index", ylab = NULL, main = NULL, xlim = NULL, ylim = NULL,
-  xy.labels = FALSE, xy.lines = NULL,
-  oma = c(6, 0, 5, 0), mar = c(0, 5.1, 0, 2.1), 
+  xy.labels = FALSE, xy.lines = NULL, yax.flip = FALSE,
+  oma = c(6, 0, 5, 0), mar = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1), 
   col = 1, lty = 1, lwd = 1, pch = 1, type = "l", log = "",
   nc, widths = 1, heights = 1, ...)
 {
@@ -135,22 +135,24 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
 	ranges <- tapply(1:ncol(x), screens, f)
     for(j in seq_along(levels(screens))) {
       panel.number <- j
+      y.side <- if (j %% 2 || !yax.flip) 2 else 4
       range. <- rep(ranges[[j]], length.out = length(time(x)))
       if(j%%nr==0 || j == length(levels(screens))) {
-			args <- list(x.index, range., xlab = "", ylab = ylab[j], 
+			args <- list(x.index, range., xlab = "", ylab = "", 
 				xlim = xlim, ylim = ylim[[j]], log = log, ...)
 			args$type <- "n"
 			do.call("plot", args)
 			mtext(xlab, side = 1, line = 3)
       } else {      
 			# args <- list(x.index, range., axes = FALSE, xlab = "", 
-			args <- list(x.index, range., xaxt = "n", xlab = "", 
-				ylab = ylab[j], xlim = xlim, ylim = ylim[[j]], log = log, ...)
+			args <- list(x.index, range., xaxt = "n", yaxt = "n", xlab = "", 
+				ylab = "", xlim = xlim, ylim = ylim[[j]], log = log, ...)
 			args$type <- "n"
 			do.call("plot", args)
 			box()
-			# axis(2, xpd = NA)
       }
+      axis(y.side, xpd = NA)
+      mtext(ylab[j], y.side, line = 3)
 
       for(i in which(screens == levels(screens)[j]))
         panel(x.index, x[, i], col = col[[i]], pch = pch[[i]], lty = lty[i], lwd = lwd[i], type = type[[i]], ...)

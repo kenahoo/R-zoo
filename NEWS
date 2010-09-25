@@ -16,6 +16,9 @@ Changes in Version 1.7-0
 
   o rollapply has new which and partial arguments.  ascending argument
     is deprecated.
+    
+  o added yax.flip argument to plot() method for "zoo" objects to be consistent
+    with the "ts" method.
   
 
 Changes in Version 1.6-4
