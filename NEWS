@@ -19,6 +19,11 @@ Changes in Version 1.7-0
     
   o added yax.flip argument to plot() method for "zoo" objects to be consistent
     with the "ts" method.
+
+  o in read.zoo if FUN is not specified but FUN2 is specified then FUN2
+    is applied in place of FUN.  Previously FUN2 was ignored in this case.
+    Also format and tz arguments can be NULL in which case they are treated
+    as missing.
   
 
 Changes in Version 1.6-4

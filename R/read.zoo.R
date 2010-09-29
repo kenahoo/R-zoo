@@ -62,13 +62,13 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
     
   ## index transformation functions
 
-  toDate <- if(missing(format)) {
+  toDate <- if(missing(format) || is.null(format)) {
      function(x, ...) as.Date(format(x, scientific = FALSE))
   } else {
      function(x, format) as.Date(format(x, scientific = FALSE), format = format)
   }
 
-  toPOSIXct <- if (missing(format)) {
+  toPOSIXct <- if (missing(format) || is.null(format)) {
         function(x, tz) as.POSIXct(format(x, scientific = FALSE), tz = tz)
   } else function(x, format, tz) {
         as.POSIXct(strptime(format(x, scientific = FALSE), tz = tz, format = format))
@@ -93,12 +93,19 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   toNumeric <- function(x, ...) x
   
   ## setup default FUN
+
+  if ((missing(FUN) || is.null(FUN)) && !missing(FUN2) && !is.null(FUN2)) {
+	FUN <- FUN2
+	FUN2 <- NULL
+  }
+
   if(is.null(FUN)) {
-    FUN <- if (!missing(tz)) toPOSIXct
-        else if (!missing(format)) toDate
+    FUN <- if (!missing(tz) && !is.null(tz)) toPOSIXct
+        else if (!missing(format) && !is.null(format)) toDate
         else if (is.numeric(ix)) toNumeric
         else toDefault
   }
+
   FUN <- match.fun(FUN)
 
   processFUN <- function(...) {
@@ -108,10 +115,10 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   }
   
   ## compute index from (former) first column
-  ix <- if (missing(format)) {
-    if (missing(tz)) processFUN(ix) else processFUN(ix, tz = tz)
+  ix <- if (missing(format) || is.null(format)) {
+    if (missing(tz) || is.null(tz)) processFUN(ix) else processFUN(ix, tz = tz)
   } else {
-    if (missing(tz)) processFUN(ix, format = format) 
+    if (missing(tz) || is.null(tz)) processFUN(ix, format = format) 
     else processFUN(ix, format = format, tz = tz)
   }
 

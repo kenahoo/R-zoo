@@ -50,7 +50,8 @@ and/or \code{tz}, if they specified as arguments.}
   \item{col.names}{logical. Should column names be written? Default is to
     write column names only if \code{x} has column names.}
   \item{FUN2}{function. It is applied to the time index after 
-    \code{FUN} and before \code{aggregate}.}
+    \code{FUN} and before \code{aggregate}. If \code{FUN} is not specified
+    but \code{FUN2} is specified then only \code{FUN2} is applied.}
   \item{split}{NULL or column number or name or vector of numbers or 
    names. If not NULL then the data is assumed to be in long format and is 
    split according to the indicated columns.  See the \R 
