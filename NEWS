@@ -15,7 +15,7 @@ Changes in Version 1.7-0
   o check.names argument of merge() method now defaults to FALSE.
 
   o rollapply has new which and partial arguments.  ascending argument
-    is deprecated.
+    removed.
     
   o added yax.flip argument to plot() method for "zoo" objects to be consistent
     with the "ts" method.

@@ -9,7 +9,7 @@ rollmean.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "
 {
   x <- unclass(x)
   n <- length(x) 
-  y <- x[k:n] - x[c(1, 1:(n-k))] # difference from previous
+  y <- x[k:n] - x[c(1, seq_len(n-k))] # difference from previous
   y[1] <- sum(x[1:k])		 # find the first
   # apply precomputed differencest sum
   rval <- cumsum(y)/k

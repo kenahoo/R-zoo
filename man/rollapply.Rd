@@ -8,7 +8,7 @@
   A generic function for applying a function to rolling margins of an array.
 }
 \usage{
-rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
+rollapply(data, width, FUN, \dots, by = 1, by.column = TRUE,
  na.pad = FALSE, align = c("center", "left", "right"), which, partial = FALSE)
 }
 \arguments{
@@ -20,10 +20,6 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
   \item{\dots}{optional arguments to \code{FUN}.}
   \item{by}{calculate FUN for trailing width points at every by-th time
     point.}
-  \item{ascending}{logical. If TRUE then points are passed to \code{FUN} in
-    ascending order of time; otherwise, they are passed in descending order.
-    This argument is deprecated and will be removed in a future version of
-    \code{zoo}.  Use \code{which} instead.}
   \item{by.column}{logical. If \code{TRUE}, \code{FUN} is applied to each column separately.}
   \item{na.pad}{logical. If \code{TRUE} 
     then additional elements or rows of \code{NA}s are added so that 
@@ -33,10 +29,10 @@ rollapply(data, width, FUN, \dots, by = 1, ascending = TRUE, by.column = TRUE,
     to the rolling window of observations.}
   \item{which}{Sequence of relative indexes. Using \code{which} is a more
     flexible alternative to using \code{width} and \code{align}.  For
-    example, \code{which=seq(-1, 1)} is the same as \code{width=3)} with
-	\code{align="center")} and 
-    example, \code{which=seq(-2, 0)} is the same as \code{width=3)} with
-	\code{align="right")}.}
+    example, \code{which=seq(-1, 1)} is the same as \code{width=3} with
+	\code{align="center"} and as another 
+    example, \code{which=seq(-2, 0)} is the same as \code{width=3} with
+	\code{align="right"}.}
   \item{partial}{Logical value. If \code{FALSE} (the default) then if
     the span of values extends past the end of the series then no value
     is output for that point whereas if \code{TRUE} then the appropriate subset

@@ -1,4 +1,4 @@
-rollapply <- function(data, width, FUN, ..., by = 1, ascending = TRUE,
+rollapply <- function(data, width, FUN, ..., by = 1, 
   by.column = TRUE, na.pad = FALSE, align = c("center", "left", "right"), 
   which, partial = FALSE)
     UseMethod("rollapply")
@@ -14,12 +14,12 @@ rollapply <- function(data, width, FUN, ..., by = 1, ascending = TRUE,
 ## }
 
 
-rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.column = TRUE, na.pad = FALSE,
+rollapply.zoo <- function(data, width, FUN, ..., by = 1, by.column = TRUE, na.pad = FALSE,
   align = c("center", "left", "right"), 
   which, partial = FALSE) {
     itt <- 0
 
-    embedi <- function(n, which, by = 1, ascending = TRUE) {
+    embedi <- function(n, which, by = 1) {
     # n = no of time points, k = number of columns
     # by = increment. normally = 1 but if = b calc every b-th point 
     # ascending If TRUE, points passed in ascending order else descending.
@@ -29,16 +29,14 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
     	    s <- seq(1, n, by)
     	    s <- seq_len(n)
     	    lens <- length(s)
-    	    cols <- if (ascending) which else rev(which)
+			cols <- which
     	    mat <- matrix(s + rep(cols, rep(lens,k)), lens)
 			withzero <- replace(mat, TRUE, ifelse(mat < 1 | mat > n, 0, mat))
 			if (by > 1) withzero[seq(1, nrow(withzero), by), ] else withzero
     }
 
 
-	if (!missing(ascending)) warning("'ascending' argument deprecated.  Use 'which' argument.")
-
-    if (missing(which) && by.column && by == 1 && ascending && length(list(...)) < 1 &&
+    if (missing(which) && by.column && by == 1 && length(list(...)) < 1 &&
 		length(sw <- deparse(substitute(FUN))) == 1) {
     if (sw == "mean" && all(!is.na(data))) {
 		return(rollmean(data, width, na.pad = na.pad, align = align))
@@ -50,21 +48,22 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
     ## evaluate FUN only on coredata(data)
     cdata <- coredata(data)
     nr <- NROW(cdata)
-	if (!missing(width) && !is.null(width)) width <- as.integer(width)[1]
+	width <- if (!missing(width) && !is.null(width)) as.integer(width)[1]
     
     ## process alignment
     tt <- index(data)
 
 	if (missing(which) || is.null(which)) {
+		if (is.null(width)) stop("width and which cannot both be missing")
 		align <- match.arg(align)
 		which <- switch(align,
 		  "left" = { seq(from = 0, length = width) },
-		  "center" = { seq(from = -floor(width/2), length = width) },
+		  "center" = { seq(to = floor(width/2), length = width) },
 		  "right" = { seq(to= 0, length = width) })    
 	}
 
     FUN <- match.fun(FUN)
-	e <- embedi(nr, which, by, ascending)
+	e <- embedi(nr, which, by)
 	idx <- if (partial) rep(TRUE, nr) else apply(e > 0, 1, all) 
 	idx <- idx & apply(e > 0, 1, any)
 	idx <- seq_along(idx)[idx]
@@ -88,11 +87,11 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1, ascending = TRUE, by.co
     return(res)
 } 
 
-rollapply.ts <- function(data, width, FUN, by = 1, ascending = TRUE, by.column = TRUE, na.pad = FALSE, ...)
-  as.ts(rollapply(as.zoo(data), width = width, FUN = FUN, by = by, ascending = ascending,
+rollapply.ts <- function(data, width, FUN, by = 1, by.column = TRUE, na.pad = FALSE, ...)
+  as.ts(rollapply(as.zoo(data), width = width, FUN = FUN, by = by, 
                by.column = by.column, na.pad = na.pad, ...))
 
-rollapply.default <- function(data, width, FUN, by = 1, ascending = TRUE, by.column = TRUE, na.pad = FALSE, ...)
-  coredata(rollapply(as.zoo(data), width = width, FUN = FUN, by = by, ascending = ascending,
+rollapply.default <- function(data, width, FUN, by = 1, by.column = TRUE, na.pad = FALSE, ...)
+  coredata(rollapply(as.zoo(data), width = width, FUN = FUN, by = by,
                by.column = by.column, na.pad = na.pad, ...))
 
