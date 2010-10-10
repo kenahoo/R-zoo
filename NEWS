@@ -24,6 +24,8 @@ Changes in Version 1.7-0
     is applied in place of FUN.  Previously FUN2 was ignored in this case.
     Also format and tz arguments can be NULL in which case they are treated
     as missing.
+
+  o added "frequency" argument to as.zooreg() generic and associated methods.
   
 
 Changes in Version 1.6-4
