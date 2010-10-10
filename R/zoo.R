@@ -34,8 +34,11 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
         if(frequency > 1 && identical(all.equal(frequency, round(frequency)), TRUE))
 	  frequency <- round(frequency)
       }
-      if(!is.null(frequency) && identical(class(order.by), "numeric") | identical(class(order.by), "integer"))
+      if(!is.null(frequency) && identical(class(order.by), "numeric") | identical(class(order.by), "integer")) {
+        orig.order.by <- order.by
         order.by <- floor(frequency * order.by + .0001)/frequency
+        if(!isTRUE(all.equal(order.by, orig.order.by))) order.by <- orig.order.by
+      }
     }
 
     attr(x, "oclass") <- attr(x, "class")
