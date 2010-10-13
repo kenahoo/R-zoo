@@ -19,7 +19,7 @@ zoo <- function (x = NULL, order.by = index(x), frequency = NULL)
         drop = FALSE])[index, , drop = FALSE]
     else if(is.atomic(x)) 
       x <- rep(x, length.out = length(index))[index]
-    else stop(paste(dQuote("x"), ": attempt to define illegal zoo object"))
+    else stop(paste(dQuote("x"), ": attempt to define invalid zoo object"))
 
     if(!is.null(frequency)) {
       delta <- suppressWarnings(try(diff(as.numeric(order.by)), silent = TRUE))

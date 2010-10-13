@@ -45,7 +45,7 @@ coredata.its <- function(x, ...)
 {
   stopifnot(length(x) == length(value))
   if(!(is.vector(value) || is.factor(value) || is.matrix(value) || is.data.frame(value)))
-    stop(paste(dQuote("value"), ": attempt to assign illegal coredata to zoo object"))
+    stop(paste(dQuote("value"), ": attempt to assign invalid coredata to zoo object"))
   if(is.matrix(value) || is.data.frame(value)) value <- as.matrix(value)
     
   x[] <- value  
