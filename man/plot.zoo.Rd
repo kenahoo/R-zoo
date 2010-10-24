@@ -245,6 +245,18 @@ rect(as.yearmon("2007-8"), u[3], as.yearmon("2009-11"), u[4],
 lines(v)
 axis(1, floor(time(v)), labels = FALSE, tcl = -1)
 
+## fill area under plot
+
+pnl.xyarea <- function(x, y, fill.base = 0, col = 1, ...) {
+       lines(x, y, ...)
+       panel.number <- parent.frame()$panel.number
+	   col <- rep(col, length = panel.number)[panel.number]
+       polygon(c(x[1], x, tail(x, 1), x[1]), 
+		c(fill.base, as.numeric(y), fill.base, fill.base), col = col)
+}
+plot(zoo(EuStockMarkets), col = rainbow(4), panel = pnl.xyarea)
+
+
 ## barplot
 x <- zoo(cbind(rpois(5, 2), rpois(5, 3)), x.Date)
 barplot(x, beside = TRUE)
