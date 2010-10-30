@@ -4,6 +4,14 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 {
 
 
+  if (is.character(file) && length(file) > 1) {
+	mc <- match.call()
+	pf <- parent.frame()
+	L <- sapply(file, function(file) eval(replace(mc, 2, file), pf), 
+			simplify = FALSE)
+	return(do.call("merge", L))
+  }
+
   ## read data
   rval <- if (is.data.frame(file)) file else read.table(file, ...)
 
