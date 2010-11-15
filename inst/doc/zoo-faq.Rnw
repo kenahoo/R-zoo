@@ -58,7 +58,9 @@ times and rather than give an undesired or unexpected result,
 such illegal objects.   Since \code{merge.zoo}
 is the workhorse behind many \pkg{zoo} functions, a significant
 portion of \pkg{zoo} will not accept
-duplicates among the times.  Typically duplicates are eliminated by
+duplicates among the times.  
+
+Typically duplicates are eliminated by
 (1)~averaging over them, (2)~taking the last among each run of duplicates
 or (3)~interpolating the duplicates and deleting ones on the end that
 cannot be interpolated.  These three approaches are shown here
@@ -143,6 +145,21 @@ z$volume <- z2$volume
 z
 @
 
+If the reason for the duplicate times is that the data is stored in long
+format then use \code{read.zoo} (particlarly the \code{split} argument)
+to convert it to wide format.  Wide format is typically a time series
+whereas long format is not so wide format is the suitable one for zoo.
+
+<<readsplit, source = TRUE>>=
+Lines <- "Date Stock Price
+2000-01-01 IBM 10
+2000-01-02 IBM 11
+2000-01-01 ORCL 12
+2000-01-02 ORCL 13"
+
+stocks <- read.zoo(textConnection(Lines), header = TRUE, split = "Stock")
+stocks
+@
 
 \mysection[2. When I try to specify a log axis to plot.zoo a warning is issued.  What is wrong?]{2. When I try to specify a log axis to \code{plot.zoo} a warning is issued.  What is wrong?}
 
