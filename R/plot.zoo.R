@@ -183,7 +183,10 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
         lwd = lwd[i], type = type[[i]], ...)
     }
   }
-  title(main, outer = main.outer)
+  dots <- list(...)
+  title.args <- c(list(main = main, outer = main.outer),
+    dots[grep("[.]main$", names(dots))])
+  do.call("title", title.args)
   return(invisible(x))
 }
 
