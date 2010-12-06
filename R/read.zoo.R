@@ -66,7 +66,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   }
 
   if(is.factor(ix)) ix <- as.character(ix)
-  rval3 <- if(is.data.frame(rval2)) as.matrix(rval2) else rval2
+  rval3 <- if(is.data.frame(rval2)) as.matrix(rval2) else  if(is.list(rval2)) t(rval2) else rval2
     
   ## index transformation functions
 
