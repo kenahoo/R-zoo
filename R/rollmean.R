@@ -2,18 +2,36 @@
 # https://www.stat.math.ethz.ch/pipermail/r-help/2004-October/057363.html
 # ToDo: rollmad, currently rollapply() can be used
 
-rollmean <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmean <- function(x, k, na.pad = FALSE, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
   UseMethod("rollmean")
 
-rollmean.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmean.default <- function(x, k, na.pad = FALSE, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
 {
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   x <- unclass(x)
   n <- length(x) 
   y <- x[k:n] - x[c(1, seq_len(n-k))] # difference from previous
   y[1] <- sum(x[1:k])		 # find the first
   # apply precomputed differencest sum
   rval <- cumsum(y)/k
-  if (na.pad) {
+  if (rule == "NA") {
     rval <- switch(match.arg(align),
       "left" = { c(rval, rep(NA, k-1)) },
       "center" = { c(rep(NA, floor((k-1)/2)), rval, rep(NA, ceiling((k-1)/2))) },
@@ -22,11 +40,27 @@ rollmean.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "
   return(rval)
 }
 
-rollmean.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmean.zoo <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
 { 
   stopifnot(k <= NROW(x))
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   index.x <- index(x)
-  if(!na.pad) {
+  if(rule != "NA") {
     n <- length(index.x)
     ix <- switch(match.arg(align),
       "left" = { 1:(n-k+1) },
@@ -35,21 +69,56 @@ rollmean.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "righ
     index.x <- index.x[ix]
   }
   if(length(dim(x)) == 0) 
-    return(zoo(rollmean.default(coredata(x), k, na.pad, align), index.x, attr(x, "frequency")))
+    return(zoo(rollmean.default(coredata(x), k, rule = rule, align = align), index.x, attr(x, "frequency")))
   else
-    return(zoo(apply(coredata(x), 2, rollmean.default, k=k, na.pad=na.pad, align=align),
+    return(zoo(apply(coredata(x), 2, rollmean.default, k=k, rule=rule, align=align),
         index.x, attr(x, "frequency")))
 }
 
-rollmean.ts <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
-  as.ts(rollmean(as.zoo(x), k = k, na.pad = na.pad, align = align, ...))
+rollmean.ts <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...) {
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
+  as.ts(rollmean(as.zoo(x), k = k, rule = rule, align = align, ...))
+}
 
 
-rollmax <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmax <- function(x, k, na.pad,
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...) 
   UseMethod("rollmax")
 
-rollmax.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmax.default <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
 {
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   n <- length(x) 
   rval <- rep(0, n) 
   a <- 0
@@ -61,7 +130,7 @@ rollmax.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "r
   a <- x[i-k+1] # point that will be removed from window
   }
   rval <- rval[-seq(k-1)]
-  if (na.pad) {
+  if (rule == "NA") {
     rval <- switch(match.arg(align),
       "left" = { c(rval, rep(NA, k-1)) },
       "center" = { c(rep(NA, floor((k-1)/2)), rval, rep(NA, ceiling((k-1)/2))) },
@@ -70,11 +139,27 @@ rollmax.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "r
   return(rval)
 } 
 
-rollmax.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmax.zoo <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
 { 
   stopifnot(k <= NROW(x))
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   index.x <- index(x)
-  if(!na.pad) {
+  if(rule != "NA") {
     n <- length(index.x)
     ix <- switch(match.arg(align),
       "left" = { 1:(n-k+1) },
@@ -83,9 +168,9 @@ rollmax.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right
     index.x <- index.x[ix]
   }
   if (length(dim(x)) == 0) 
-    return(zoo(rollmax.default(coredata(x), k, na.pad, align), index.x, attr(x, "frequency")))
+    return(zoo(rollmax.default(coredata(x), k, rule = rule, align = align), index.x, attr(x, "frequency")))
   else {
-    s <- apply(coredata(x), 2, rollmax.default, k=k, na.pad = na.pad, align=align)
+    s <- apply(coredata(x), 2, rollmax.default, k=k, rule = rule, align=align)
 	if (length(s) > 1 && length(index.x) == 1) {
 		s <- matrix(s, 1)
 		colnames(s) <- colnames(x)
@@ -94,24 +179,58 @@ rollmax.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right
   }
 }
 
-rollmax.ts <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
-  as.ts(rollmax(as.zoo(x), k = k, na.pad = na.pad, align = align, ...))
+rollmax.ts <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...) {
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
+  as.ts(rollmax(as.zoo(x), k = k, rule = rule, align = align, ...))
+}
 
 
-
-rollmedian <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmedian <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
   UseMethod("rollmedian")
 
-rollmedian.default <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
+rollmedian.default <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...)
 {
   ## interfaces runmed from `stats'
   stopifnot(k <= length(x), k %% 2 == 1)
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   n <- length(x)
   m <- k %/% 2
   rval <- runmed(x, k, ...)
   attr(rval, "k") <- NULL
   rval <- rval[-c(1:m, (n-m+1):n)]
-  if (na.pad) {
+  if (rule == "NA") {
     rval <- switch(match.arg(align),
       "left" = { c(rval, rep(NA, k-1)) },
       "center" = { c(rep(NA, floor((k-1)/2)), rval, rep(NA, ceiling((k-1)/2))) },
@@ -120,8 +239,24 @@ rollmedian.default <- function(x, k, na.pad = FALSE, align = c("center", "left",
   return(rval)
 }
 
-rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...) { 
+rollmedian.zoo <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...) { 
   stopifnot(all(!is.na(x)), k <= NROW(x), k %% 2 == 1)
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
   # todo:
   # rather than abort we should do a simple loop to get the medians
   # for those columns with NAs.
@@ -130,7 +265,7 @@ rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "ri
   n <- NROW(x)
   align <- match.arg(align)
   
-  if(!na.pad) {
+  if(rule != "NA") {
     n <- length(index.x)
     ix <- switch(align,
       "left" = { 1:(n-k+1) },
@@ -139,9 +274,9 @@ rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "ri
     index.x <- index.x[ix]
   }
   
-  rollmedian0 <- function(x, k, na.pad, ...) {
+  rollmedian0 <- function(x, k, rule, ...) {
     x <- runmed(x, k, ...)[-c(seq(m),seq(to=n,len=m))]
-    if (na.pad) {
+    if (rule == "NA") {
       x <- switch(align,
         "left" = { c(x, rep(NA, k-1)) },
         "center" = { c(rep(NA, floor((k-1)/2)), x, rep(NA, ceiling((k-1)/2))) },
@@ -150,10 +285,10 @@ rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "ri
     return(x)
   }
   if (length(dim(x)) == 0)
-    return(zoo(rollmedian0(coredata(x), k, na.pad = na.pad, ...), index.x,
+    return(zoo(rollmedian0(coredata(x), k, rule = rule, ...), index.x,
       attr(x, "frequency")))
   else {
-    s <- apply(coredata(x), 2, rollmedian0, k = k, na.pad = na.pad, ...)
+    s <- apply(coredata(x), 2, rollmedian0, k = k, rule = rule, ...)
 	if (length(s) > 1 && length(index.x) == 1) {
 		s <- matrix(s, 1)
 		colnames(s) <- colnames(x)
@@ -162,5 +297,24 @@ rollmedian.zoo <- function(x, k, na.pad = FALSE, align = c("center", "left", "ri
   }
 }
 
-rollmedian.ts <- function(x, k, na.pad = FALSE, align = c("center", "left", "right"), ...)
-  as.ts(rollmedian(as.zoo(x), k = k, na.pad = na.pad, align = align, ...))
+rollmedian.ts <- function(x, k, na.pad, 
+	rule = c("drop", "NA", "extend", "partial"), 
+	align = c("center", "left", "right"), ...) {
+
+	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
+	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"
+	if (!missing(na.pad) && !missing(rule)) {
+		warning("na.pad is deprecated and will be ignored")
+	}
+
+	rule <- if (is.numeric(rule)) c("drop", "NA", "extend", "partial")[rule+1]
+	else match.arg(rule)
+	if (identical(rule, "extend")) {
+		warning("rule='extend' not yet implemented - rule ignored")
+		rule <- "drop"
+	}
+
+  as.ts(rollmedian(as.zoo(x), k = k, rule = rule, align = align, ...))
+
+}
+
