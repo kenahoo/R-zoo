@@ -1,6 +1,6 @@
 rollapply <- function(data, width, FUN, ..., by = 1, 
   by.column = TRUE, na.pad, align = c("center", "left", "right"), 
-  which, partial = FALSE, rule = c("drop", "NA", "extend", "partial"))
+  which, rule = c("drop", "NA", "extend", "partial"))
     UseMethod("rollapply")
 
 ## up to zoo 1.2-0 rollapply was called rapply(), it was deprecated
@@ -15,7 +15,7 @@ rollapply <- function(data, width, FUN, ..., by = 1,
 
 rollapply.zoo <- function(data, width, FUN, ..., by = 1, by.column = TRUE, na.pad,
   align = c("center", "left", "right"), 
-  which, partial = FALSE, rule = c("drop", "NA", "extend", "partial")) {
+  which, rule = c("drop", "NA", "extend", "partial")) {
 
 	if (missing(rule) && !missing(na.pad) && na.pad) rule <- "NA"
 	if (missing(rule) && !missing(na.pad) && !na.pad) rule <- "drop"

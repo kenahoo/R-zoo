@@ -8,8 +8,10 @@
   A generic function for applying a function to rolling margins of an array.
 }
 \usage{
-rollapply(data, width, FUN, \dots, by = 1, by.column = TRUE,
- na.pad = FALSE, align = c("center", "left", "right"), which, partial = FALSE)
+
+rollapply(data, width, FUN, ..., by = 1, 
+  by.column = TRUE, na.pad, align = c("center", "left", "right"), 
+  which, rule = c("drop", "NA", "extend", "partial"))
 }
 \arguments{
   \item{data}{the data to be used (representing a series of observations).}
@@ -18,12 +20,12 @@ rollapply(data, width, FUN, \dots, by = 1, by.column = TRUE,
     In the case of functions like \code{+}, \code{\%*\%}, etc., the
     function name must be quoted.}
   \item{\dots}{optional arguments to \code{FUN}.}
-  \item{by}{calculate FUN for trailing width points at every by-th time
-    point.}
+  \item{by}{calculate FUN at every by-th time point rather than every point.}
   \item{by.column}{logical. If \code{TRUE}, \code{FUN} is applied to each column separately.}
   \item{na.pad}{logical. If \code{TRUE} 
     then additional elements or rows of \code{NA}s are added so that 
-    result has same number of elements or rows as \code{data}.}
+    result has same number of elements or rows as \code{data}. This argument is
+    deprecated. Use \code{rule} instead.}
   \item{align}{character specifying whether the index of the result
     should be left- or right-aligned or centered (default) compared
     to the rolling window of observations.}
@@ -33,14 +35,14 @@ rollapply(data, width, FUN, \dots, by = 1, by.column = TRUE,
 	\code{align="center"} and as another 
     example, \code{which=seq(-2, 0)} is the same as \code{width=3} with
 	\code{align="right"}.}
-  \item{partial}{Logical value. If \code{FALSE} (the default) then if
-    the span of values extends past the end of the series then no value
-    is output for that point whereas if \code{TRUE} then the appropriate subset
-    is output.  
-	For example, \code{rollapply(zoo(c(5,6,7,8)), 3, sum, partial = TRUE)}
-    returns \code{zoo(c(5+6, 5+6+7, 6+7+8, 7+8))} where the same command 
-    but with \code{partial=FALSE} only returns the components made of three
-    term sums: \code{zoo(c(5+6+7, 6+7+8), 2:3)}.}
+  \item{rule}{This argument may be \code{"drop"}, 
+	\code{"NA"}, \code{"extend"} or \code{"partial"}.  The
+    numbers 0, 1, 2 and 3, respectively, may be used instead (for consistency
+    with the \code{rule} argument in \code{approx}.  \code{"drop"} causes
+    endpoints to be dropped, \code{"NA"} causes additional \code{NA} rows or
+    elements to be appended, \code{"extend"} causes the first and last computed
+    points to be extended (this option is not  yet implemented) and \code{"partial"}
+    then at the ends partials sets less than \code{width} are used.}
 }
 \details{
   Groups time points in successive sets of \code{width} time points and 
@@ -104,6 +106,15 @@ fm <- rollapply(seat, width = 36,
 plot(fm)
 ## showing the shifts after the oil crisis in Oct 1973
 ## and after the seatbelt legislation change in Jan 1983
+
+## different values of rule argument
+z <- zoo(c(NA, NA, 2, 3, 4, 5, NA))
+rollapply(z, 3, sum, na.rm = TRUE)
+rollapply(z, 3, sum, na.rm = TRUE, rule = "drop")
+rollapply(z, 3, sum, na.rm = TRUE, rule = "NA")
+## rollapply(z, 3, sum, na.rm = TRUE, rule = "extend") # not yet implemented
+rollapply(z, 3, sum, na.rm = TRUE, rule = "partial")
+
 
 }
 \keyword{iteration}
