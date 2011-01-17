@@ -420,7 +420,7 @@ Year   Qtr1  Qtr2  Qtr3  Qtr4
 
 library(zoo)
 z <- read.zoo(textConnection(texinp), header=TRUE)
-zz <- zooreg(c(t(coredata(z))), start = yearqtr(start(z)), freq = 4)
+zz <- zooreg(c(t(z)), start = yearqtr(start(z)), freq = 4)
 
 # first portion of zz looks like this:
 # > head(zz)
