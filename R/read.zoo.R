@@ -54,15 +54,15 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	 else {
 		# Inf: first value in each run is first series, etc.
 	    # -Inf: last value in each run is first series, etc.
-		if (split == Inf) ave(ix, ix, FUN = seq_along)
-	    else if (split == -Inf) ave(ix, ix, FUN = function(x) rev(seq_along(x)))
+		if (identical(split, Inf)) ave(ix, ix, FUN = seq_along)
+	    else if (identical(split, -Inf)) ave(ix, ix, FUN = function(x) rev(seq_along(x)))
 	    else ix
 	 }
 
-	 if (split. == 0) {
+	 if (0 %in% split.) {
 		stop(paste("split:", split, "not found in colnames:", colnames(rval)))
 	 }
-	 rval[,-c(split., which(is.index.column)), drop = drop]
+	 rval[,-c(if (is.finite(split.)) split. else 0, which(is.index.column)), drop = drop]
   }
 
   if(is.factor(ix)) ix <- as.character(ix)
@@ -107,7 +107,9 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	FUN2 <- NULL
   }
 
+  FUN0 <- NULL
   if(is.null(FUN)) {
+	if (is.list(index.column)) FUN0 <- paste
     FUN <- if (!missing(tz) && !is.null(tz)) toPOSIXct
         else if (!missing(format) && !is.null(format)) toDate
         else if (is.numeric(ix)) toNumeric
@@ -116,12 +118,18 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 
   FUN <- match.fun(FUN)
 
-  processFUN <- function(...) {
+ processFUN <- function(...) {
 	if (is.data.frame(..1)) FUN(...)
-	else if (is.list(..1)) do.call(FUN, c(...))
-	else FUN(...)
+	else if (is.list(..1)) {
+		if (is.null(FUN0)) do.call(FUN, c(...))
+		else {
+			L <- list(...)
+			L[[1]] <- do.call(FUN0, L[[1]])
+			do.call(FUN, L)
+		}
+	} else FUN(...)
   }
-  
+
   ## compute index from (former) first column
   ix <- if (missing(format) || is.null(format)) {
     if (missing(tz) || is.null(tz)) processFUN(ix) else processFUN(ix, tz = tz)

@@ -32,6 +32,10 @@ Changes in Version 1.7-0
   o read.zoo can accept a vector of filenames in which case each is read in
     and a single zoo object is returned formed by merging the individual ones.
 
+  o if FUN is omitted and index.column specifies multiple columns then the
+    columns are pasted together separated by spaces and processing continues
+    as if there were one column.
+
 
 Changes in Version 1.6-4
 

@@ -33,7 +33,8 @@ write.zoo(x, file = "", index.name = "Index", row.names = FALSE, col.names = NUL
 in which the index/time is stored.  If the \code{read.table} \code{colClasses} 
 argument is used and \code{"NULL"} is among its componennts then 
 \code{index.column} refers to the column numbers after the columns 
-corresponding to \code{"NULL"} have been removed.  If specified as a list 
+corresponding to \code{"NULL"} in \code{colClasses} have been removed.  
+If specified as a list 
 then one argument will be passed to argument \code{FUN} per component so that, 
 for example, \code{index.column = list(1, 2)} will cause 
 \code{FUN(x[,1], x[,2], ...)} to be called whereas 
@@ -84,15 +85,15 @@ interpreted to be the index/time, the remaining columns the corresponding data.
 \code{1, 2, ...} are used for the index.)  To assign the appropriate class
 to the index, \code{FUN} can be specified and is applied to the first column.
 
-To process the index, \code{read.zoo} uses the first of the following that is
-true:  1. If \code{FUN} is specified then \code{read.zoo} calls \code{FUN} with
-the index as the first argument.  2. If \code{tz} is specified then the index 
-column is converted to \code{POSIXct}.  3. If \code{format} is specified
-then the index column is converted to \code{Date}.  4. A heuristic
+To process the index, \code{read.zoo} calls \code{FUN} with the index as the
+first argument.  If \code{FUN} is not specified then if there are multiple
+index columns they are pasted together with a space between each.  Using the
+index column or pasted index column: 1. If \code{tz} is specified then the
+index column is converted to \code{POSIXct}.  2. If \code{format} is specified
+then the index column is converted to \code{Date}.  3. Otherwise, a heuristic
 attempts to decide among \code{"numeric"}, \code{"Date"} and \code{"POSIXct"}.
-If \code{format} and/or \code{tz} is specified 
-then it is passed to the conversion function as well.
-
+If \code{format} and/or \code{tz} is specified then they are passed to the
+conversion function as well.
 
 If \code{regular} is set to \code{TRUE} and the resulting series has an 
 underlying regularity, it is coerced to a \code{"zooreg"} series.
