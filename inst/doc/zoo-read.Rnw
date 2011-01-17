@@ -405,6 +405,28 @@ library(chron)
 z <- read.zoo(textConnection(Lines), header = TRUE,
        index = list(1, 2), FUN = chron)
 
+############################################################################
+
+# Example 16
+# regular quarterly series where each quarter is in separate column
+
+# read using read.zoo and convert it to a zooreg object with yearqtr index
+
+texinp <- "
+Year   Qtr1  Qtr2  Qtr3  Qtr4   
+1992    566   443   329   341   
+1993    344   212   133   112   
+1994    252   252   199   207"
+
+library(zoo)
+z <- read.zoo(textConnection(texinp), header=TRUE)
+zz <- zooreg(c(t(coredata(z))), start = yearqtr(time(z)[1]), freq = 4)
+
+# first portion of zz looks like this:
+# > head(zz)
+# 1992 Q1 1992 Q2 1992 Q3 1992 Q4 1993 Q1 1993 Q2 
+#     566     443     329     341     344     212 
+
 \end{verbatim}
 
 \end{document}
