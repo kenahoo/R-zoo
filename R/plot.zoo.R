@@ -149,7 +149,7 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
 				ylab = "", xlim = xlim, ylim = ylim[[j]], log = log, ...)
 			args$type <- "n"
 			do.call("plot", args)
-			box()
+			if ("bty" %in% names(args) && args$bty == "n") {} else box()
       }
       axis(y.side, xpd = NA)
       mtext(ylab[j], y.side, line = 3)
@@ -176,7 +176,7 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
     args <- list(x.index, dummy, xlab = xlab, ylab = ylab[1], ylim = ylim, xlim = xlim, log = log, ...)
     args$type <- "n"
     do.call("plot", args)
-    box()
+	if ("bty" %in% names(args) && args$bty == "n") {} else box()
     y <- as.matrix(x)
     for(i in 1:nser) {
       panel(x.index, y[, i], col = col[[i]], pch = pch[[i]], lty = lty[i], 
