@@ -231,14 +231,17 @@ TRUE, FUN  = f)
 f2 <- function(d, t, format = "%d.%m.%Y %H:%M") {
        as.chron(paste(d, t), format = format)
 }
-z2 <- read.zoo(textConnection(L), index = list(1, 2), sep=",", header
-= TRUE, FUN  = f)
+z2 <- read.zoo(textConnection(L), index = list(1, 2), sep=",", 
+       header = TRUE, FUN  = f2)
 
 # alternative using POSIXct instead of chron
+# Note that the two index columns are pasted together since FUN was not
+# specified and passed to as.POSIXct(x, tz = "", format = "%d.%m.%Y %H:%M")
+# since tz and format were.
 
-f3 <- function(...) as.POSIXct(paste(...), format = "%d.%m.%Y %H:%M")
-z3 <- read.zoo(textConnection(L), index = list(1, 2), sep=",", 
-	header = TRUE, FUN  = f3)
+z3 <- read.zoo(textConnection(L), sep = ",", header = TRUE, 
+	index = list(1, 2), tz = "", format = "%d.%m.%Y %H:%M")
+
 
 ############################################################################
 
@@ -257,12 +260,7 @@ Lines1 <- "Date Time V2   V3   V4   V5
 
 library(zoo)
 z1 <- read.zoo(textConnection(Lines1), header = TRUE,
-	index = list(1, 2), FUN = paste, FUN2 = as.POSIXct)
-
-
-# equivalent alternative
-z2 <- read.zoo(textConnection(Lines1), header = TRUE,
-	index = list(1, 2), FUN = function(d, t) as.POSIXct(paste(d, t)))
+	index = list(1, 2), tz = "")
 
 ############################################################################
 
