@@ -38,7 +38,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   
   ## extract index, retain rest of the data
   ix <- if (index.column == 0 || length(index.column) == 0) {
-	seq_len(NROW(rval))
+	attributes(rval)$row.names
   }
   else if (is.list(index.column)) {
 	sapply(index.column, function(j) rval[,j], simplify = FALSE)

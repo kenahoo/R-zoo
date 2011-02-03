@@ -42,7 +42,8 @@ for example, \code{index.column = list(1, 2)} will cause
 \code{FUN(x[,1:2], ...)} to be called where \code{x} is a data frame of 
 characters data.  Here \code{...} refers to \code{format}
 and/or \code{tz}, if they specified as arguments.  \code{index.column = 0} can
-be used to specify sequential numbering instead of using a data column.}
+be used to specify that the row names be used as the index.  In the case that
+no row names were input sequential numbering is used.}
   \item{drop}{logical. If the data frame contains just a single data column, should
     the second dimension be dropped?}
   \item{x}{a \code{"zoo"} object.}
