@@ -4,6 +4,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 {
 
 
+  ## if file is a vector of file names
   if (is.character(file) && length(file) > 1) {
 	mc <- match.call()
 	pf <- parent.frame()
@@ -19,13 +20,12 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	names(rval) %in% unname(unlist(index.column))
 
   ## convert factor columns in index to character
-  # is.fac <- sapply(rval[is.index.column], is.factor)
   is.fac <- sapply(rval, is.factor)
   is.fac.index <- is.fac & is.index.column
   if (any(is.fac.index)) rval[is.fac.index] <- 
 	lapply(rval[is.fac.index], as.character)
 
-  ## if `file' does not contain data
+  ## if file does not contain index or data
   if(NROW(rval) < 1) {
     if(is.data.frame(rval)) rval <- as.matrix(rval)
     if(NCOL(rval) > 1) rval <- rval[, ! is.index.column, drop = drop]
@@ -37,7 +37,9 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   if(NCOL(rval) < 1) stop("data file must specify at least one column")
   
   ## extract index, retain rest of the data
-  ix <- if (NCOL(rval) == 1 || length(index.column) == 0) seq_len(NROW(rval))
+  ix <- if (index.column == 0 || length(index.column) == 0) {
+	seq_len(NROW(rval))
+  }
   else if (is.list(index.column)) {
 	sapply(index.column, function(j) rval[,j], simplify = FALSE)
   } else rval[,index.column]

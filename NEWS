@@ -36,6 +36,11 @@ Changes in Version 1.7-0
     columns are pasted together separated by spaces and processing continues
     as if there were one column.
 
+  o in read.zoo index.column = 0 is now valid in which case 1, 2, 3, ... is
+    used for index
+
+  o read.zoo can now read in a zoo object with an index but no data
+
 
 Changes in Version 1.6-4
 
