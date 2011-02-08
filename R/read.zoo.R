@@ -16,6 +16,10 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   ## read data
   rval <- if (is.data.frame(file)) file else read.table(file, ...)
 
+  if (is.null(FUN) && is.null(FUN2) && length(index.column) > 1) {
+	index.column <- as.list(index.column)
+  }
+
   is.index.column <- seq_along(rval) %in% unname(unlist(index.column)) |
 	names(rval) %in% unname(unlist(index.column))
 
