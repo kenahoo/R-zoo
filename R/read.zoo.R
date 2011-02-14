@@ -16,9 +16,25 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   ## read data
   rval <- if (is.data.frame(file)) file else read.table(file, ...)
 
-  if (is.null(FUN) && is.null(FUN2) && length(index.column) > 1) {
+  # returns TRUE if a formal argument x has no default
+  no.default <- function(x) typeof(x) %in% c("symbol", "language")
+
+  if (is.null(FUN) && is.null(FUN2)) {
+	index.column <- as.list(index.column)
+  } else if (identical(FUN, paste)) {
+	index.column <- as.list(index.column)
+  } else if (is.null(FUN) && identical(FUN2, paste)) {
+	index.column <- as.list(index.column)
+  } else if (!is.null(FUN) && !is.list(index.column) && length(index.column) <=
+		length(sapply(formals(match.fun(FUN)), no.default))) {
+	index.column <- as.list(index.column)
+  } else if (is.null(FUN) && !is.null(FUN2) && length(index.column) <= 
+		length(sapply(formals(match.fun(FUN2)), no.default))) {
 	index.column <- as.list(index.column)
   }
+
+  if (is.list(index.column) && length(index.column) == 1 && 
+	index.column[[1]] == 1) index.column <- unlist(index.column)
 
   is.index.column <- seq_along(rval) %in% unname(unlist(index.column)) |
 	names(rval) %in% unname(unlist(index.column))
@@ -89,7 +105,7 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
   }
 
   toDefault <- function(x, ...) {
-    rval. <- try(toPOSIXct(x), silent = TRUE)
+    rval. <- try(toPOSIXct(x, ...), silent = TRUE)
     if(inherits(rval., "try-error"))
       rval. <- try(toDate(x), silent = TRUE)
     else {

@@ -113,7 +113,7 @@ Lines <- "Date Time O H L C
 library(zoo)
 library(chron)
 
-z <- read.zoo(textConnection(Lines), header = TRUE, index = list(1, 2),
+z <- read.zoo(textConnection(Lines), header = TRUE, index = 1:2,
        FUN = function(d, t) as.chron(paste(as.Date(chron(d)), t)))
 
 ############################################################################
@@ -216,23 +216,20 @@ L <- "Date,Time,Open,High,Low,Close,Up,Down
 library(zoo)
 library(chron)
 
-# use chron appending seconds and index = list(1, 2)
+# use chron appending seconds and index = 1:2
 
-f <- function(d, t, format = c("m.d.y", "h:m:s")) {
-       chron(d, paste(t, "00", sep = ":"), format = format)
+f <- function(d, t) {
+       chron(d, paste(t, "00", sep = ":"), format = c("m.d.y", "h:m:s"))
 }
-z <- read.zoo(textConnection(L), index = list(1, 2), sep=",", header =
-TRUE, FUN  = f)
+z <- read.zoo(textConnection(L), index = 1:2, sep=",", header = TRUE, FUN  = f)
 
 
 # Example 7b
-# alternative.  as.chron and index = list(1, 2)
+# alternative.  as.chron
 
-f2 <- function(d, t, format = "%d.%m.%Y %H:%M") {
-       as.chron(paste(d, t), format = format)
-}
-z2 <- read.zoo(textConnection(L), index = list(1, 2), sep=",", 
-       header = TRUE, FUN  = f2)
+f2 <- function(d, t) as.chron(paste(d, t), format = "%d.%m.%Y %H:%M")
+z2 <- read.zoo(textConnection(L), index = 1:2, sep=",", header = TRUE, 
+	FUN  = f2)
 
 # alternative using POSIXct instead of chron
 # Note that the two index columns are pasted together since FUN was not
@@ -240,7 +237,7 @@ z2 <- read.zoo(textConnection(L), index = list(1, 2), sep=",",
 # since tz and format were.
 
 z3 <- read.zoo(textConnection(L), sep = ",", header = TRUE, 
-	index = list(1, 2), tz = "", format = "%d.%m.%Y %H:%M")
+	index = 1:2, tz = "", format = "%d.%m.%Y %H:%M")
 
 
 ############################################################################
@@ -259,8 +256,7 @@ Lines1 <- "Date Time V2   V3   V4   V5
 2010-10-15 13:49:51 73.7 73.7 73.7 73.7"
 
 library(zoo)
-z1 <- read.zoo(textConnection(Lines1), header = TRUE,
-	index = list(1, 2), tz = "")
+z1 <- read.zoo(textConnection(Lines1), header = TRUE, index = 1:2, tz = "")
 
 ############################################################################
 
@@ -320,7 +316,7 @@ library(chron)
 # replace textConnection(L) with name of your file
 
 z <- read.zoo(textConnection(L), skip = 1,
-       FUN = paste, FUN2 = as.chron, index = list(3, 4))
+       FUN = paste, FUN2 = as.chron, index = 3:4)
 
 ############################################################################
 
@@ -400,8 +396,7 @@ Lines <- "Date Time Value
 
 library(zoo)
 library(chron)
-z <- read.zoo(textConnection(Lines), header = TRUE,
-       index = list(1, 2), FUN = chron)
+z <- read.zoo(textConnection(Lines), header = TRUE, index = 1:2, FUN = chron)
 
 ############################################################################
 

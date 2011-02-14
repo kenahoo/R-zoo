@@ -43,7 +43,12 @@ for example, \code{index.column = list(1, 2)} will cause
 characters data.  Here \code{...} refers to \code{format}
 and/or \code{tz}, if they specified as arguments.  \code{index.column = 0} can
 be used to specify that the row names be used as the index.  In the case that
-no row names were input sequential numbering is used.}
+no row names were input sequential numbering is used.
+If \code{index.column} is specified as an ordinary vector then if it has the
+same length as the number of arguments of \code{FUN} (or \code{FUN2} in the
+event that \code{FUN2} is specified and \code{FUN} is not) 
+then \code{index.column} is converted to a
+list.  Also it is always converted to a list if it has length 1.}
   \item{drop}{logical. If the data frame contains just a single data column, should
     the second dimension be dropped?}
   \item{x}{a \code{"zoo"} object.}
@@ -193,7 +198,7 @@ z <- read.zoo(textConnection(Lines),
 		"numeric", "NULL"), 
 	col.names = c("Symbol", "Date", "Hour", "Minute", "Second", "Price", 
 		"Volume", "junk"),
-	index = as.list(1:3),  # do not count columns that are "NULL" in colClasses
+	index = 1:3,  # do not count columns that are "NULL" in colClasses
 	FUN = function(h, m, s) times(paste(h, m, s, sep = ":")),
 	FUN2 = function(tt) trunc(tt, "00:00:05"),
 	aggregate = mean)

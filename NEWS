@@ -41,6 +41,11 @@ Changes in Version 1.7-0
 
   o read.zoo can now read in a zoo object with an index but no data
 
+  o in most situations in which a plain numeric vector for index.column would 
+    give an error it also tries using as.list(index.column).  As a result its
+    almost always possible to use a plain numeric index.column rather than a
+    list.
+
 
 Changes in Version 1.6-4
 
