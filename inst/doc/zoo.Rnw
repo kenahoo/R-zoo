@@ -742,7 +742,7 @@ or right-aligned or centered (default) with respect to the original index.
 
 <<rollapply>>=
 rollapply(Z, 5, sd)
-rollapply(Z, 5, sd, na.pad = TRUE, align = "left")
+rollapply(Z, 5, sd, fill = TRUE, align = "left")
 @
 
 To improve the performance of \code{rollapply(x, k, }\textit{foo}\code{)} for some frequently

@@ -3,22 +3,23 @@ Changes in Version 1.7-0
   o A [<- method was added and the behaviour is now consistent with the
     [ method.
 
-  o rollapply with FUN = mean will no longer call rollmean if the data has
-    any NA values
-  
+  o check.names argument of merge() method now defaults to FALSE.
+
   o Added a new as.zoo() method for "matrix" objects in order to preserve
     column names. Also, a new "data.frame" method leverages the "matrix"
     method.
 
-  o New default method for rollapply().
+  o In rollapply width may be a list whose components are offsets.  ascending
+    argument is no longer supported.  Use width's list form instead.
 
-  o check.names argument of merge() method now defaults to FALSE.
+  o In rollapply new partial and fill arguments. na.pad argument is deprecated.
 
-  o rollapply has new which arguments.  ascending argument removed.
+  o a new option "zoo.rollapply.align" used as the default for the rollapply 
+    align argument.
 
-  o rollapply, rollmean, rollmedian, rollmax have new rule argument.  
-    na.pad argument deprecated.
-    
+  o rollapply with FUN = mean will no longer call rollmean if the data has
+    any NA values
+  
   o added yax.flip argument to plot() method for "zoo" objects to be consistent
     with the "ts" method.
 
@@ -46,6 +47,9 @@ Changes in Version 1.7-0
     almost always possible to use a plain numeric index.column rather than a
     list.
 
+  o new na.fill function.
+
+  o new na.StructTS function for seasonal NA interpolation using R's StructTS.
 
 Changes in Version 1.6-4
 

@@ -340,6 +340,11 @@ merge(z4, lag(z4))
 z5 <- zoo(11:15, letters[1:5])
 merge(z5, lag(z5))
 
+# index values relative to 2001Q1
+zz <- zooreg(cbind(a = 1:10, b = 11:20), start = as.yearqtr(2000), freq = 4)
+zz[] <- mapply("/", as.data.frame(zz), coredata(zz[as.yearqtr("2001Q1")]))
+
+
 ## even though time index must be unique zoo (and read.zoo)
 ## will both allow creation of such illegal objects with
 ## a warning (rather than ana error) to give the user a 

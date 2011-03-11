@@ -65,10 +65,13 @@ export(
 ## NA operations
   "na.approx",
   "na.approx.default",
+  "na.fill",
+  "na.fill.default",
   "na.locf",
   "na.locf.default",
   "na.spline",
   "na.spline.default",
+  "na.StructTS",
   "na.trim",
   "na.trim.default",
   "na.trim.ts",
@@ -158,7 +161,9 @@ export(
   S3method("ltext", "zoo")
   S3method("na.approx", "zoo")
   S3method("na.contiguous", "zoo")
+  S3method("na.fill", "zoo")
   S3method("na.spline", "zoo")
+  S3method("na.StructTS", "zoo")
   S3method("names", "zoo")
   S3method("names<-", "zoo")
   S3method("plot", "zoo")
@@ -203,6 +208,8 @@ export(
   S3method("index", "ts")
   S3method("is.regular", "ts")
   S3method("na.approx", "ts")
+  S3method("na.fill", "ts")
+  S3method("na.StructTS", "ts")
   S3method("rollapply", "ts")
   S3method("rollmax", "ts")
   S3method("rollmean", "ts")

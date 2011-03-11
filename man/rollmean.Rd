@@ -16,14 +16,18 @@
 Generic functions for computing rolling means, maximums and medians of ordered observations.
 }
 \usage{
-rollmean(x, k, na.pad = FALSE, align = c("center", "left", "right"), \dots)
-rollmax(x, k, na.pad = FALSE, align = c("center", "left", "right"), \dots)
-rollmedian(x, k, na.pad = FALSE, align = c("center", "left", "right"), \dots)
+rollmean(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
+	align = getOption("zoo.rollapply.align"), ...)
+rollmax(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
+	align = getOption("zoo.rollapply.align"), ...)
+rollmedian(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
+	align = getOption("zoo.rollapply.align"), ...)
 }
 \arguments{
   \item{x}{an object (representing a series of observations).}
   \item{k}{integer width of the rolling window. Must be odd for \code{rollmedian}.}  
-  \item{na.pad}{logical. Should \code{NA} padding be added at beginning?}
+  \item{fill}{see \code{fill} argument of \code{\link{na.fill}}.}
+  \item{na.pad}{logical. Deprecated. Use \code{fill} instead.}
   \item{align}{character specifying whether the index of the result
     should be left- or right-aligned or centered (default) compared
     to the rolling window of observations.}
@@ -36,7 +40,7 @@ and are thus similar to \code{\link{rollapply}} but are
 optimized for speed.
 
 Currently, there are methods for \code{"zoo"} and \code{"ts"} series and
-default methods (intended for vectors). The default method of \code{rollmedian}
+default methods. The default method of \code{rollmedian}
 is an interface to \code{\link{runmed}}.
 The default method of \code{rollmean} does not handle inputs that contain
 \code{NA}s. In such cases, use \code{\link{rollapply}} instead.
@@ -46,7 +50,7 @@ The default method of \code{rollmean} does not handle inputs that contain
 An object of the same class as \code{x} with the rolling mean/max/median.
 }
 
-\seealso{\code{\link{rollapply}}, \code{\link{zoo}}}
+\seealso{\code{\link{rollapply}}, \code{\link{zoo}}, \code{\link{na.fill}}}
 
 \examples{
 x.Date <- as.Date(paste(2004, rep(1:4, 4:1), sample(1:28, 10), sep = "-"))
