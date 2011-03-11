@@ -202,10 +202,12 @@ rollapply(zoo(1:5), 3, function(x) sum(x[-2]))
 rollapply(1:5, 3, rev)
 embed(1:5, 3)
 
-# these three are the same
-rollapply(1:6, 3, sum, partial = TRUE, align = "right") - 1:6
-rollapply(1:6, 3, function(x) sum(x[-3]), partial = TRUE, align = "right")
-rollapply(1:6, list(-(2:1)), sum, partial = 0)
+# these four are the same
+x <- 1:6
+rollapply(c(0, 0, x), 3, sum, align = "right") - x
+rollapply(x, 3, sum, partial = TRUE, align = "right") - x
+rollapply(x, 3, function(x) sum(x[-3]), partial = TRUE, align = "right")
+rollapply(x, list(-(2:1)), sum, partial = 0)
 
 # same as Matlab's buffer(x, n, p) for valid non-negative p
 # See http://www.mathworks.com/help/toolbox/signal/buffer.html
