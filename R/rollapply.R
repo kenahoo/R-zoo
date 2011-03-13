@@ -28,6 +28,11 @@
 #   right points.  NULL causes no filling and "extend" causes the first or
 #   last point to be repeated or interior points to be linearly approximated.
 
+# wrapper around rollapply which defaults to align = "right"
+rollapplyr <- function(..., align = "right") {
+	rollapply(..., align = align)
+}
+
 rollapply <- function(data, ...) UseMethod("rollapply")
 
 rollapply.default <- function(data, ...) {
@@ -40,7 +45,7 @@ rollapply.ts <- function(data, ...) {
 
 rollapply.zoo <- function(data, width, FUN, ..., by = 1, 
 	by.column = TRUE, fill = if (na.pad) NA, na.pad = FALSE,
-	partial = FALSE, align = getOption("zoo.rollapply.align")) {
+	partial = FALSE, align = c("center", "left", "right")) {
 
 	if (!missing(na.pad)) {
 		warning("na.pad argument is deprecated")
@@ -73,7 +78,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1,
 	if (is.logical(partial)) partial <- if (partial) 1 else -1
 
 	# convert widths to offsets using align
-	align <- match.arg(align, c("center", "left", "right"))
+	align <- match.arg(align)
 
 	if (!is.list(width)) width <- lapply(width, function(w) {
 			if (align == "right") seq(to = 0, length = w)

@@ -55,11 +55,15 @@ export(
 
 ## rolling operations
   "rollapply",
+  "rollapplyr",
   "rollmax",
+  "rollmaxr",
   "rollmax.default",
   "rollmean",
+  "rollmeanr",
   "rollmean.default",
   "rollmedian",
+  "rollmedianr",
   "rollmedian.default",
 
 ## NA operations

@@ -1,5 +1,6 @@
 \name{rollapply}
 \alias{rollapply}
+\alias{rollapplyr}
 \alias{rollapply.default}
 \alias{rollapply.ts}
 \alias{rollapply.zoo}
@@ -8,12 +9,13 @@
   A generic function for applying a function to rolling margins of an array.
 }
 \usage{
-rollapply(data, ...)
+rollapply(data, \dots)
 \method{rollapply}{ts}(data, \dots)
 \method{rollapply}{zoo}(data, width, FUN, \dots, by = 1, by.column = TRUE, 
     fill = if (na.pad) NA, na.pad = FALSE, partial = FALSE, 
-    align = getOption("zoo.rollapply.align"))
+    align = c("center", "left", "right"))
 \method{rollapply}{default}(data, \dots)
+rollapplyr(\dots, align = "right")
 }
 \arguments{
   \item{data}{the data to be used (representing a series of observations).}
@@ -76,6 +78,9 @@ specifies the minimum number of offsets that must be within range.  Negative
   
   Currently, there are methods for \code{"zoo"} and \code{"ts"} series
   and \code{"default"} method for ordinary vectors and matrices.
+
+  \code{rollapplyr} is a wrapper around \code{rollapply} that uses a default
+  of \code{align="right"}.
 }
 \value{
   A object of the same class as \code{data} with the results of the rolling function.

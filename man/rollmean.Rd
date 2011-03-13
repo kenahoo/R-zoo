@@ -1,7 +1,10 @@
 \name{rollmean}
 \alias{rollmean}
+\alias{rollmeanr}
 \alias{rollmax}
+\alias{rollmaxr}
 \alias{rollmedian}
+\alias{rollmedianr}
 \alias{rollmean.zoo}
 \alias{rollmedian.zoo}
 \alias{rollmax.zoo}
@@ -17,11 +20,14 @@ Generic functions for computing rolling means, maximums and medians of ordered o
 }
 \usage{
 rollmean(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = getOption("zoo.rollapply.align"), ...)
+	align = c("center", "left", "right"), ...)
+rollmeanr(..., align = "right")
 rollmax(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = getOption("zoo.rollapply.align"), ...)
+	align = c("center", "left", "right"), ...)
+rollmaxr(..., align = "right")
 rollmedian(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = getOption("zoo.rollapply.align"), ...)
+	align = c("center", "left", "right"), ...)
+rollmedianr(..., align = "right")
 }
 \arguments{
   \item{x}{an object (representing a series of observations).}
