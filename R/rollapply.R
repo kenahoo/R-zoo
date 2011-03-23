@@ -54,11 +54,13 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1,
     if (is.vector(width) && !is.list(width) && length(width) == 1 &&
 		by.column && length(by) == 1 && by == 1 && 
 		length(list(...)) < 1 && length(sw <- deparse(substitute(FUN))) == 1) {
-    if (sw == "mean" && all(!is.na(data))) {
-		return(rollmean(data, width, fill = fill, align = align))
-	} else switch(sw,
-		max = return(rollmax(data, width, fill = fill, align = align)),
-		median = return(rollmedian(data, width, fill = fill, align = align)))
+		  if (sw == "mean" && all(!is.na(data))) {
+				return(rollmean(data, width, fill = fill, align = align))
+		  } else if (sw == "median" && width %% 2 == 1) {
+				return(rollmedian(data, width, fill = fill, align = align))
+	      } else if (sw == "max") {
+				return(rollmax(data, width, fill = fill, align = align))
+	      }
 	}
 
 
@@ -82,7 +84,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1,
 
 	if (!is.list(width)) width <- lapply(width, function(w) {
 			if (align == "right") seq(to = 0, length = w)
-			else if (align == "center") seq(-floor(w/2), length = w)
+			else if (align == "center") seq(to = floor(w/2), length = w)
 			else seq(from = 0, length = w)
 	})
 	# recycle width (using by if length(width) == 1)
