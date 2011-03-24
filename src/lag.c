@@ -23,32 +23,30 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
+#include "zoo.h"
 
-#define Zoo_IndexSymbol         install("index")
-
-SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad)
+SEXP zoo_lag (SEXP x, SEXP _k, SEXP _pad)
 {
+#ifdef ZOO_DEBUG
+Rprintf("zoo_lag\n");
+#endif
   SEXP result;
   int i,j;
   double *result_real=NULL;
   int    *result_int=NULL;
 
-  int k=INTEGER(_k)[0]; /* lagts uses opposite sign for lag than stats::lag */
+  int k=INTEGER(_k)[0] * -1; /* -1 is zoo convention */
   int k_positive = (k > 0) ? 1 : 0;
   int nr = nrows(x);
   int nc = ncols(x);
   int P=0;
   int PAD = INTEGER(coerceVector(_pad,INTSXP))[0];
 
-/*
-  if(k_positive) {
-    if(k > length(x) || k > nr)
-      error("'k' must be less than nrow(x)");
-  } else {
-    if(-1*k > length(x) || -1*k > nr)
-      error("'-1*k' must be less than nrow(x)");
-  }
-*/
+  if(k > length(x))
+    error("abs(k) must be less than nrow(x)");
+
+  if(k < 0 && -1*k > length(x))
+    error("abs(k) must be less than nrow(x)");
 
   PROTECT(result = allocVector(TYPEOF(x), 
           length(x) - (PAD ? 0 : abs(k)*nc))); P++;
@@ -258,8 +256,11 @@ SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad)
 
   copyMostAttrib(x,result);
   if(!PAD) {
+    // likely unneeded as copyMostAttrib will cover
+  //  setAttrib(result, install("index"), getAttrib(x, install("index")));
+  //} else {
     SEXP index, newindex;
-    PROTECT(index = getAttrib(x, Zoo_IndexSymbol)); P++;
+    PROTECT(index = getAttrib(x, install("index"))); P++;
     if(IS_S4_OBJECT(index)) {
       /* should make this
          1) generic for any S4 object if possible
@@ -288,9 +289,9 @@ SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad)
       default:
         break;
     }
-    if(IS_S4_OBJECT(getAttrib(x, Zoo_IndexSymbol))) {
+    if(IS_S4_OBJECT(getAttrib(x, install("index")))) {
       /* need to assure that this is timeDate */
-      SEXP tmp = PROTECT(getAttrib(x, Zoo_IndexSymbol)); P++;
+      SEXP tmp = PROTECT(getAttrib(x, install("index"))); P++;
       SEXP timeDate = PROTECT(NEW_OBJECT(MAKE_CLASS("timeDate"))); P++;
       copyMostAttrib(index,newindex);
       SET_SLOT(timeDate,install("Data"),newindex);
@@ -298,10 +299,10 @@ SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad)
                GET_SLOT(tmp, install("format")));
       SET_SLOT(timeDate,install("FinCenter"),
                GET_SLOT(tmp, install("FinCenter")));
-      setAttrib(result, Zoo_IndexSymbol, timeDate);
+      setAttrib(result, install("index"), timeDate);
     } else {
       copyMostAttrib(index, newindex);
-      setAttrib(result, Zoo_IndexSymbol, newindex);
+      setAttrib(result, install("index"), newindex);
     }
   } 
 
@@ -317,4 +318,9 @@ SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad)
 
   UNPROTECT(P);
   return result;
+}
+
+SEXP zoo_lagts (SEXP x, SEXP _k, SEXP _pad) {
+  int k = INTEGER(_k)[0]*-1; /* change zoo default negative handling */
+  return zoo_lag (x, ScalarInteger(k), _pad);
 }
