@@ -16,4 +16,5 @@ Copyright Jeffrey A. Ryan 2010
 #define _Zoo
 
 SEXP zoo_lag (SEXP x, SEXP _k, SEXP _pad);
+SEXP zoo_coredata (SEXP x, SEXP copyAttr);
 #endif

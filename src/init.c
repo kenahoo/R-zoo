@@ -26,6 +26,7 @@
 static const
 R_CallMethodDef callMethods[] = {
   {"zoo_lag",               (DL_FUNC) &zoo_lag,                 3},
+  {"zoo_coredata",          (DL_FUNC) &zoo_coredata,            2},
   {NULL,                    NULL,                               0}
 };
 
@@ -42,4 +43,5 @@ void R_init_zoo(DllInfo *info)
 
   /* used by external packages linking to internal xts code from C */
   R_RegisterCCallable("zoo","zoo_lag",(DL_FUNC) &zoo_lag);
+  R_RegisterCCallable("zoo","zoo_coredata",(DL_FUNC) &zoo_coredata);
 }
