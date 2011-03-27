@@ -527,7 +527,7 @@ R> rollapply(Z, 5, sd)
 2004-02-29 0.8662296 0.5266261 0.6411751
 2004-03-05 0.9363400 1.7011273 0.6356144
 2004-03-10 0.9508642 1.6892246 0.9578196
-R> rollapply(Z, 5, sd, na.pad = TRUE, align = "left")
+R> rollapply(Z, 5, sd, fill = NA, align = "left")
                   Aa        Bb        Cc
 2004-02-02 1.2814876 0.8018950 0.8218959
 2004-02-08 1.2658555 0.7891358 0.8025043
@@ -544,7 +544,7 @@ R>
 R> ###################################################
 R> ### chunk number 40: rollmean
 R> ###################################################
-R> rollmean(z2, 5, na.pad = TRUE)
+R> rollmean(z2, 5, fill = NA)
    2004-01-05    2004-01-14    2004-01-19    2004-01-25    2004-01-27 
            NA            NA  0.0005792538  0.0031770388 -0.1139910497 
    2004-02-07    2004-02-12    2004-02-16    2004-02-20    2004-02-24 
@@ -558,7 +558,7 @@ R> library("strucchange")
 R> library("DAAG")
 Loading required package: rpart
 Loading required package: randomForest
-randomForest 4.5-36
+randomForest 4.6-2
 Type rfNews() to see new features/changes/bug fixes.
 
 Attaching package: 'randomForest'

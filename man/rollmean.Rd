@@ -32,8 +32,10 @@ rollmedianr(..., align = "right")
 \arguments{
   \item{x}{an object (representing a series of observations).}
   \item{k}{integer width of the rolling window. Must be odd for \code{rollmedian}.}  
-  \item{fill}{see \code{fill} argument of \code{\link{na.fill}}.}
-  \item{na.pad}{logical. Deprecated. Use \code{fill} instead.}
+  \item{fill}{a three-component vector or list (recycled otherwise) providing
+    filling values at the left/within/to the right of the data range.
+    See the \code{fill} argument of \code{\link{na.fill}} for details.}
+  \item{na.pad}{deprecated. Use \code{fill = NA} instead of \code{na.pad = TRUE}.}
   \item{align}{character specifying whether the index of the result
     should be left- or right-aligned or centered (default) compared
     to the rolling window of observations.}

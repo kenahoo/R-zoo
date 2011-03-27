@@ -566,8 +566,8 @@ xm <- merge(z, dif = diff(z))
 with(xm, ifelse(dif > 4, -z, z))
 
 # or in this case we could also use orindary ifelse if we 
-# use na.pad = TRUE to ensure all three have same index
-ifelse(diff(z, na.pad = TRUE) > 4, -z, z)
+# use fill = NA to ensure all three have same index
+ifelse(diff(z, fill = NA) > 4, -z, z)
 @
 
 

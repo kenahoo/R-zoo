@@ -281,13 +281,13 @@ na.locf(z1)
 ### chunk number 39: rollapply
 ###################################################
 rollapply(Z, 5, sd)
-rollapply(Z, 5, sd, na.pad = TRUE, align = "left")
+rollapply(Z, 5, sd, fill = NA, align = "left")
 
 
 ###################################################
 ### chunk number 40: rollmean
 ###################################################
-rollmean(z2, 5, na.pad = TRUE)
+rollmean(z2, 5, fill = NA)
 
 
 ###################################################

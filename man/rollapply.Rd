@@ -19,59 +19,54 @@ rollapplyr(\dots, align = "right")
 }
 \arguments{
   \item{data}{the data to be used (representing a series of observations).}
-  \item{width}{ 
-If \code{width} is a plain numeric vector its elements are regarded as widths
- to be interpreted in conjunction with \code{align} whereas if 
-\code{width} is a list
- its components are regarded as offsets.  
-In the above cases if the length of \code{width} is 1 then \code{width} 
-is recycled for every \code{by}-th point.
-In addition to the a plain numeric vector or list the following may be 
-supported in the future.
-If \code{width} is an undimensioned zoo object it is regarded as containing
- widths applied to the associated time points in conjunction with \code{align}.
-If \code{width} is a 2d zoo object then its rows are regarded as offsets to be
- applied to the associated time points.  
-align is only used if the width represents widths (as opposed to offsets).}
+  \item{width}{numeric vector or list. In the simplest case this is an integer
+    specifying the window width which is aligned to the original sample according
+    to the \code{align} argument. Alternatively, \code{width} can be a list
+    regarded as offsets compared to the current time, see below for details.}
   \item{FUN}{the function to be applied.}
   \item{\dots}{optional arguments to \code{FUN}.}
   \item{by}{calculate FUN at every \code{by}-th time point rather than 
-every point.  \code{by} is only used if \code{width} is length 1 and either
-a plain scalar or a list.}
+    every point.  \code{by} is only used if \code{width} is length 1 and either
+    a plain scalar or a list.}
   \item{by.column}{logical. If \code{TRUE}, \code{FUN} is applied to each column separately.}
-  \item{fill}{See the \code{fill} argument of \code{na.fill}.}
-  \item{na.pad}{deprecated. Use \code{fill} instead.}
-  \item{partial}{Logical value. If \code{FALSE} then \code{FUN} is only 
-applied when
-all indexes are within range.  If \code{TRUE} and some indexes are not within
-range then the subset that are in range are passed to \code{FUN}.
-For example, if \code{width=3, align="right"} then if \code{partial=TRUE}
-then for the first point just that point is passed to \code{FUN}
-since the two points to its
-left are out of range.  For the same example, if 
-\code{partial=FALSE} then \code{FUN} is not
-invoked at all for the first point.  If \code{partial} is a numeric then it
-specifies the minimum number of offsets that must be within range.  Negative
-\code{partial} is interpreted as \code{FALSE}.}
+  \item{fill}{a three-component vector or list (recycled otherwise) providing
+    filling values at the left/within/to the right of the data range.
+    See the \code{fill} argument of \code{\link{na.fill}} for details.}
+  \item{na.pad}{deprecated. Use \code{fill = NA} instead of \code{na.pad = TRUE}.}
+  \item{partial}{logical or numeric. If \code{FALSE} (default) then \code{FUN} is only 
+    applied when all indexes of the rolling window are within the observed time range.
+    If \code{TRUE}, then the subset of indexes that are in range are passed to \code{FUN}.
+    A numeric argument to \code{partial} can be used to determin the minimal
+    window size for partial computations. See below for more details.}
   \item{align}{specifyies whether the index of the result
     should be left- or right-aligned or centered (default) compared
     to the rolling window of observations. This argument is only used if
     \code{width} represents widths.}
 }
 \details{
+  If \code{width} is a plain numeric vector its elements are regarded as widths
+  to be interpreted in conjunction with \code{align} whereas if \code{width} is a list
+  its components are regarded as offsets. In the above cases if the length of
+  \code{width} is 1 then \code{width} is recycled for every \code{by}-th point.
   If \code{width} is a list its components represent integer offsets such that 
   the i-th component of the list refers to time points at positions
-  \code{i+width[[i]]}.  If any of these points are below 1 or above the 
+  \code{i + width[[i]]}.  If any of these points are below 1 or above the 
   length of \code{index(data)} then \code{FUN} is not evaluated for that
-  point unless \code{rule = "partial"} and in that case only the valid
+  point unless \code{partial = TRUE} and in that case only the valid
   points are passed.
 
-  If \code{FUN} is
-  \code{mean}, \code{max} or \code{median} and \code{by.column} is 
+  The rolling function can also be applied to partial windows by setting \code{partial = TRUE}
+  For example, if \code{width = 3, align = "right"} then for the first point
+  just that point is passed to \code{FUN} since the two points to its
+  left are out of range.  For the same example, if \code{partial = FALSE} then \code{FUN} is not
+  invoked at all for the first two points.  If \code{partial} is a numeric then it
+  specifies the minimum number of offsets that must be within range.  Negative
+  \code{partial} is interpreted as \code{FALSE}.
+
+  If \code{FUN} is \code{mean}, \code{max} or \code{median} and \code{by.column} is 
   \code{TRUE} and width is a plain scalar and there are no other arguments
   then special purpose code is used to enhance performance.
-  Also in the case of \code{mean} such special purpose code is only 
-  invoked if the
+  Also in the case of \code{mean} such special purpose code is only invoked if the
   \code{data} argument has no \code{NA} values.
   See \code{\link{rollmean}}, \code{\link{rollmax}} and \code{\link{rollmedian}}
   for more details.
@@ -80,7 +75,7 @@ specifies the minimum number of offsets that must be within range.  Negative
   and \code{"default"} method for ordinary vectors and matrices.
 
   \code{rollapplyr} is a wrapper around \code{rollapply} that uses a default
-  of \code{align="right"}.
+  of \code{align = "right"}.
 }
 \value{
   A object of the same class as \code{data} with the results of the rolling function.
@@ -218,7 +213,6 @@ rollapply(x, list(-(2:1)), sum, partial = 0)
 # See http://www.mathworks.com/help/toolbox/signal/buffer.html
 x <- 1:30; n <- 7; p <- 3
 t(rollapply(c(rep(0, p), x, rep(0, n-p)), n, by = n-p, c))
-
 }
 \keyword{iteration}
 \keyword{array}
