@@ -144,14 +144,14 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
 			do.call("plot", args)
 			mtext(xlab, side = 1, line = 3)
       } else {      
-			# args <- list(x.index, range., axes = FALSE, xlab = "", 
 			args <- list(x.index, range., xaxt = "n", yaxt = "n", xlab = "", 
 				ylab = "", xlim = xlim, ylim = ylim[[j]], log = log, ...)
 			args$type <- "n"
 			do.call("plot", args)
 			if ("bty" %in% names(args) && args$bty == "n") {} else box()
       }
-      axis(y.side, xpd = NA)
+      axis(y.side, xpd = NA, cex.axis = dots[["cex.axis"]], col.axis = dots[["col.axis"]],
+        font.axis = dots[["font.axis"]], las = dots[["las"]])
       mtext(ylab[j], y.side, line = 3)
 
       for(i in which(screens == levels(screens)[j]))
