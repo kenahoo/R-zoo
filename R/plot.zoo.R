@@ -138,7 +138,7 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
       y.side <- if (j %% 2 || !yax.flip) 2 else 4
       range. <- rep(ranges[[j]], length.out = length(time(x)))
       if(j%%nr==0 || j == length(levels(screens))) {
-			args <- list(x.index, range., xlab = "", ylab = "", 
+			args <- list(x.index, range., xlab = "", ylab = "", yaxt = "n",
 				xlim = xlim, ylim = ylim[[j]], log = log, ...)
 			args$type <- "n"
 			do.call("plot", args)
@@ -150,8 +150,7 @@ plot.zoo <- function(x, y = NULL, screens, plot.type, panel = lines,
 			do.call("plot", args)
 			if ("bty" %in% names(args) && args$bty == "n") {} else box()
       }
-      axis(y.side, xpd = NA, cex.axis = dots[["cex.axis"]], col.axis = dots[["col.axis"]],
-        font.axis = dots[["font.axis"]], las = dots[["las"]])
+      do.call("axis", c(list(side = y.side, xpd = NA), dots))
       mtext(ylab[j], y.side, line = 3)
 
       for(i in which(screens == levels(screens)[j]))
