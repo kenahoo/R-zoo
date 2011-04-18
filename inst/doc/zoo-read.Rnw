@@ -7,9 +7,9 @@
 \newcommand{\class}[1]{{`\code{#1}'}}
 \SweaveOpts{engine = R, strip.white = TRUE, keep.source = TRUE, eps = FALSE}
 
-\author{Achim Zeileis\\Universit\"at Innsbruck \And
-        Gabor Grothendieck\\GKX Associates Inc.}
-\Plainauthor{Achim Zeileis, Gabor Grothendieck}
+\author{ Gabor Grothendieck\\GKX Associates Inc. \And
+Achim Zeileis\\Universit\"at Innsbruck}
+\Plainauthor{Gabor Grothendieck, Achim Zeileis}
 
 \title{Reading Data in \pkg{zoo}}
 \Plaintitle{Reading Data in zoo}
