@@ -204,6 +204,7 @@ export(
   S3method("lag", "zooreg")
   S3method("na.approx", "zooreg")
   S3method("na.spline", "zooreg")
+  S3method("rev", "zooreg")
   S3method("time<-", "zooreg")
 
 ## methods for class ts

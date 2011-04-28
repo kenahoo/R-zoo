@@ -50,6 +50,8 @@ Changes in Version 1.7-0
 
   o new na.StructTS function for seasonal NA interpolation using R's StructTS.
 
+  o rev.zooreg method added.
+
 
 Changes in Version 1.6-5
 

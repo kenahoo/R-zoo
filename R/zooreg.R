@@ -74,3 +74,5 @@ zooreg <- function(data, start = 1, end = numeric(), frequency = 1,
         return(zoo(data, order.by, frequency))
     }
 }
+
+rev.zooreg <- function(x) { z <- as.zooreg(rev(as.zoo(x))); frequency(z) <- frequency(x); z }
