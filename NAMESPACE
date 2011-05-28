@@ -188,6 +188,7 @@ export(
   S3method("tail", "zoo")
   S3method("time", "zoo")
   S3method("time<-", "zoo")
+  S3method("transform", "zoo")
   S3method("window", "zoo")
   S3method("window<-", "zoo")
   S3method("with", "zoo")

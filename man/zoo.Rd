@@ -32,7 +32,7 @@
 \alias{names<-.zoo}
 \alias{quantile.zoo}
 \alias{rev.zoo}
-\alias{median.zoo}
+\alias{transform.zoo}
 
 \alias{index2char}
 \alias{index2char.default}

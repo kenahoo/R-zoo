@@ -52,6 +52,8 @@ Changes in Version 1.7-0
 
   o rev.zooreg method added.
 
+  o transform.zoo method added.
+  
 
 Changes in Version 1.6-5
 

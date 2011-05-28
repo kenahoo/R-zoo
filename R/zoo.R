@@ -309,3 +309,9 @@ ifelse.zoo <- function(test, yes, no) {
 median.zoo <- function(x, na.rm = FALSE)  median(coredata(x), na.rm = na.rm)
 
 quantile.zoo <- function(x, ...) quantile(coredata(x), ...)
+
+transform.zoo <- function(`_data`, ...) {
+  if(is.null(dim(coredata(`_data')))) warning("transform() is only useful for matrix-based zoo series")
+  zoo(transform.data.frame(data.frame(coredata(`_data`)), ...),
+    index(`_data`), attr(`_data`, "frequency"))
+}
