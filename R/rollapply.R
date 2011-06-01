@@ -130,7 +130,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1,
 		
 	ix <- !sapply(dat, is.null) # integer indexes of non-nulls
 
-	if (!missing(fill)) {
+	if (!missing(fill) || !missing(na.pad)) {
 
 		# replace NULLs with NAs
 		dat <- lapply(dat, function(x) if (is.null(x)) NA else x)
