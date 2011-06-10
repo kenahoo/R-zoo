@@ -125,3 +125,18 @@ test.zoo.data.frame.2.cols <- function() {
   checkIdentical(target, current)
 }
 
+test.transform.zoo <- function() {
+	target <- structure(logical(0), .Dim = c(0L, 3L), .Dimnames = list(NULL, 
+    c("a", "b", "c")), index = structure(numeric(0), class = "Date"), 
+	class = "zoo")
+	z <- zoo(cbind(a = numeric(0), b = numeric(0)), as.Date(numeric(0)))
+	current <- transform(z, c = a + 1)
+	checkIdentical(target, current)
+
+	DF <- data.frame(a = 1:3, b = 4:6)
+	zz <- zoo(DF, as.Date(1:3))
+	target <- zoo(transform(DF, c = 10 * a), time(zz))
+	current <- transform(zz, c = 10 * a)
+	checkIdentical(target, current)
+}
+
