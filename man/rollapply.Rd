@@ -213,6 +213,31 @@ rollapply(x, list(-(2:1)), sum, partial = 0)
 # See http://www.mathworks.com/help/toolbox/signal/buffer.html
 x <- 1:30; n <- 7; p <- 3
 t(rollapply(c(rep(0, p), x, rep(0, n-p)), n, by = n-p, c))
+
+# these three are the same
+y <- 10 * seq(8); k <- 4; d <- 2
+# 1
+# from http://ucfagls.wordpress.com/2011/06/14/embedding-a-time-series-with-time-delay-in-r-part-ii/
+Embed <- function(x, m, d = 1, indices = FALSE, as.embed = TRUE) {
+    n <- length(x) - (m-1)*d
+    X <- seq_along(x)
+    if(n <= 0)
+        stop("Insufficient observations for the requested embedding")
+    out <- matrix(rep(X[seq_len(n)], m), ncol = m)
+    out[,-1] <- out[,-1, drop = FALSE] +
+        rep(seq_len(m - 1) * d, each = nrow(out))
+    if(as.embed)
+        out <- out[, rev(seq_len(ncol(out)))]
+    if(!indices)
+        out <- matrix(x[out], ncol = m)
+    out
+}
+Embed(y, k, d)
+# 2
+rollapply(y, list(-d * seq(0, k-1)), c)
+# 3
+rollapply(y, d*k-1, function(x) x[d * seq(k-1, 0) + 1])
+
 }
 \keyword{iteration}
 \keyword{array}
