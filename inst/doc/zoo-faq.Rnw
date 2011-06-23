@@ -462,7 +462,7 @@ detach("package:timeDate")
 
 \mysection[11. What other packages use zoo?]{11. What other packages use \pkg{zoo}?}
 
-There are 63 other packages that depend on, suggest, can use with or 
+There are 64 other packages that depend on, suggest, can use with or 
 are otherwise used with \pkg{zoo} that we have located:
 
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
@@ -477,6 +477,7 @@ are otherwise used with \pkg{zoo} that we have located:
 \pkg{FinTS} & Companion to Tsay's ``Analysis of financial time series'' \\
 \pkg{fractalrock} & Generate fractal time series with non-normal returns distribution \\
 \pkg{fxregime} & Exchange rate regime analysis \\
+\pkg{RghcnV3} & Process GHCN V3 climate series \\
 \pkg{hydroTSM} & Time series for hydrological modelling \\
 \pkg{lmtest} & Testing linear regression models \\
 \pkg{meboot} & Maximum entropy bootstrap for time series \\
