@@ -51,6 +51,7 @@ Achim Zeileis\\Universit\"at Innsbruck}
 <<preliminaries, echo=FALSE, results=hide>>=
 library("zoo")
 library("chron")
+Sys.setenv(TZ = "GMT")
 @
 
 \section*{Example 1}

@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.13.0 (2011-04-13)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -24,6 +25,7 @@ Loading required package: quadprog
 > online <- FALSE ## if set to FALSE the local copy of
 >                 ## is used instead of get.hist.quote()
 > options(prompt = "R> ")
+R> Sys.setenv(TZ = "GMT")
 R> 
 R> 
 R> ###################################################
@@ -258,7 +260,7 @@ R> ix <- !duplicated(time(tmp), fromLast = TRUE)
 R> 
 R> # merge with grid 
 R> merge(tmp[ix], zoo(, seq(start(tmp), end(tmp), "sec")))
-2009-02-16 06:00:03 2009-02-16 06:00:04 2009-02-16 06:00:05 
+2009-02-16 05:00:03 2009-02-16 05:00:04 2009-02-16 05:00:05 
                   3                  NA                  10 
 R> 
 R> # Here is a function which generalizes the above:
@@ -272,7 +274,7 @@ R> intraday.discretise <- function(b, Nsec) {
 + }
 R> 
 R> intraday.discretise(zsec, 1)
-2009-02-16 06:00:03 2009-02-16 06:00:04 2009-02-16 06:00:05 
+2009-02-16 05:00:03 2009-02-16 05:00:04 2009-02-16 05:00:05 
                   3                  NA                  10 
 R> 
 R> 

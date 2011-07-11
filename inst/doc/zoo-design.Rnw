@@ -31,6 +31,7 @@
 
 <<preliminaries, echo=FALSE, results=hide>>=
 library("zoo")
+Sys.setenv(TZ = "GMT")
 @
 
 \emph{\pkg{zoo} works with any ordered index class} having the prescribed

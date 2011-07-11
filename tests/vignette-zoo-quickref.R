@@ -6,6 +6,7 @@ library("tseries")
 online <- FALSE ## if set to FALSE the local copy of
                 ## is used instead of get.hist.quote()
 options(prompt = "R> ")
+Sys.setenv(TZ = "GMT")
 
 
 ###################################################

@@ -9,6 +9,7 @@ library("fSeries")
 online <- FALSE ## if set to FALSE the local copy of MSFT.rda
                 ## is used instead of get.hist.quote()
 options(prompt = "R> ")
+Sys.setenv(TZ = "GMT")
 
 
 ###################################################
