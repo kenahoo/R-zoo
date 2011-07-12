@@ -1,4 +1,5 @@
 ## name spaces needed for S3 methods
+useDynLib("zoo")
 import("stats", "utils", "graphics", "lattice", "grDevices")
 
 export(
