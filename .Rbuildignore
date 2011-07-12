@@ -6,7 +6,6 @@ inst/doc/.*\.log
 inst/doc/.*\.dvi
 tests/doRUnit.R
 inst/unitTests
-src
 R/lagts.R
 R/listindex.R
 man/lagts.Rd
