@@ -45,6 +45,13 @@ Changes in Version 1.7-0
     as.list(index.column). As a result its almost always possible to use a 
     plain numeric index.column rather than a list.
 
+  o a new src/ directory containing C code backported from the xts package is now
+    included. This is the start of the process to align some of the faster C
+    internals of xts with zoo.  xts is now using the LinkingTo option to
+    call certain code in the zoo package (previously in xts/src). Subsequent
+    zoo releases will begin to use the new C, which in the current release are
+    not yet available.
+  
   o new roll*r() wrappers which default to align = "right".
 
   o new na.fill() function.
@@ -56,13 +63,6 @@ Changes in Version 1.7-0
   o transform() method added.
   
   o added "frequency" argument to as.zooreg() generic and associated methods.
-  
-  o a new src/ directory containing C code backported from the xts package is now
-    included. This is the start of the process to align some of the faster C
-    internals of xts with zoo.  xts is now using the LinkingTo option to
-    call certain code in the zoo package (previously in xts/src). Subsequent
-    zoo releases will begin to use the new C, which in the current release are
-    not yet available.
   
 
 Changes in Version 1.6-5

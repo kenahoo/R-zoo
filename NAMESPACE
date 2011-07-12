@@ -1,6 +1,8 @@
 ## name spaces needed for S3 methods
-useDynLib("zoo")
 import("stats", "utils", "graphics", "lattice", "grDevices")
+
+## C code
+useDynLib("zoo")
 
 export(
 ## zoo core functionality
