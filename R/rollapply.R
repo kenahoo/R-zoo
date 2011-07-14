@@ -62,7 +62,7 @@ rollapply.zoo <- function(data, width, FUN, ..., by = 1,
 				return(rollmax(data, width, fill = fill, align = align))
 	      }
 	}
-
+	FUN <- match.fun(FUN)
 
 	if (by.column && length(dim(data)) == 2) {
 		z <- do.call(merge,
