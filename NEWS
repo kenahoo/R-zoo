@@ -1,3 +1,10 @@
+Changes in Version 1.7-1
+
+  o internal change to roll* routines to increase xts compatibility.  This has
+    no effect on zoo.
+
+  o rationalized several unit tests in inst/unitTests
+
 Changes in Version 1.7-0
 
   o A [<- method was added and the behaviour is now consistent with the

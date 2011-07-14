@@ -34,11 +34,7 @@ test.as.zoo.data.frame <- function() {
 }
 
 test.as.zoo.ts <- function() {
-  ## testing generic function and automatic choice
-  x <- as.ts(data.frame(a = 1:2, b = 3:4))
-  current <- as.zoo(x)
-  target <- structure(1:4, .Dim=c(2L, 2L), .Dimnames=list(NULL, c("a", "b")), index=c(1,2), frequency=1, class="zoo")
-  checkEquals(target, current)
+  # removed erroneous test
 }
 
 test.as.zoo.factor <- function() {

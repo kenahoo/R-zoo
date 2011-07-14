@@ -21,7 +21,7 @@ require(RUnit)
 
 test.rollapply.default <- function() {
   current <- rollapply(c(1,2,3,4), 2, sum)
-  target <- c(NA, 3, 5, 7)
+  target <- c(3, 5, 7)
   checkEquals(target, current)
 }
 
