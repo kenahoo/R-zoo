@@ -4,7 +4,7 @@ Date: 2011-07-18
 Title: S3 Infrastructure for Regular and Irregular Time Series (Z's ordered observations)
 Authors@R: c(person(given = "Achim", family = "Zeileis", role = c("aut", "cre"), email = "Achim.Zeileis@R-project.org"),
              person(given = "Gabor", family = "Grothendieck", role = "aut", email = "ggrothendieck@gmail.com"),
-             person(given = c("Jeffrey", "A."), family = "Ryan", role = "ctb", email = "jeff.a.ryan@gmail.com"),
+             person(given = c("Jeffrey", "A."), family = "Ryan", role = "aut", email = "jeff.a.ryan@gmail.com"),
              person(given = "Felix", family = "Andrews", role = "ctb", email = "felix@nfrac.org"))
 Author: Achim Zeileis [aut, cre], Gabor Grothendieck [aut], Jeffrey A. Ryan [aut], Felix Andrews [ctb]
 Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
