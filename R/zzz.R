@@ -1,4 +1,6 @@
 .onLoad <- function(libname, pkgname) {
+  zoo.as.Date.numeric <- getOption("zoo.as.Date.numeric")
+  if (!identical(zoo.as.Date.numeric, FALSE))
   assignInNamespace("as.Date.numeric", function (x, origin, ...) {
     if (missing(origin)) origin <- "1970-01-01"
     # Matalb origin is day before 0000-01-01
