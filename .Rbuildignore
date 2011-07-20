@@ -10,3 +10,5 @@ R/lagts.R
 R/listindex.R
 man/lagts.Rd
 man/listindex.Rd
+zzz.R
+INSTALL

@@ -1,8 +1,6 @@
 Changes in Version 1.7-2
 
-  o if option "zoo.as.Date.numeric" is FALSE then zoo will not extend
-    as.Date.numeric.  To use this option it must be set before zoo is 
-    loaded, e.g. in your .Rprofile .
+  o as.Date.numeric is now in the zoo namespace rather than in base namespace
 
   o bug fixes
 
