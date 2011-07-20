@@ -120,8 +120,7 @@ export(
   "ORDER.default",
 
 ## other
-   as.Date
-
+   "as.Date"
 )
 
 ## methods for class zoo
