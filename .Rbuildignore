@@ -1,3 +1,4 @@
+R/zzz.R
 R/fBasics.R
 R/misc.zoo.R
 R/filter.zoo.R
@@ -10,5 +11,3 @@ R/lagts.R
 R/listindex.R
 man/lagts.Rd
 man/listindex.Rd
-zzz.R
-INSTALL

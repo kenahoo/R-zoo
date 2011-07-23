@@ -1,5 +1,6 @@
 as.Date <- function (x, ...) {
-  if (is.numeric(x)) zoo:::as.Date.numeric(x, ...)
+  ## for plain numeric input, call zoo:::as.Date.numeric
+  if (!is.object(x) && is.numeric(x)) as.Date.numeric(x, ...)
   else UseMethod("as.Date")
 }
 

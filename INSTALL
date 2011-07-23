@@ -1,7 +1,0 @@
-
-zoo is installed in the usual way using install.packages:
-
-	install.packages("zoo")
-
-After installing a new version of zoo R should be restarted.
-

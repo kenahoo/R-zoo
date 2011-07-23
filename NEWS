@@ -2,6 +2,8 @@ Changes in Version 1.7-2
 
   o modified as.Date.numeric() is now in the zoo namespace rather than in
     the base namespace, own as.Date() generic to assure dispatch.
+    For packages depending on zoo, this means that they may need to import
+    if from zoo (or call zoo:::as.Date.numeric directly).
 
   o small bug fixes
 

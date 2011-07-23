@@ -1,6 +1,6 @@
 Package: zoo
 Version: 1.7-2
-Date: 2011-07-18
+Date: 2011-07-23
 Title: S3 Infrastructure for Regular and Irregular Time Series (Z's ordered observations)
 Authors@R: c(person(given = "Achim", family = "Zeileis", role = c("aut", "cre"), email = "Achim.Zeileis@R-project.org"),
              person(given = "Gabor", family = "Grothendieck", role = "aut", email = "ggrothendieck@gmail.com"),
