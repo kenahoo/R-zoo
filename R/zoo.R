@@ -203,8 +203,8 @@ str.zoo <- function(object, ...)
   if(length(object) == 0L) {
     is.plain <- function(x)
       all(class(x) %in% c("array", "integer", "numeric", "factor", "matrix", "logical"))
-    if(is.plain(value) && (NROW(value) == length(index(object))))
-      value <- zoo(value, index(object), attr(object, "frequency"))
+    if(is.plain(value)) value <- zoo(value,
+      if(length(index(object))) index(object) else seq_along(value), attr(object, "frequency"))
     return(setNames(merge(object, value, drop = FALSE), x))
   }
   if(length(dim(object)) != 2) stop("not possible for univariate zoo series")
