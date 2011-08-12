@@ -84,7 +84,6 @@ as.matrix.zoo <- function(x, ...)
 		colnames(x)
 	    else {
 		lab <- deparse(substitute(x))
-		nc <- dim(x)[2]
 		if (NCOL(x) == 1) 
 		    lab
 		else paste(lab, 1:NCOL(x), sep = ".")
