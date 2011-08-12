@@ -84,11 +84,13 @@ as.matrix.zoo <- function(x, ...)
 		colnames(x)
 	    else {
 		lab <- deparse(substitute(x))
+		nc <- dim(x)[2]
 		if (NCOL(x) == 1) 
 		    lab
 		else paste(lab, 1:NCOL(x), sep = ".")
 	    }
-    if(is.null(row.names(y))) row.names(y) <- index2char(index(x), frequency = attr(x, "frequency"))
+    if (!is.null(y) && nrow(y) > 0 && is.null(row.names(y))) 
+		row.names(y) <- index2char(index(x), frequency = attr(x, "frequency"))
     return(y)
 }
 
