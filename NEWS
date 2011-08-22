@@ -1,8 +1,9 @@
 Changes in Version 1.7-4
 
-  o fixed bug in rollapply and slowness in rollmax
+  o fixed bug in rollapply() and slowness in rollmax()
 
-  o read.zoo gains text= argument similar to that in read.table
+  o read.zoo() gains text= argument similar to that in new read.table()
+
 
 Changes in Version 1.7-3
 
