@@ -1,3 +1,8 @@
+Changes in Version 1.7-5
+
+  o in read.zoo index.column can refer to column names or numbers (previously
+    only numbers)
+
 Changes in Version 1.7-4
 
   o fixed bug in rollapply() and slowness in rollmax()
