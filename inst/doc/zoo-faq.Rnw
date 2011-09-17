@@ -470,7 +470,7 @@ are otherwise used with \pkg{zoo} that we have located:
 \multicolumn{2}{|l|}{\emph{Depends}} \\ \hline
 \pkg{AER} & Applied econometrics with \proglang{R} \\
 \pkg{BootPR} & Bootstrap prediction intervals and bias-corrected forecasting \\
-\pkg{cxxPack} & R/C++ Tools for Literate Statistical Practice \\
+\pkg{cxxPack} & R/C++ Tools for Literate Statistical Practice (outdated) \\
 \pkg{delftfews} & timeseries functions used at Nelen en Schuurmans \\
 \pkg{dyn} & Time-series regression \\
 \pkg{dynlm} & Dynamic linear regression \\
@@ -487,7 +487,7 @@ are otherwise used with \pkg{zoo} that we have located:
 \pkg{PerformanceAnalytics} & Econometric tools for performance and risk analysis \\
 \pkg{quantmod} & Quantitative financial modelling framework \\
 \pkg{RBloomberg} & \proglang{R}/\pkg{Bloomberg} interface \\
-\pkg{RcppTemplate} & \pkg{Rcpp} \proglang{R}/\proglang{C++} object mapping library and package template \\
+\pkg{RcppTemplate} & \pkg{Rcpp} \proglang{R}/\proglang{C++} object mapping library and package template (outdated) \\
 \pkg{sandwich} & Robust covariance matrix estimators \\
 \pkg{sde} & Simulation and Inference for Stochastic Differential Equations \\
 \pkg{solaR} & Solar radiation and performance of photovoltaic systems \\
