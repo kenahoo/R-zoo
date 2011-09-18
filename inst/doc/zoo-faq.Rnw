@@ -466,6 +466,7 @@ detach("package:timeDate")
 There are 74 other CRAN packages that are or can be used with \pkg{zoo} (and 
 possibly more in other repositories):
 
+\begin{center}
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Depends}} \\ \hline
 \pkg{AER} & Applied Econometrics with R \\ \hline
@@ -510,6 +511,9 @@ possibly more in other repositories):
 \pkg{wq} & Exploring water quality monitoring data \\ \hline
 \pkg{xts} & eXtensible Time Series \\ \hline
 \end{tabular}
+\end{center}
+
+\begin{center}
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Enhances}} \\ \hline
 \pkg{chron} & Chronological objects which can handle dates and times \\ \hline
@@ -525,6 +529,9 @@ possibly more in other repositories):
 \pkg{openair} & Tools for the analysis of air pollution data \\ \hline
 \pkg{rasterVis} & Visualization methods for the raster package \\ \hline
 \end{tabular}
+\end{center}
+
+\begin{center}
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Suggests}} \\ \hline
 \pkg{MeDiChI} & MeDiChI ChIP-chip deconvolution library \\ \hline
@@ -546,7 +553,9 @@ possibly more in other repositories):
 \pkg{quantreg} & Quantile Regression \\ \hline
 \pkg{tframePlus} & Time Frame coding kernel extensions \\ \hline
 \end{tabular}
+\end{center}
 
+\begin{center}
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Uses or Used with}} \\ \hline
 \pkg{timeDate} & \pkg{Rmetrics} date and time functions: \code{timeDate} usable with \code{zoo} \\ \hline
@@ -556,7 +565,7 @@ possibly more in other repositories):
 \pkg{timeSeries} & \pkg{Rmetrics} time series functions: \code{as.timeSeries.zoo}, \code{as.zoo.timeSeries} \\ \hline
 \pkg{YaleToolkit} & Data exploration tools from Yale University: accepts \code{"zoo"} input \\ \hline
 \end{tabular}
-
+\end{center}
 \mysection[12. Why does ifelse not work as I expect?]{12. Why does \code{ifelse} not work as I expect?}
 The ordinary \proglang{R} \code{ifelse} function only works with zoo objects if all three arguments are zoo objects with the same time index.  \pkg{zoo} provides an \code{ifelse.zoo} function that should be used instead.  The \code{.zoo} part must be written out since \code{ifelse} is not generic.
 
