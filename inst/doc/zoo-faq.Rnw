@@ -463,84 +463,89 @@ detach("package:timeDate")
 
 \mysection[11. What other packages use zoo?]{11. What other packages use \pkg{zoo}?}
 
-There are 64 other packages that depend on, suggest, can use with or 
-are otherwise used with \pkg{zoo} that we have located:
+There are 74 other CRAN packages that are or can be used with \pkg{zoo} (and 
+possibly more in other repositories):
 
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Depends}} \\ \hline
-\pkg{AER} & Applied econometrics with \proglang{R} \\
-\pkg{BootPR} & Bootstrap prediction intervals and bias-corrected forecasting \\
-\pkg{cxxPack} & R/C++ Tools for Literate Statistical Practice (outdated) \\
-\pkg{delftfews} & timeseries functions used at Nelen en Schuurmans \\
-\pkg{dyn} & Time-series regression \\
-\pkg{dynlm} & Dynamic linear regression \\
-\pkg{fda} & Functional data analysis \\
-\pkg{FinTS} & Companion to Tsay's ``Analysis of financial time series'' \\
-\pkg{fractalrock} & Generate fractal time series with non-normal returns distribution \\
-\pkg{fxregime} & Exchange rate regime analysis \\
-\pkg{RghcnV3} & Process GHCN V3 climate series \\
-\pkg{hydroTSM} & Time series for hydrological modelling \\
-\pkg{lmtest} & Testing linear regression models \\
-\pkg{meboot} & Maximum entropy bootstrap for time series \\
-\pkg{MFDF} & Modeling functional data in finance \\
-\pkg{party} & Recursive partytioning toolbox \\
-\pkg{PerformanceAnalytics} & Econometric tools for performance and risk analysis \\
-\pkg{quantmod} & Quantitative financial modelling framework \\
-\pkg{RBloomberg} & \proglang{R}/\pkg{Bloomberg} interface \\
-\pkg{RcppTemplate} & \pkg{Rcpp} \proglang{R}/\proglang{C++} object mapping library and package template (outdated) \\
-\pkg{sandwich} & Robust covariance matrix estimators \\
-\pkg{sde} & Simulation and Inference for Stochastic Differential Equations \\
-\pkg{solaR} & Solar radiation and performance of photovoltaic systems \\
-\pkg{spacetime} & classes and methods for spatio-temporal data \\
-\pkg{StreamMetabollism} & Calculating single station metabolism from diurnal Oxygen curves \\
-\pkg{strucchange} & Testing, monitoring, and dating structural changes \\
-\pkg{tawny} & Provides various portfolio optimization strategies including random matrix theory and shrinkage estimators \\
-\pkg{termstrc} & Zero-coupon Yield Curve Estimation \\
-\pkg{tgram} & Functions to compute and plot tracheidograms \\
-\pkg{tripEstimation} & Metropolis sampler and supporting functions for
-  estimating animal movement from archival tags and satellite fixes \\
-\pkg{tseries} & Time series analysis and computational finance \\
-\pkg{TSfame} & Time series database interface extensions for fame \\
-\pkg{TShirtQuote} & Time series database interface extensions for \code{get.hist.quote} \\
-\pkg{VhayuR} & \proglang{R} interface to the Vhayu time series database \\
-\pkg{wq} & Exploring water quality monitoring data \\
-\pkg{xts} & Extensible time series \\ \hline
+\pkg{AER} & Applied Econometrics with R \\ \hline
+\pkg{BootPR} & Bootstrap Prediction Intervals and Bias-Corrected Forecasting \\ \hline
+\pkg{DMwR} & Functions and data for "Data Mining with R" \\ \hline
+\pkg{FinTS} & Companion to Tsay (2005) Analysis of Financial Time Series \\ \hline
+\pkg{MFDF} & Modeling Functional Data in Finance \\ \hline
+\pkg{Modalclust} & Hierarchical Modal Clustering \\ \hline
+\pkg{PerformanceAnalytics} & Econometric tools for performance and risk analysis \\ \hline
+\pkg{RBloomberg} & R/Bloomberg \\ \hline
+\pkg{RghcnV3} & Global Historical Climate Network Version 3 \\ \hline
+\pkg{StreamMetabolism} & Stream Metabolism-A package for calculating single station metabolism from diurnal Oxygen curves \\ \hline
+\pkg{TSfame} & Time Series Database Interface extensions for fame \\ \hline
+\pkg{TShistQuote} & Time Series Database Interface extensions for get.hist.quote \\ \hline
+\pkg{TSxls} & Time Series Database Interface extension to connect to spreadsheets \\ \hline
+\pkg{VhayuR} & Vhayu R Interface \\ \hline
+\pkg{delftfews} & delftfews R extensions \\ \hline
+\pkg{dyn} & Time Series Regression \\ \hline
+\pkg{dynlm} & Dynamic Linear Regression \\ \hline
+\pkg{fda} & Functional Data Analysis \\ \hline
+\pkg{forecast} & Forecasting functions for time series \\ \hline
+\pkg{fractalrock} & Generate fractal time series with non-normal returns distribution \\ \hline
+\pkg{fxregime} & Exchange Rate Regime Analysis \\ \hline
+\pkg{glogis} & Fitting and Testing Generalized Logistic Distributions \\ \hline
+\pkg{hydroTSM} & Time series management, analysis and interpolation for hydrological modelling \\ \hline
+\pkg{lmtest} & Testing Linear Regression Models \\ \hline
+\pkg{meboot} & Maximum Entropy Bootstrap for Time Series \\ \hline
+\pkg{mlogit} & multinomial logit model \\ \hline
+\pkg{party} & A Laboratory for Recursive Partytioning \\ \hline
+\pkg{quantmod} & Quantitative Financial Modelling Framework \\ \hline
+\pkg{rdatamarket} & Data access API for DataMarket.com \\ \hline
+\pkg{sandwich} & Robust Covariance Matrix Estimators \\ \hline
+\pkg{sde} & Simulation and Inference for Stochastic Differential Equations \\ \hline
+\pkg{solaR} & Solar Photovoltaic Systems \\ \hline
+\pkg{spacetime} & classes and methods for spatio-temporal data \\ \hline
+\pkg{strucchange} & Testing, Monitoring, and Dating Structural Changes \\ \hline
+\pkg{tawny} & Provides various portfolio optimization strategies including random matrix theory and shrinkage estimators \\ \hline
+\pkg{termstrc} & Zero-coupon Yield Curve Estimation \\ \hline
+\pkg{tgram} & Functions to compute and plot tracheidograms \\ \hline
+\pkg{tripEstimation} & Metropolis sampler and supporting functions for estimating animal movement from archival tags and satellite fixes \\ \hline
+\pkg{tseries} & Time series analysis and computational finance \\ \hline
+\pkg{wq} & Exploring water quality monitoring data \\ \hline
+\pkg{xts} & eXtensible Time Series \\ \hline
 \end{tabular}
-
-\begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
-\multicolumn{2}{|l|}{\emph{Imports}} \\ \hline
-\pkg{openair} & Tools for the analysis of air pollution data \\ \hline
-\end{tabular}
-
-\begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
-\multicolumn{2}{|l|}{\emph{Suggests}} \\ \hline
-\pkg{ChIPSim} & Simulation of ChIP-seq experiments \\
-\pkg{futile} & Utilities for strings and function arguments \\
-\pkg{gsubfn} & Utilities for strings and function arguments \\
-\pkg{hydroGOF} & Compare goodness-of-fit of simulated and observed hydrological series \\
-\pkg{latticeExtra} & \pkg{grid}-based graphics: use with \code{xyplot.zoo} \\ 
-\pkg{MeDiChI} & Model-based deconvolution of genome-wide binding (ChIP-chip) data \\
-\pkg{mondate} & Keep track of dates in month units. \\
-\pkg{playwith} & Interactive graphics: works with \code{xylot.zoo} \\ 
-\pkg{pscl} & Political Science Computational Laboratory, Stanford University \\
-\pkg{tframePlus} & Time frame coding kernel extensions \\ \hline
-\pkg{TSAgg} & Time series aggregation for incomplete time series data \\
-\pkg{TSdbi} & Time series database interface \\
-\pkg{TSMySQL} & Time series database interface extensions for \pkg{MySQL} \\
-\pkg{TSPostgresSQL} & Time series database interface extentions for \pkg{Postgres} \\
-\pkg{TSodbc} & Time series database interface extentions for \pkg{ODBC} \\
-\pkg{TSSQLite} & Time series database interface extentions for \pkg{SQLite} \\
-\pkg{UsingR} & A collection of datasets to accompany the textbook ``Using \proglang{R} for Introductory Statistics'' \\
-\pkg{Zelig} & Everyone's statistical software \\ \hline
-\end{tabular}
-
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Enhances}} \\ \hline
-\pkg{chron} & Chronological objects which can handle dates and times \\ 
-\pkg{lubridate} & Make dealing with dates a little easier \\ 
+\pkg{chron} & Chronological objects which can handle dates and times \\ \hline
+\pkg{hydroTSM} & Time series management, analysis and interpolation for hydrological modelling \\ \hline
+\pkg{lubridate} & Make dealing with dates a little easier \\ \hline
 \pkg{tis} & Time Indexes and Time Indexed Series \\ \hline
 \end{tabular}
-
+\begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
+\multicolumn{2}{|l|}{\emph{Imports}} \\ \hline
+\pkg{fxregime} & Exchange Rate Regime Analysis \\ \hline
+\pkg{glogis} & Fitting and Testing Generalized Logistic Distributions \\ \hline
+\pkg{hydroGOF} & Goodness-of-fit functions for comparison of simulated and observed hydrological time series \\ \hline
+\pkg{openair} & Tools for the analysis of air pollution data \\ \hline
+\pkg{rasterVis} & Visualization methods for the raster package \\ \hline
+\end{tabular}
+\begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
+\multicolumn{2}{|l|}{\emph{Suggests}} \\ \hline
+\pkg{MeDiChI} & MeDiChI ChIP-chip deconvolution library \\ \hline
+\pkg{RQuantLib} & R interface to the QuantLib library \\ \hline
+\pkg{TSAgg} & Time series Aggregation \\ \hline
+\pkg{TSMySQL} & Time Series Database Interface extensions for MySQL \\ \hline
+\pkg{TSPostgreSQL} & Time Series Database Interface extensions for PostgreSQL \\ \hline
+\pkg{TSSQLite} & Time Series Database Interface extentions for SQLite \\ \hline
+\pkg{TSdbi} & Time Series Database Interface \\ \hline
+\pkg{TSodbc} & Time Series Database Interface extensions for ODBC \\ \hline
+\pkg{TSzip} & Time Series Database Interface extension to connect to zip files \\ \hline
+\pkg{UsingR} & Data sets for the text "Using R for Introductory Statistics" \\ \hline
+\pkg{Zelig} & Everyone's Statistical Software \\ \hline
+\pkg{gsubfn} & Utilities for strings and function arguments \\ \hline
+\pkg{latticeExtra} & Extra Graphical Utilities Based on Lattice \\ \hline
+\pkg{mondate} & Keep track of dates in terms of months \\ \hline
+\pkg{playwith} & A GUI for interactive plots using GTK+ \\ \hline
+\pkg{pscl} & Political Science Computational Laboratory, Stanford University \\ \hline
+\pkg{quantreg} & Quantile Regression \\ \hline
+\pkg{tframePlus} & Time Frame coding kernel extensions \\ \hline
+\end{tabular}
 
 \begin{tabular}{|p{3.6cm}|p{11cm}|} \hline
 \multicolumn{2}{|l|}{\emph{Uses or Used with}} \\ \hline
