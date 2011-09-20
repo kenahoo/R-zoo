@@ -49,8 +49,6 @@ read.zoo <- function(file, format = "", tz = "", FUN = NULL,
 	lapply(index.column, name.to.num)
   else name.to.num(index.column)
 
-  print(index.column)
-
   ## convert factor columns in index to character
   is.fac <- sapply(rval, is.factor)
   is.fac.index <- is.fac & is.index.column

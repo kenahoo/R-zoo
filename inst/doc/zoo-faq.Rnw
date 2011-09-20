@@ -624,4 +624,38 @@ g <- seq(start(z), end(z), by = times("00:10:00"))
 na.locf(z, xout = g)
 @
 
+\mysection[14. What is the difference between as.Date in zoo and as.Date in the core of R?]{What is the difference between \code{as.Date} in zoo and \code{as.Date} in the core of R?}
+
+zoo has extended \code{origin} argument of \code{as.Date.numeric} so that it
+has a default of \code{origin="1970-01-01"} (whereas in the core of R it has no 
+default and must always be specified).  Also zoo supports 
+\code{origin = "0000-00-00"} to handle
+Matlab style dates.  Note that these are strictly upwardly compatible 
+extensions to R and any usage of \code{as.Date} in R will also work in zoo.  
+
+This makes it more convenient to use as.Date as a function input. For example,
+one can shorten this:
+
+<<date>>=
+z <- zoo(1:2, c("2000-01-01", "2000-01-02"))
+aggregate(z, function(x) as.Date(x, origin = "1970-01-01"))
+@
+to just this:
+
+<<date-2>>=
+aggregate(z, as.Date) 
+@
+
+As another example, one can shorten
+
+<<date-3>>=
+Lines <- "2000-01-01 12:00:00,12
+2000-01-02 12:00:00,13"
+read.zoo(text = Lines, sep = ",", FUN = function(x) as.Date(x, origin = "1970-01-01"))
+@
+to this:
+
+<<date-4>>=
+read.zoo(text = Lines, sep = ",", FUN = as.Date)
+@
 \end{document}
