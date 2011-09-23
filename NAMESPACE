@@ -120,7 +120,11 @@ export(
   "ORDER.default",
 
 ## other
-   "as.Date"
+   "as.Date",
+   "as.Date.yearmon",
+   "as.Date.yearqtr",
+   "as.Date.numeric",
+   "as.Date.ts"
 )
 
 ## methods for class zoo
