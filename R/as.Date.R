@@ -1,6 +1,5 @@
 as.Date <- function (x, ...) {
-	if (is.numeric(x)) zoo:::as.Date.numeric(x, ...)
-	else UseMethod("as.Date")
+	UseMethod("as.Date")
 }
 
 as.Date.numeric <- function (x, origin, ...) {
