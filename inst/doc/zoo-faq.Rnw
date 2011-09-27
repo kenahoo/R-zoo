@@ -463,6 +463,19 @@ detach("package:timeDate")
 
 \mysection[11. What other packages use zoo?]{11. What other packages use \pkg{zoo}?}
 
+A DEIS dependency means that a package lists \pkg{zoo} in the Depends,
+Enhances, Imports or Suggests clause of their DESCRIPTION file.  As of
+September 27, 2011 there are 65 packages on CRAN with DEIS dependencies on zoo
+and 207 packages which either have direct DEIS dependencies or a DEIS
+dependency on a package which in turn has a DEIS dependency on zoo.   This
+suggests that packages that have a DEIS dependency on zoo are themselves
+popular.  If one recursively calculates DEIS dependencies to all depths then
+2127 packages on CRAN have direct or indirect DEIS dependencies on zoo.  That
+is over half of CRAN.  Below are 74 packages which include those with direct
+DEIS dependencies as well as packages that are often used with zoo:
+
+Some packages depend on zoo indirectly listing such a relationship to a package
+which in turn has such a dependency on zoo.  There are 207 packages which 
 There are 74 other CRAN packages that are or can be used with \pkg{zoo} (and 
 possibly more in other repositories):
 
