@@ -34,22 +34,22 @@ as.yearqtr.character <- function(x, format, ...) {
     } else as.yearmon(x, format)
     as.yearqtr(y)
 }
-as.yearqtr.ti <- function(x, ...) as.yearqtr(as.Date(x), ...)
+as.yearqtr.ti <- function(x, origin = "1970-01-01", ...) as.yearqtr(as.Date(x, origin = origin), ...)
 
 ## coercion from yearqtr
 # returned Date is the fraction of the way through the period given by frac
-as.Date.yearqtr <- function(x, frac = 0, ...) {
+as.Date.yearqtr <- function(x, frac = 0, origin = "1970-01-01", ...) {
 	x <- unclass(x)
 	year <- floor(x + .001)
     ix <- !is.na(year)
 	month <- floor(12 * (x - year) + 1 + .5 + .001)
-	dd.start <- as.Date(rep(NA, length(year)))
-    dd.start[ix] <- as.Date(paste(year[ix], month[ix], 1, sep = "-")) 
+	dd.start <- as.Date(rep(NA, length(year)), origin = origin)
+    dd.start[ix] <- as.Date(paste(year[ix], month[ix], 1, sep = "-"), origin = origin) 
 	dd.end <- dd.start + 100 - as.numeric(format(dd.start + 100, "%d")) 
-	as.Date((1-frac) * as.numeric(dd.start) + frac * as.numeric(dd.end), origin = "1970-01-01")
+	as.Date((1-frac) * as.numeric(dd.start) + frac * as.numeric(dd.end), origin = origin)
 }
-as.POSIXct.yearqtr <- function(x, tz = "", ...) as.POSIXct(as.Date(x), tz = tz, ...)
-as.POSIXlt.yearqtr <- function(x, tz = "", ...) as.POSIXlt(as.Date(x), tz = tz, ...)
+as.POSIXct.yearqtr <- function(x, tz = "", origin = "1970-01-01", ...) as.POSIXct(as.Date(x), tz = tz, origin = "1970-01-01", ...)
+as.POSIXlt.yearqtr <- function(x, tz = "", origin = "1970-01-01", ...) as.POSIXlt(as.Date(x), tz = tz, origin = origin, ...)
 as.numeric.yearqtr <- function(x, ...) unclass(x)
 as.character.yearqtr <- function(x, ...) format.yearqtr(x, ...)
 as.data.frame.yearqtr <- function(x, row.names = NULL, optional = FALSE, ...) 
@@ -106,12 +106,12 @@ format.yearqtr <- function(x, format = "%Y Q%q", ...)
 }
 
 
-months.yearqtr <- function(x, abbreviate) {
-    months(as.Date(x), abbreviate)
+months.yearqtr <- function(x, abbreviate, origin = "1970-01-01") {
+    months(as.Date(x, origin = origin), abbreviate)
 }
 
-quarters.yearqtr <- function(x, abbreviate) {
-    quarters(as.Date(x), abbreviate)
+quarters.yearqtr <- function(x, abbreviate, origin = "1970-01-01") {
+    quarters(as.Date(x, origin = origin), abbreviate)
 }
 
 
@@ -204,8 +204,8 @@ summary.yearqtr <- function(object, ...)
   summary(as.numeric(object), ...)
 
 ## convert from package date
-as.yearqtr.date <- function(x, ...) {
-	as.yearqtr(as.Date(x, ...))
+as.yearqtr.date <- function(x, origin = "1970-01-01", ...) {
+	as.yearqtr(as.Date(x, origin = origin, ...))
 }
 
 mean.yearqtr <- function (x, ...) as.yearqtr(mean(unclass(x), ...))

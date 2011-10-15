@@ -121,6 +121,7 @@ export(
 
 ## other
    "as.Date",
+   "as.Date.numeric",
    "as.Date.yearmon",
    "as.Date.yearqtr",
    "as.Date.ts"
