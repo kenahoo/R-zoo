@@ -1,5 +1,5 @@
 ## class creation
-yearmon <- function(x, origin = "1970-01-01") structure(floor(12*x + .0001)/12, class = "yearmon")
+yearmon <- function(x) structure(floor(12*x + .0001)/12, class = "yearmon")
 
 ## coercion to yearmon: always go via numeric
 as.yearmon <- function(x, ...) UseMethod("as.yearmon")
@@ -7,9 +7,8 @@ as.yearmon.default <- function(x, ...) as.yearmon(as.numeric(x))
 as.yearmon.numeric <- function(x, ...) yearmon(x)
 as.yearmon.integer <- function(x, ...) structure(x, class = "yearmon")
 as.yearmon.yearqtr <- function(x, frac = 0, ...) {
-	.origin <- "1970-01-01"
     if (frac == 0) yearmon(as.numeric(x)) else
-    as.yearmon(as.Date(x, origin = origin, frac = frac), ...)
+    as.yearmon(as.Date(x, frac = frac), ...)
 }
 as.yearmon.dates <- 
 as.yearmon.Date <- 
@@ -17,9 +16,9 @@ as.yearmon.POSIXt <- function(x, ...) as.yearmon(with(as.POSIXlt(x, tz="GMT"), 1
 # as.jul.yearmon <- function(x, ...) jul(as.Date(x, ...)) # jul is from tis pkg
 as.yearmon.mondate <-
 as.yearmon.timeDate <-
-as.yearmon.jul <- function(x, origin = "1970-01-01", ...) as.yearmon(as.Date(x, origin = origin, ...))
+as.yearmon.jul <- function(x, ...) as.yearmon(as.Date(x, ...))
 as.yearmon.factor <- function(x, ...) as.yearmon(as.character(x), ...)
-as.yearmon.character <- function(x, format = "", origin = "1970-01-01", ...) {
+as.yearmon.character <- function(x, format = "", ...) {
    if (format == "") {
         nch <- nchar(gsub("[^-]", "", x))
 		nch[is.na(x)] <- NA
@@ -32,26 +31,26 @@ as.yearmon.character <- function(x, format = "", origin = "1970-01-01", ...) {
    has.short.keys <- rep(regexpr("%[mbByY%]", format) > 0, length(x))
    has.no.others <- regexpr("%", gsub("%[mbByY%]", "", format)) < 0
    z <- ifelse(has.short.keys & has.no.others,
-      as.Date( paste("01", x, sep = "-", origin = origin), paste("%d", format, sep = "-"), ... ),
-      as.Date(x, format, origin = origin, ...))
-   as.yearmon(as.Date(z, origin = origin))
+      as.Date( paste("01", x, sep = "-"), paste("%d", format, sep = "-"), ... ),
+      as.Date(x, format, ...))
+   as.yearmon(as.Date(z, origin = "1970-01-01"))
 }
-as.yearmon.ti <- function(x, origin = "1970-01-01", ...) as.yearmon(as.Date(x, origin = origin), ...)
+as.yearmon.ti <- function(x, ...) as.yearmon(as.Date(x), ...)
 
 ## coercion from yearmon
 # returned Date is the fraction of the way through the period given by frac
-as.Date.yearmon <- function(x, frac = 0, origin = "1970-01-01", ...) {
+as.Date.yearmon <- function(x, frac = 0, ...) {
      x <- unclass(x)
      year <- floor(x + .001)
 	 ix <- !is.na(year)
      month <- floor(12 * (x - year) + 1 + .5 + .001)
-	 dd.start <- as.Date(rep(NA, length(year)), origin = origin)
-     dd.start[ix] <- as.Date(paste(year[ix], month[ix], 1, sep = "-"), origin = origin) 
+	 dd.start <- as.Date(rep(NA, length(year)))
+     dd.start[ix] <- as.Date(paste(year[ix], month[ix], 1, sep = "-")) 
      dd.end <- dd.start + 32 - as.numeric(format(dd.start + 32, "%d"))
-     as.Date((1-frac) * as.numeric(dd.start) + frac * as.numeric(dd.end), origin = origin)
+     as.Date((1-frac) * as.numeric(dd.start) + frac * as.numeric(dd.end), origin = "1970-01-01")
 }
-as.POSIXct.yearmon <- function(x, tz = "", origin = "1970-01-01", ...) as.POSIXct(as.Date(x, origin = origin), tz = tz, ...)
-as.POSIXlt.yearmon <- function(x, tz = "", ...) as.POSIXlt(as.Date(x, origin = origin), tz = tz, ...)
+as.POSIXct.yearmon <- function(x, tz = "", ...) as.POSIXct(as.Date(x), tz = tz, ...)
+as.POSIXlt.yearmon <- function(x, tz = "", ...) as.POSIXlt(as.Date(x), tz = tz, ...)
 as.numeric.yearmon <- function(x, ...) unclass(x)
 as.character.yearmon <- function(x, ...) format.yearmon(x, ...)
 as.data.frame.yearmon <- function(x, row.names = NULL, optional = FALSE, ...) 
@@ -80,10 +79,10 @@ c.yearmon <- function(...)
 
 cycle.yearmon <- function(x, ...) as.numeric(months(x))
 
-format.yearmon <- function(x, format = "%b %Y", origin = "1970-01-01", ...) 
+format.yearmon <- function(x, format = "%b %Y", ...) 
 {
     if (length(x) == 0) return(character(0))
-    xx <- format(as.Date(x, origin = origin), format = format, ...)
+    xx <- format(as.Date(x), format = format, ...)
     names(xx) <- names(x)
     xx
 }
@@ -93,12 +92,12 @@ print.yearmon <- function(x, ...) {
     invisible(x) 
 }
 
-months.yearmon <- function(x, abbreviate, origin = "1970-01-01") {
-    months(as.Date(x, origin = origin), abbreviate)
+months.yearmon <- function(x, abbreviate) {
+    months(as.Date(x), abbreviate)
 }
 
-quarters.yearmon <- function(x, abbreviate, origin = "1970-01-01") {
-    quarters(as.Date(x, origin = origin), abbreviate)
+quarters.yearmon <- function(x, abbreviate) {
+    quarters(as.Date(x), abbreviate)
 }
 
 "[.yearmon" <- function (x, ..., drop = TRUE) 
@@ -185,8 +184,8 @@ summary.yearmon <- function(object, ...)
 ###
 
 ## convert from package date
-as.yearmon.date <- function(x, origin = "1970-01-01", ...) {
-	as.yearmon(as.Date(x, origin = origin, ...))
+as.yearmon.date <- function(x, ...) {
+	as.yearmon(as.Date(x, ...))
 }
 
 mean.yearmon <- function (x, ...) as.yearmon(mean(unclass(x), ...))

@@ -42,11 +42,10 @@
   \code{"yearmon"} is a class for representing monthly data.
 }
 \usage{
-yearmon(x, origin = "1970-01-01")
+yearmon(x)
 }
 \arguments{
   \item{x}{numeric (interpreted as being \dQuote{in years}).}
-  \item{origin}{default origin for \code{as.Date}.  Defaults to \code{"1970-01-01"}.}
 }
 \details{
   The \code{"yearmon"} class is used to represent monthly data. Internally it holds
