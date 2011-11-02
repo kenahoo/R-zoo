@@ -1,3 +1,10 @@
+Changes in Version 1.7-6
+
+  o Removed dependency on fCalendar which was only for historical purposes.
+    vignette("zoo", package = "zoo") outlines how timeDate instead of
+    fCalendar can be used together with zoo.
+
+
 Changes in Version 1.7-5
 
   o fixed a bug in the aggregate() method which occured when using
