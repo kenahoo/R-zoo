@@ -639,11 +639,10 @@ na.locf(z, xout = g)
 
 \mysection[14. What is the difference between as.Date in zoo and as.Date in the core of R?]{What is the difference between \code{as.Date} in zoo and \code{as.Date} in the core of R?}
 
-zoo has extended \code{origin} argument of \code{as.Date.numeric} so that it
+zoo has extended the \code{origin} argument of \code{as.Date.numeric} so that it
 has a default of \code{origin="1970-01-01"} (whereas in the core of R it has no 
-default and must always be specified).  Also zoo supports 
-\code{origin = "0000-00-00"} to handle
-Matlab style dates.  Note that these are strictly upwardly compatible 
+default and must always be specified).  
+Note that these are strictly upwardly compatible 
 extensions to R and any usage of \code{as.Date} in R will also work in zoo.  
 
 This makes it more convenient to use as.Date as a function input. For example,
@@ -671,4 +670,11 @@ to this:
 <<date-4>>=
 read.zoo(text = Lines, sep = ",", FUN = as.Date)
 @
+Note: Other packages that work
+with zoo and define \code{as.Date} methods
+should either import \pkg{zoo} or else should fully export their
+\code{as.Date} methods in their \code{NAMESPACE} file, 
+e.g. \code{export(as.Date.X)}, in order that those methods be registered
+with \pkg{zoo}'s \code{as.Date} generic and not just the 
+\code{as.Date} generic in \pkg{base}.
 \end{document}

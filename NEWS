@@ -4,6 +4,8 @@ Changes in Version 1.7-6
     vignette("zoo", package = "zoo") outlines how timeDate instead of
     fCalendar can be used together with zoo.
 
+  o fixed bug where colnames dropped when merging with zero width zoo object
+
 
 Changes in Version 1.7-5
 
