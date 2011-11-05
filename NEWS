@@ -6,6 +6,8 @@ Changes in Version 1.7-6
 
   o fixed bug where colnames dropped when merging with zero width zoo object
 
+  o fixed slow down in rollapply
+
 
 Changes in Version 1.7-5
 
