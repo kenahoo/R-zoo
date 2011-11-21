@@ -1,12 +1,15 @@
+Changes in Version 1.7-7
+
+  o Fixed bug where colnames were dropped when merging with zero width zoo object.
+
+  o Fixed slow-down in rollapply() compared to versions up to 1.6-x.
+
+
 Changes in Version 1.7-6
 
   o Removed dependency on fCalendar which was only for historical purposes.
     vignette("zoo", package = "zoo") outlines how timeDate instead of
     fCalendar can be used together with zoo.
-
-  o fixed bug where colnames dropped when merging with zero width zoo object
-
-  o fixed slow down in rollapply
 
 
 Changes in Version 1.7-5
