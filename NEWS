@@ -1,8 +1,12 @@
 Changes in Version 1.7-7
 
-  o Fixed bug where colnames were dropped when merging with zero width zoo object.
+  o Fixed bug where colnames were dropped when merging with zero width
+    zoo object.
 
   o Fixed slow-down in rollapply() compared to versions up to 1.6-x.
+
+  o C code now correctly declares GPL-2 (or later) license in the
+    src/*.c files.
 
 
 Changes in Version 1.7-6
