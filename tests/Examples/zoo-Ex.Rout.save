@@ -168,7 +168,7 @@ The following object(s) are masked from 'package:base':
 + merge(y2, y0)
 + }
 Loading required package: chron
-                
+            A  B
 1970-01-01 11 11
 1970-02-01 NA NA
 1970-03-01 13 13
@@ -2456,17 +2456,17 @@ detaching 'package:grid', 'package:lattice'
 > ## 4. convert to "zooreg" and then to "ts"
 > frequency(z) <- 12
 > as.ts(z)
-         Series 1 Series 2
-May 1999        4       NA
-Jun 1999       NA       NA
-Jul 1999       NA       NA
-Aug 1999       NA       NA
-Sep 1999       NA       NA
-Oct 1999       NA       NA
-Nov 1999       NA       NA
-Dec 1999       NA       NA
-Jan 2000       NA       NA
-Feb 2000       NA        6
+         123 222
+May 1999   4  NA
+Jun 1999  NA  NA
+Jul 1999  NA  NA
+Aug 1999  NA  NA
+Sep 1999  NA  NA
+Oct 1999  NA  NA
+Nov 1999  NA  NA
+Dec 1999  NA  NA
+Jan 2000  NA  NA
+Feb 2000  NA   6
 > 
 > xx <- zoo(seq_along(x), x)
 > 
@@ -2803,8 +2803,8 @@ e 15      NA
       1       2       5       6       7       8       9      10 
 > 
 > ## create a regular series with a "Date" index
-> zooreg(1:5, start = Sys.Date())
-2012-02-10 2012-02-11 2012-02-12 2012-02-13 2012-02-14 
+> zooreg(1:5, start = as.Date("2000-01-01"))
+2000-01-01 2000-01-02 2000-01-03 2000-01-04 2000-01-05 
          1          2          3          4          5 
 > ## or with "yearmon" index
 > zooreg(1:5, end = yearmon(2000))
@@ -2873,7 +2873,7 @@ NA  1  2  3 NA  6
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  4.64 0.096 5.281 0 0 
+Time elapsed:  4.064 0.112 4.274 0 0 
 > grDevices::dev.off()
 null device 
           1 
