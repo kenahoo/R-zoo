@@ -156,11 +156,11 @@ str.zoo <- function(object, ...)
   if (all(class(i) == "matrix")) i <- as.vector(i)
   if (all(class(i) == "logical")) {
     lx <- length(x)
-    if (length(i) == lx) {
+    if (length(i) == NROW(x)) {
 		i <- which(i)
 		n.ok <- TRUE
 	} else {
-		i <- which(rep(i, length.out = length(x)))
+		i <- which(rep(i, length.out = NROW(x)))
 		n.ok <- all(i <= lx)
 	}
   } else if (inherits(i, "zoo") && all(class(coredata(i)) == "logical")) {
