@@ -11,3 +11,7 @@ x <- zoo(cbind(a = 3:4, b = 5:6))
 y <- zoo(1:2)
 merge(x, zoo(, time(x)))
 merge(y, x)
+
+## [<-.zoo with logical row index
+z <- zoo(cbind(1:5, 11:15), 101:105)
+z[index(z) == 103, 1] <- 0
