@@ -15,3 +15,8 @@ merge(y, x)
 ## [<-.zoo with logical row index
 z <- zoo(cbind(1:5, 11:15), 101:105)
 z[index(z) == 103, 1] <- 0
+
+## rollapply(..., mean, partial = TRUE)
+z <- zoo(11:15)
+identical(rollapply(z, 3, mean, partial = TRUE),
+  rollapply(z, 3, (mean), partial = TRUE))
