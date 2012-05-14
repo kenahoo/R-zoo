@@ -80,7 +80,7 @@ rollmax.zoo <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE,
 		rollmax(x[, i, drop = TRUE], k, fill = fill, align = align, ...)
 	  }), all = FALSE))
 	  if (ncol(x) == 1) dim(out) <- c(length(out), 1)
-	  colnames(out) <- if (ncol(x) == ncol(out)) colnames(data)
+	  colnames(out) <- if (ncol(x) == ncol(out)) colnames(x)
 	  return(out)
   }
 
