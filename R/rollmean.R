@@ -214,7 +214,7 @@ rollmedian.zoo <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE,
   m <- k %/% 2
   rval <- runmed(x, k, ...)
   attr(rval, "k") <- NULL
-  rval <- rval[-c(1:m, (n-m+1):n)]
+  if(m >= 1) rval <- rval[-c(1:m, (n-m+1):n)]
 
   x[ix] <- rval
   na.fill(x, fill = fill, ix)

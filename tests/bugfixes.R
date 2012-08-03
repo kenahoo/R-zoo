@@ -20,3 +20,8 @@ z[index(z) == 103, 1] <- 0
 z <- zoo(11:15)
 identical(rollapply(z, 3, mean, partial = TRUE),
   rollapply(z, 3, (mean), partial = TRUE))
+
+## rollmedian(..., k = 1)
+z <- zoo(sin(0:20))
+identical(z, rollmedian(z, 1))
+identical(coredata(rollmedian(z, 1)), as.vector(runmed(coredata(z), 1)))
