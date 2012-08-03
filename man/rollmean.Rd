@@ -36,7 +36,6 @@ rollmedianr(..., align = "right")
 rollsum(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
 	align = c("center", "left", "right"), ...)
 rollsumr(..., align = "right")
-rollmax(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
 }
 \arguments{
   \item{x}{an object (representing a series of observations).}
