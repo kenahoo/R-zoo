@@ -40,8 +40,8 @@ autoplot.zoo <- function(object, ..., geom = "line")
   ## processing by fortify.zoo)
   lab <- deparse(substitute(object))
   if(NCOL(object) == 1L) {
-    dim(object) <- c(NROW(object), 1L)
-    colnames(object) <- lab
+    if(is.null(dim(object))) dim(object) <- c(NROW(object), 1L)
+    if(is.null(colnames(object)) colnames(object) <- lab
   }
   if(is.null(colnames(object))) colnames(object) <- paste(lab, 1:NCOL(object), sep = ".")
   df <- na.omit(fortify.zoo(object, melt = TRUE))
