@@ -5,12 +5,9 @@ fortify.zoo <- function(model, data, melt = FALSE, ...)
   k <- NCOL(model)
 
   ## series labels
-  lab <- deparse(substitute(model))  
-  lab <- if(is.null(nam <- colnames(model))) {
-    if(k == 1L) lab else paste(lab, 1:k, sep = ".")
-  } else {
-    nam
-  }
+  lab <- colnames(model)
+  if(is.null(lab)) lab <- rep.int(deparse(substitute(model)), k)
+  lab <- make.unique(lab)
   
   ## either long format (melt = TRUE) or wide format (melt = FALSE)
   if(melt) {
@@ -19,19 +16,19 @@ fortify.zoo <- function(model, data, melt = FALSE, ...)
     } else {
       data.frame(index(model)[rep.int(1:n, k)],
         factor(rep(1:k, each = n), levels = 1:k, labels = lab),
-	value <- as.vector(coredata(model)))
+	as.vector(coredata(model)))
     }
-    names(df) <- c("time", "series", "value")
+    names(df) <- c("Index", "Series", "Value")
   } else {
     df <- cbind(data.frame(index(model)), coredata(model))
-    names(df) <- c("time", lab)  
+    names(df) <- c("Index", lab)  
   }
   
   return(df)
 }
 
 
-autoplot.zoo <- function(object, ..., geom = "line")
+autoplot.zoo <- function(object, geom = "line", facets, ...)
 {
   ## need ggplot2 package
   stopifnot(require("ggplot2"))
@@ -41,17 +38,29 @@ autoplot.zoo <- function(object, ..., geom = "line")
   lab <- deparse(substitute(object))
   if(NCOL(object) == 1L) {
     if(is.null(dim(object))) dim(object) <- c(NROW(object), 1L)
-    if(is.null(colnames(object)) colnames(object) <- lab
+    if(is.null(colnames(object))) colnames(object) <- lab
   }
   if(is.null(colnames(object))) colnames(object) <- paste(lab, 1:NCOL(object), sep = ".")
-  df <- na.omit(fortify.zoo(object, melt = TRUE))
+  df <- fortify.zoo(object, melt = TRUE)
 
-  ## call qplot
-  gg <- if(nlevels(df$series) == 1L) {
-    qplot(time, value, data = df, geom = geom, ...) + ylab(levels(df$series)) + xlab("Index")
+  ## default for facets
+  single <- nlevels(df$Series) == 1L
+  if(missing(facets)) {
+    auto <- TRUE
+    facets <- if(single) NULL else Series ~ .
   } else {
-    qplot(time, value, data = df, group = series, colour = series, linetype = series,
-      shape = series, geom = geom, ...) + ylab("") + xlab("Index")
+    auto <- FALSE
+  }  
+
+  ## "fake" variables for nonstandard evaluation
+  Index <- Value <- Series <- NULL
+  
+  ## call qplot
+  gg <- if(single | (!is.null(facets) & auto)) {
+    qplot(Index, Value, data = df, geom = geom, facets = facets, ...) + ylab(if(single) levels(df$Series) else "") + xlab("Index")
+  } else {
+    qplot(Index, Value, data = df, group = Series, geom = geom, facets = facets, colour = Series, linetype = Series, shape = Series,
+      ...) + ylab("") + xlab("Index")
   }
   return(gg)
 }
