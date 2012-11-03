@@ -130,6 +130,7 @@ export(
    "as.Date.ts",
    
 ## ggplot2 interface (currently fully exported)
+  "facet_free",
   "fortify.zoo",
   "autoplot.zoo"
 )

@@ -64,3 +64,9 @@ autoplot.zoo <- function(object, geom = "line", facets, ...)
   }
   return(gg)
 }
+
+facet_free <- function (facets = Series ~ ., margins = FALSE, scales = "free_y", ...) {
+    stopifnot(require("ggplot2"))
+	facet_grid(facets, margins = margins, scales = scales, ...)
+}
+
