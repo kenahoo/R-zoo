@@ -1,7 +1,8 @@
 \name{ggplot2.zoo}
+\alias{ggplot2.zoo}
 \alias{autoplot.zoo}
 \alias{fortify.zoo}
-\alias{ggplot2.zoo}
+\alias{facet_free}
 
 \title{Convenience Functions for Plotting zoo Objects with ggplot2}
 
@@ -15,8 +16,7 @@
 \usage{
   \method{autoplot}{zoo}(object, geom = "line", facets, \dots)
   \method{fortify}{zoo}(model, data, melt = FALSE, \dots)
-  facet_free(facets = Series ~ ., margins = FALSE, scales = "free_y", ...)
-  
+  facet_free(facets = Series ~ ., margins = FALSE, scales = "free_y", ...)  
 }
 
 \arguments{
@@ -34,7 +34,6 @@
     method).}
   \item{melt}{Should the resulting data frame be in long format (\code{melt = TRUE})
     or wide format (\code{melt = FALSE}).}
-  \item{facets}{A facet formula.  Can usually be omitted when used with \code{autoplot.zoo}.}
   \item{margins}{As in \code{\link[ggplot2]{facet_grid}}.}
   \item{scales}{As in \code{\link[ggplot2]{facet_grid}} except it defaults to \code{"free_y"}.}
 }
@@ -98,14 +97,12 @@ autoplot(z, geom = "point")
 autoplot(z, facets = NULL) + geom_point()
 autoplot(z, facets = NULL) + scale_colour_grey() + theme_bw()
 
+## grid facets with free y scale
+autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_grid(Series ~ ., scales = "free_y")
+autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_free()
+
 ## for "ts" series via coercion
 autoplot(as.zoo(EuStockMarkets))
 autoplot(as.zoo(EuStockMarkets), facets = NULL)
-
-autoplot(z) + 
-	aes(colour = NULL, linetype = NULL) +
-	facet_grid(series ~ ., scales = "free_y")
-
-autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_free() # same
 }
 }
