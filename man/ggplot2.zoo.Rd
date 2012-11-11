@@ -1,8 +1,14 @@
 \name{ggplot2.zoo}
-\alias{ggplot2.zoo}
 \alias{autoplot.zoo}
 \alias{fortify.zoo}
+\alias{ggplot2.zoo}
 \alias{facet_free}
+\alias{yearmon_trans}
+\alias{yearqtr_trans}
+\alias{scale_x_yearmon}
+\alias{scale_y_yearmon}
+\alias{scale_x_yearqtr}
+\alias{scale_y_yearqtr}
 
 \title{Convenience Functions for Plotting zoo Objects with ggplot2}
 
@@ -16,7 +22,16 @@
 \usage{
   \method{autoplot}{zoo}(object, geom = "line", facets, \dots)
   \method{fortify}{zoo}(model, data, melt = FALSE, \dots)
-  facet_free(facets = Series ~ ., margins = FALSE, scales = "free_y", ...)  
+  facet_free(facets = Series ~ ., margins = FALSE, scales = "free_y", ...)
+
+  yearmon_trans(format = "\%b \%Y", n = 5)
+  scale_x_yearmon(..., format = "\%b \%Y", n = 5)
+  scale_y_yearmon(..., format = "\%b \%Y", n = 5)
+
+  yearqtr_trans(format = "\%Y-\%q", n = 5)
+  scale_x_yearqtr(..., format = "\%Y-\%q", n = 5)
+  scale_y_yearqtr(..., format = "\%Y-\%q", n = 5)
+  
 }
 
 \arguments{
@@ -34,8 +49,11 @@
     method).}
   \item{melt}{Should the resulting data frame be in long format (\code{melt = TRUE})
     or wide format (\code{melt = FALSE}).}
+  \item{facets}{A facet formula.  Can usually be omitted when used with \code{autoplot.zoo}.}
   \item{margins}{As in \code{\link[ggplot2]{facet_grid}}.}
   \item{scales}{As in \code{\link[ggplot2]{facet_grid}} except it defaults to \code{"free_y"}.}
+  \item{format}{A format acceptable to \link{format.yearmon} or \link{format.yearqtr}.}
+  \item{n}{Approximate number of axis ticks.}
 }
 
 \description{
@@ -66,7 +84,7 @@
 }
 
 \examples{
-if(require("ggplot2")) {
+if(require("ggplot2") && require("scales")) {
 ## example data
 x.Date <- as.Date(paste(2003, 02, c(1, 3, 7, 9, 14), sep = "-"))
 x <- zoo(rnorm(5), x.Date)
@@ -97,12 +115,17 @@ autoplot(z, geom = "point")
 autoplot(z, facets = NULL) + geom_point()
 autoplot(z, facets = NULL) + scale_colour_grey() + theme_bw()
 
-## grid facets with free y scale
-autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_grid(Series ~ ., scales = "free_y")
-autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_free()
-
 ## for "ts" series via coercion
 autoplot(as.zoo(EuStockMarkets))
 autoplot(as.zoo(EuStockMarkets), facets = NULL)
+
+autoplot(z) + 
+	aes(colour = NULL, linetype = NULL) +
+	facet_grid(series ~ ., scales = "free_y")
+
+autoplot(z) + aes(colour = NULL, linetype = NULL) + facet_free() # same
+
+z.yq <- zooreg(rnorm(50), as.yearqtr("2000-1"), freq = 4)
+autoplot(z.yq) + scale_x_yearqtr()
 }
 }

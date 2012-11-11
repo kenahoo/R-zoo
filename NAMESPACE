@@ -132,7 +132,15 @@ export(
 ## ggplot2 interface (currently fully exported)
   "facet_free",
   "fortify.zoo",
-  "autoplot.zoo"
+  "autoplot.zoo",
+
+  "yearmon_trans",
+  "scale_x_yearmon",
+  "scale_y_yearmon",
+
+  "yearqtr_trans",
+  "scale_x_yearqtr",
+  "scale_y_yearqtr"
 )
 
 ## methods for class zoo

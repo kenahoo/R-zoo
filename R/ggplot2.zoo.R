@@ -70,3 +70,31 @@ facet_free <- function (facets = Series ~ ., margins = FALSE, scales = "free_y",
 	facet_grid(facets, margins = margins, scales = scales, ...)
 }
 
+yearmon_trans <- function(format = "%b %Y", n = 5) {
+  breaks. <- function(x) as.yearmon(pretty_breaks(n)(x))
+  format. <- function(x) format(x, format = format)
+  scales:::trans_new("yearmon", transform = as.numeric, inverse = as.yearmon,
+    breaks = breaks., format = format.)
+}
+
+scale_x_yearmon <- function(..., format = "%b %Y", n = 5) {
+	scale_x_continuous(..., trans = yearmon_trans(format, n))
+}
+scale_y_yearmon <- function(..., format = "%b %Y", n = 5) {
+	scale_y_continuous(..., trans = yearmon_trans(format, n))
+}
+
+yearqtr_trans <- function(format = "%b %Y", n = 5) {
+  breaks. <- function(x) as.yearqtr(pretty_breaks(n)(x))
+  format. <- function(x) zoo:::format.yearqtr(x, format = format)
+  scales:::trans_new("yearqtr", transform = as.numeric, inverse = as.yearqtr,
+    breaks = breaks., format = format.)
+}
+
+scale_x_yearqtr <- function(..., format = "%Y-%q", n = 5) {
+	scale_x_continuous(..., trans = yearqtr_trans(format, n))
+}
+scale_y_yearqtr <- function(..., format = "%Y-%q", n = 5) {
+	scale_y_continuous(..., trans = yearqtr_trans(format, n))
+}
+
