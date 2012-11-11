@@ -99,7 +99,7 @@ format.yearqtr <- function(x, format = "%Y Q%q", ...)
     # TODO: speed up the following
 	xx <- gsub.vec("%q", qtr, rep(format, length(qtr)))
 	xx <- gsub.vec("%Y", year, xx)
-	xx <- gsub.vec("%y", sprintf("%02d", year %% 100), xx)
+	xx <- gsub.vec("%y", sprintf("%02d", as.integer(year %% 100)), xx)
 	xx <- gsub.vec("%C", year %/% 100, xx)
 	names(xx) <- names(x)
 	xx
