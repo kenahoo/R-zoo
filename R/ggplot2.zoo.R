@@ -59,8 +59,7 @@ autoplot.zoo <- function(object, geom = "line", facets, ...)
   gg <- if(single | (!is.null(facets) & auto)) {
     qplot(Index, Value, data = df, geom = geom, facets = facets, ...) + ylab(if(single) levels(df$Series) else "") + xlab("Index")
   } else {
-    qplot(Index, Value, data = df, group = Series, geom = geom, facets = facets, colour = Series, linetype = Series, shape = Series,
-      ...) + ylab("") + xlab("Index")
+    qplot(Index, Value, data = df, group = Series, geom = geom, facets = facets, colour = Series, shape = Series, ...) + ylab("") + xlab("Index")
   }
   return(gg)
 }
