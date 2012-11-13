@@ -39,8 +39,8 @@
   \item{geom}{character specifying which \code{geom} to use
     in \code{\link[ggplot2]{qplot}}.}
   \item{facets}{specification of \code{facets} for \code{\link[ggplot2]{qplot}}. The
-    default is to use \code{facets = NULL} for univariate series and
-    \code{facets = Series ~ .} for multivariate series.}
+    default in the \code{autoplot} method is to use \code{facets = NULL} for univariate
+    series and \code{facets = Series ~ .} for multivariate series.}
   \item{\dots}{further arguments passed to \code{\link[ggplot2]{qplot}}
     for \code{autplot} (and not used for \code{fortify}).}
   \item{model}{an object of class \code{"zoo"} to be converted to
@@ -49,7 +49,6 @@
     method).}
   \item{melt}{Should the resulting data frame be in long format (\code{melt = TRUE})
     or wide format (\code{melt = FALSE}).}
-  \item{facets}{A facet formula.  Can usually be omitted when used with \code{autoplot.zoo}.}
   \item{margins}{As in \code{\link[ggplot2]{facet_grid}}.}
   \item{scales}{As in \code{\link[ggplot2]{facet_grid}} except it defaults to \code{"free_y"}.}
   \item{format}{A format acceptable to \link{format.yearmon} or \link{format.yearqtr}.}
