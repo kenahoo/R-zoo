@@ -12,59 +12,44 @@
 ##' converting \code{width} to a numeric and passing a numeric
 ##' \code{ix}.
 rollwindow <- function(data, width, FUN, ..., partial=FALSE,
-                       align=c('center','left','right')) {
+                       align=c('center','left','right'), ix=index(data)) {
 
   align <- match.arg(align)
-  if (partial) stop("'partial' not supported yet")
-  lengths <- windowsize(data=data, width=width, align=align)
+  lengths <- windowsize(width=width, partial=partial, align=align, ix=ix)
   rollapply(data, lengths, FUN, ..., partial=partial, align=align)
 }
 
-windowsize <- function(data, width, align=c('center','left','right'), ...) {
-  UseMethod('windowsize')
-}
+windowsize <- function(width, partial=FALSE,
+                       align=c('center','left','right'), ix=index(data)) {
 
-windowsize.zoo <- function(data, width, align=c('center','left','right')) {
-  windowsize(index(data), width=width, align=align)
-}
-
-windowsize.POSIXct <- function(data, width, align=c('center','left','right')) {
-  if (inherits(width, 'Duration') || is.numeric(width)) {
-    ## Both are interpreted as number of seconds
-    return(windowsize(as.numeric(data), as.numeric(width), align=align))
-  }
-
-  NextMethod()
-}
-
-windowsize.default <- function(data, width, align=c('center','left','right')) {
+  stopifnot(partial)  ## Only partial=TRUE supported so far
   align <- match.arg(align)
   stopifnot(align=='right')  ## Only align='right' supported so far
 
-  if (is.unsorted(data))
-    stop("'data' must be sorted non-decreasingly")
+  ## This can be a big speedup
+  if(inherits(ix, 'POSIXct') && inherits(width, 'Duration')) {
+    ix <- as.numeric(ix)
+    width <- as.numeric(width)
+  }
+
+  ## This here can be a big speedup, without losing accuracy
+  if(is.POSIXct(ix) && is.duration(width)) {
+    ix <- as.numeric(ix)
+    width <- as.numeric(width)
+  }
 
   i <- 1
-  lengths <- integer(length(data))
-  for (j in seq_along(data)) {
-    while(data[j] - width > data[i]) i <- i+1
+  lengths <- integer(length(ix))
+  for (j in seq_along(ix)) {
+    while(ix[j] - width > ix[i]) i <- i+1
     lengths[j] <- j-i+1
   }
 
   return(lengths)
 }
 
-windowsize.test <- function() {
-  library(testthat)
 
-  x <- c(3, 8, 13, 17, 19, 26, 27)
-
-  expect_that(windowsize(x, 5, align='right'),
-              equals(c(1, 2, 2, 2, 2, 1, 2)))
-}
-
-
-rollsd <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE, align=c('center', 'left', 'right'), ...) {
+rollsd <- function(x, ...) {
   UseMethod('rollsd')
 }
 
@@ -78,97 +63,69 @@ rollsd.zoo <- function(x, ...) {
 ##' of a numeric vector.  Uses the formula
 ##'   Var(x) = mean(x^2) - mean(x)^2
 ##' and then adjusts by n/(n-1) for the sample mean.
-rollsd.default <- function(x, k, fill, align=c('center','left','right'), na.rm=FALSE) {
-  if (length(dim(x)) >= 2)
-    stop("Can't handle multi-dimensional input yet")
+rollsd.default <- function(x, width, align='middle', na.rm=FALSE) {
+  stopifnot(is.vector(x))
 
   n <- length(x)
-  stopifnot(k <= n)
-
-  align <- match.arg(align)
   if (align != 'right')
     stop("Only 'right' alignment is currently supported")
 
-  nas <- is.na(x)
-  x[nas] <- 0
   v <- cbind(
-    s0 = c(0,cumsum(!nas)),
+    s0 = c(0,cumsum(!is.na(x)))
+  )
+
+  if (na.rm) {
+    x[is.na(x)] <- 0
+  }
+
+  v <- cbind( v,
     s1 = c(0,cumsum(x)),
     s2 = c(0,cumsum(x^2))
   )
 
-  if (is.vector(k)) {
-    if(!is.numeric(k))
-      stop("'k' must be a numeric vector or list of numeric vectors")
+  if (is.vector(width)) {
+    if(!is.numeric(width))
+      stop("'width' must be a numeric vector or list of numeric vectors")
 
-    if(length(k)==1)
-      v <- diff(v, k)
+    if(length(width)==1)
+      v <- diff(v, width)
     else
-      v <- v[1+seq_along(k), ] - v[1+seq_along(k) - k, ]
+      v <- v[1+seq_along(width), ] - v[1+seq_along(width) - width, ]
 
-  } else if (is.list(k) && all(lapply(k, is.numeric))) {
-    stop("k=list not handled yet")
+  } else if (is.list(width) && all(lapply(width, is.numeric))) {
+    stop("list not handled yet")
 
   } else {
-    stop("'k' must be a numeric vector or list of numeric vectors")
+    stop("'width' must be a numeric vector or list of numeric vectors")
   }
 
   ret <- suppressWarnings( sqrt( (v[,'s2'] - v[,'s1']^2/v[,'s0'])/(v[,'s0']-1) ) )
   ret[v[,'s0']==1 | v[,'s0']==0] <- NA
-  if (!na.rm)
-    ret[ rollany(nas, k, align=align) ] <- NA
-
   ret
 }
 
 
 rollsd.test <- function() {
   library(testthat)
-
-  x <- 1:5
-  k <- c(1,1,3,2,2)
-
-  expect_that(rollsd(x, k, align='right'),
-              equals(rollapply(x, k, sd, align='right'))
-
+  expect_that(rollsd(1:5, c(1,1,3,2,2), align='right'),
+              equals(c(sd(1), sd(2), sd(1:3), sd(3:4), sd(4:5)))
+             )
   x <- c(2,6,4,NA,5,2,8,6)
-  k <- c(1,1,2, 2,3,2,3,3)
+  w <- c(1,1,2, 2,3,2,3,3)
+  exp <- sapply(seq_along(x), function(i) sd(x[(i-w[i]+1):i], na.rm=TRUE))
 
-  expect_that(rollsd(x, k, na.rm=TRUE, align='right'),
-              equals(rollapply(x, k, sd, align='right', na.rm=TRUE)))
-
-  expect_that(rollsd(x, k, na.rm=FALSE, align='right'),
-              equals(rollapply(x, k, sd, align='right', na.rm=FALSE)))
-}
-
-rollany <- function(data, k, ...) {
-  rollsum2(as.logical(data), k, ...) > 0
-}
-
-rollany.test <- function() {
-  library(testthat)
-  x <- runif(1000, -1, 1) > 0
-  expect_that(rollany(x, 4, align='right'),
-              equals(rollapply(x, 4, any, align='right')))
+  expect_that(rollsd(x, w, na.rm=TRUE, align='right'), equals(exp)) #
 }
 
 
 ##' Equivalent to rollsum() in 'zoo', but accepts a non-scalar 'width'
 ##' attribute.
-rollsum2 <- function(data, width, align=c('center','left','right'), na.rm=FALSE, partial=FALSE) {
+rollsum2 <- function(data, width, align=c('center','left','right'), na.rm=FALSE) {
   align <- match.arg(align)
   if (align != 'right')
     stop("Only 'right' alignment is currently supported")
   if (na.rm) data[is.na(data)] <- 0
   cs <- cumsum(c(0,data))
-
-  ## Check for constant-width
-  if(length(width)==1) {
-    if(!partial) return( cs[(width+1):length(cs)] - cs[1:(length(cs)-width)] )
-
-    width <- pmin(seq_along(data), width)
-  }
-
   cs[seq_along(width) + 1] - cs[seq_along(width) - width + 1]
 }
 
@@ -181,17 +138,9 @@ rollsum2.test <- function() {
   expect_that(rollsum2(x, w, align='right'),
               equals(rollapply(x, w, sum, align='right')))
 
-  x2 <- x
-  x2[4] <- NA
-  expect_that(rollsum2(x2, w, align='right', na.rm=TRUE),
-              equals(rollapply(x2, w, sum, align='right', na.rm=TRUE)))
-
-  ## Constant width
-  expect_that(rollsum2(x, 4, align='right', partial=FALSE),
-              equals(rollapply(x, 4, sum, align='right', partial=FALSE)))
-  expect_that(rollsum2(x, 4, align='right', partial=TRUE),
-              equals(rollapply(x, 4, sum, align='right', partial=TRUE)))
-
+  x[4] <- NA
+  expect_that(rollsum2(x, w, align='right', na.rm=TRUE),
+              equals(rollapply(x, w, sum, align='right', na.rm=TRUE)))
 
   ## Doesn't currently work:
   expect_that(rollsum2(x, w, align='right', na.rm=FALSE),
