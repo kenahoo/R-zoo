@@ -117,6 +117,16 @@ rollsd.test <- function() {
   expect_that(rollsd(x, w, na.rm=TRUE, align='right'), equals(exp)) #
 }
 
+rollany <- function(data, width, ...) {
+  rollsum2(as.logical(data), width, ...) > 0
+}
+
+rollany.test <- function() {
+  library(testthat)
+  x <- runif(1000, -1, 1) > 0
+  expect_that(rollany(x, 4, align='right'), equals(rollapply(x, 4, any, align='right')))
+}
+
 
 ##' Equivalent to rollsum() in 'zoo', but accepts a non-scalar 'width'
 ##' attribute.
