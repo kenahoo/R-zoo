@@ -120,12 +120,20 @@ rollsd.test <- function() {
 
 ##' Equivalent to rollsum() in 'zoo', but accepts a non-scalar 'width'
 ##' attribute.
-rollsum2 <- function(data, width, align=c('center','left','right'), na.rm=FALSE) {
+rollsum2 <- function(data, width, align=c('center','left','right'), na.rm=FALSE, partial=FALSE) {
   align <- match.arg(align)
   if (align != 'right')
     stop("Only 'right' alignment is currently supported")
   if (na.rm) data[is.na(data)] <- 0
   cs <- cumsum(c(0,data))
+
+  ## Check for constant-width
+  if(length(width)==1) {
+    if(!partial) return( cs[(width+1):length(cs)] - cs[1:(length(cs)-width)] )
+
+    width <- pmin(seq_along(data), width)
+  }
+
   cs[seq_along(width) + 1] - cs[seq_along(width) - width + 1]
 }
 
@@ -142,6 +150,13 @@ rollsum2.test <- function() {
   x2[4] <- NA
   expect_that(rollsum2(x2, w, align='right', na.rm=TRUE),
               equals(rollapply(x2, w, sum, align='right', na.rm=TRUE)))
+
+  ## Constant width
+  expect_that(rollsum2(x, 4, align='right', partial=FALSE),
+              equals(rollapply(x, 4, sum, align='right', partial=FALSE)))
+  expect_that(rollsum2(x, 4, align='right', partial=TRUE),
+              equals(rollapply(x, 4, sum, align='right', partial=TRUE)))
+
 
   ## Doesn't currently work:
   expect_that(rollsum2(x, w, align='right', na.rm=FALSE),
