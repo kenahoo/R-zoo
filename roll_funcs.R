@@ -138,9 +138,10 @@ rollsum2.test <- function() {
   expect_that(rollsum2(x, w, align='right'),
               equals(rollapply(x, w, sum, align='right')))
 
-  x[4] <- NA
-  expect_that(rollsum2(x, w, align='right', na.rm=TRUE),
-              equals(rollapply(x, w, sum, align='right', na.rm=TRUE)))
+  x2 <- x
+  x2[4] <- NA
+  expect_that(rollsum2(x2, w, align='right', na.rm=TRUE),
+              equals(rollapply(x2, w, sum, align='right', na.rm=TRUE)))
 
   ## Doesn't currently work:
   expect_that(rollsum2(x, w, align='right', na.rm=FALSE),
