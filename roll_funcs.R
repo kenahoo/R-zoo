@@ -74,15 +74,10 @@ rollsd.default <- function(x, k, fill, align=c('center','left','right'), na.rm=F
   if (align != 'right')
     stop("Only 'right' alignment is currently supported")
 
+  nas <- is.na(x)
+  x[nas] <- 0
   v <- cbind(
-    s0 = c(0,cumsum(!is.na(x)))
-  )
-
-  if (na.rm) {
-    x[is.na(x)] <- 0
-  }
-
-  v <- cbind( v,
+    s0 = c(0,cumsum(!nas)),
     s1 = c(0,cumsum(x)),
     s2 = c(0,cumsum(x^2))
   )
@@ -105,6 +100,9 @@ rollsd.default <- function(x, k, fill, align=c('center','left','right'), na.rm=F
 
   ret <- suppressWarnings( sqrt( (v[,'s2'] - v[,'s1']^2/v[,'s0'])/(v[,'s0']-1) ) )
   ret[v[,'s0']==1 | v[,'s0']==0] <- NA
+  if (!na.rm)
+    ret[ rollany(nas, k, align=align) ] <- NA
+
   ret
 }
 
@@ -124,6 +122,8 @@ rollsd.test <- function() {
   expect_that(rollsd(x, k, na.rm=TRUE, align='right'),
               equals(rollapply(x, k, sd, align='right', na.rm=TRUE)))
 
+  expect_that(rollsd(x, k, na.rm=FALSE, align='right'),
+              equals(rollapply(x, k, sd, align='right', na.rm=FALSE)))
 }
 
 
