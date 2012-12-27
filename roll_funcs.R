@@ -126,14 +126,15 @@ rollsd.test <- function() {
               equals(rollapply(x, k, sd, align='right', na.rm=FALSE)))
 }
 
-rollany <- function(data, width, ...) {
-  rollsum2(as.logical(data), width, ...) > 0
+rollany <- function(data, k, ...) {
+  rollsum2(as.logical(data), k, ...) > 0
 }
 
 rollany.test <- function() {
   library(testthat)
   x <- runif(1000, -1, 1) > 0
-  expect_that(rollany(x, 4, align='right'), equals(rollapply(x, 4, any, align='right')))
+  expect_that(rollany(x, 4, align='right'),
+              equals(rollapply(x, 4, any, align='right')))
 }
 
 
