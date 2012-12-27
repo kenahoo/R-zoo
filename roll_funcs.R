@@ -49,7 +49,7 @@ windowsize <- function(width, partial=FALSE,
 }
 
 
-rollsd <- function(x, ...) {
+rollsd <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE, align=c('center', 'left', 'right'), ...) {
   UseMethod('rollsd')
 }
 
@@ -63,10 +63,14 @@ rollsd.zoo <- function(x, ...) {
 ##' of a numeric vector.  Uses the formula
 ##'   Var(x) = mean(x^2) - mean(x)^2
 ##' and then adjusts by n/(n-1) for the sample mean.
-rollsd.default <- function(x, width, align='middle', na.rm=FALSE) {
-  stopifnot(is.vector(x))
+rollsd.default <- function(x, k, fill, align=c('center','left','right'), na.rm=FALSE) {
+  if (length(dim(x)) >= 2)
+    stop("Can't handle multi-dimensional input yet")
 
   n <- length(x)
+  stopifnot(k <= n)
+
+  align <- match.arg(align)
   if (align != 'right')
     stop("Only 'right' alignment is currently supported")
 
@@ -83,20 +87,20 @@ rollsd.default <- function(x, width, align='middle', na.rm=FALSE) {
     s2 = c(0,cumsum(x^2))
   )
 
-  if (is.vector(width)) {
-    if(!is.numeric(width))
-      stop("'width' must be a numeric vector or list of numeric vectors")
+  if (is.vector(k)) {
+    if(!is.numeric(k))
+      stop("'k' must be a numeric vector or list of numeric vectors")
 
-    if(length(width)==1)
-      v <- diff(v, width)
+    if(length(k)==1)
+      v <- diff(v, k)
     else
-      v <- v[1+seq_along(width), ] - v[1+seq_along(width) - width, ]
+      v <- v[1+seq_along(k), ] - v[1+seq_along(k) - k, ]
 
-  } else if (is.list(width) && all(lapply(width, is.numeric))) {
-    stop("list not handled yet")
+  } else if (is.list(k) && all(lapply(k, is.numeric))) {
+    stop("k=list not handled yet")
 
   } else {
-    stop("'width' must be a numeric vector or list of numeric vectors")
+    stop("'k' must be a numeric vector or list of numeric vectors")
   }
 
   ret <- suppressWarnings( sqrt( (v[,'s2'] - v[,'s1']^2/v[,'s0'])/(v[,'s0']-1) ) )
@@ -107,14 +111,19 @@ rollsd.default <- function(x, width, align='middle', na.rm=FALSE) {
 
 rollsd.test <- function() {
   library(testthat)
-  expect_that(rollsd(1:5, c(1,1,3,2,2), align='right'),
-              equals(c(sd(1), sd(2), sd(1:3), sd(3:4), sd(4:5)))
-             )
-  x <- c(2,6,4,NA,5,2,8,6)
-  w <- c(1,1,2, 2,3,2,3,3)
-  exp <- sapply(seq_along(x), function(i) sd(x[(i-w[i]+1):i], na.rm=TRUE))
 
-  expect_that(rollsd(x, w, na.rm=TRUE, align='right'), equals(exp)) #
+  x <- 1:5
+  k <- c(1,1,3,2,2)
+
+  expect_that(rollsd(x, k, align='right'),
+              equals(rollapply(x, k, sd, align='right'))
+
+  x <- c(2,6,4,NA,5,2,8,6)
+  k <- c(1,1,2, 2,3,2,3,3)
+
+  expect_that(rollsd(x, k, na.rm=TRUE, align='right'),
+              equals(rollapply(x, k, sd, align='right', na.rm=TRUE)))
+
 }
 
 rollany <- function(data, width, ...) {
