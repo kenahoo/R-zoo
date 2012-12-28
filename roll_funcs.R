@@ -20,22 +20,29 @@ rollwindow <- function(data, width, FUN, ..., partial=FALSE,
   rollapply(data, lengths, FUN, ..., partial=partial, align=align)
 }
 
-windowsize <- function(data, width, align=c('center','left','right')) {
+windowsize <- function(data, width, align=c('center','left','right'), ...) {
+  UseMethod('windowsize')
+}
 
+windowsize.zoo <- function(data, width, align=c('center','left','right')) {
+  windowsize(index(data), width=width, align=align)
+}
+
+windowsize.POSIXct <- function(data, width, align=c('center','left','right')) {
+  if (inherits(width, 'Duration') || is.numeric(width)) {
+    ## Both are interpreted as number of seconds
+    return(windowsize(as.numeric(data), as.numeric(width), align=align))
+  }
+
+  NextMethod()
+}
+
+windowsize.default <- function(data, width, align=c('center','left','right')) {
   align <- match.arg(align)
   stopifnot(align=='right')  ## Only align='right' supported so far
 
-  ## This can be a big speedup
-  if(inherits(data, 'POSIXct') && inherits(width, 'Duration')) {
-    data <- as.numeric(data)
-    width <- as.numeric(width)
-  }
-
-  ## This here can be a big speedup, without losing accuracy
-  if(is.POSIXct(data) && is.duration(width)) {
-    data <- as.numeric(data)
-    width <- as.numeric(width)
-  }
+  if (is.unsorted(data))
+    stop("'data' must be sorted non-decreasingly")
 
   i <- 1
   lengths <- integer(length(data))
@@ -45,6 +52,15 @@ windowsize <- function(data, width, align=c('center','left','right')) {
   }
 
   return(lengths)
+}
+
+windowsize.test <- function() {
+  library(testthat)
+
+  x <- c(3, 8, 13, 17, 19, 26, 27)
+
+  expect_that(windowsize(x, 5, align='right'),
+              equals(c(1, 2, 2, 2, 2, 1, 2)))
 }
 
 
