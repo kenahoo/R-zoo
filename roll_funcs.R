@@ -12,36 +12,35 @@
 ##' converting \code{width} to a numeric and passing a numeric
 ##' \code{ix}.
 rollwindow <- function(data, width, FUN, ..., partial=FALSE,
-                       align=c('center','left','right'), ix=index(data)) {
+                       align=c('center','left','right')) {
 
   align <- match.arg(align)
-  lengths <- windowsize(width=width, partial=partial, align=align, ix=ix)
+  if (partial) stop("'partial' not supported yet")
+  lengths <- windowsize(data=data, width=width, align=align)
   rollapply(data, lengths, FUN, ..., partial=partial, align=align)
 }
 
-windowsize <- function(width, partial=FALSE,
-                       align=c('center','left','right'), ix=index(data)) {
+windowsize <- function(data, width, align=c('center','left','right')) {
 
-  stopifnot(partial)  ## Only partial=TRUE supported so far
   align <- match.arg(align)
   stopifnot(align=='right')  ## Only align='right' supported so far
 
   ## This can be a big speedup
-  if(inherits(ix, 'POSIXct') && inherits(width, 'Duration')) {
-    ix <- as.numeric(ix)
+  if(inherits(data, 'POSIXct') && inherits(width, 'Duration')) {
+    data <- as.numeric(data)
     width <- as.numeric(width)
   }
 
   ## This here can be a big speedup, without losing accuracy
-  if(is.POSIXct(ix) && is.duration(width)) {
-    ix <- as.numeric(ix)
+  if(is.POSIXct(data) && is.duration(width)) {
+    data <- as.numeric(data)
     width <- as.numeric(width)
   }
 
   i <- 1
-  lengths <- integer(length(ix))
-  for (j in seq_along(ix)) {
-    while(ix[j] - width > ix[i]) i <- i+1
+  lengths <- integer(length(data))
+  for (j in seq_along(data)) {
+    while(data[j] - width > data[i]) i <- i+1
     lengths[j] <- j-i+1
   }
 
