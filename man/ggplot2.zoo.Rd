@@ -13,7 +13,7 @@
 \title{Convenience Functions for Plotting zoo Objects with ggplot2}
 
 \details{
-  Convenience interface for visualizing zoo objects with ggplo2.
+  Convenience interface for visualizing zoo objects with ggplot2.
   \code{autoplot.zoo} uses \code{fortify.zoo} (with \code{melt = TRUE})
   to convert the zoo object into a data frame and then uses a suitable
   \code{aes()} mapping to visiualize the series.
@@ -42,7 +42,7 @@
     default in the \code{autoplot} method is to use \code{facets = NULL} for univariate
     series and \code{facets = Series ~ .} for multivariate series.}
   \item{\dots}{further arguments passed to \code{\link[ggplot2]{qplot}}
-    for \code{autplot} (and not used for \code{fortify}).}
+    for \code{autoplot} (and not used for \code{fortify}).}
   \item{model}{an object of class \code{"zoo"} to be converted to
     a \code{"data.frame"}.}
   \item{data}{not used (required by generic \code{\link[ggplot2]{fortify}}
