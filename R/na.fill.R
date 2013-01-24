@@ -10,7 +10,7 @@ na.fill <- function(object, fill, ...) UseMethod("na.fill")
 
 na.fill.zoo <- function(object, fill, ix, ...) {
 
-	if (length(dim(object)) == 2 && NCOL(object) > 0) {
+	if (length(dim(object)) == 2 && NCOL(object) > 1) {
 		ixmiss <- missing(ix)
 		L <- lapply(1:NCOL(object), 
 				function(i) {
