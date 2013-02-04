@@ -1,7 +1,19 @@
 Changes in Version 1.7-10
 
+  o All methods that had previously been fully exported (merge.zoo,
+    MATCH.default, ..., and many more) in order to be accessible to
+    _all_ conceivable generics are now additionally registered as
+    S3method()s for the standard generics. Exception: as.Date.* are
+    still only fully exported.
+
   o Added yearmon_trans, scale_x_yearmon and scale_y_yearmon and
     yearqtr_trans, scale_x_yearqtr and scale_y_yearqtr to ggplot2 interface.
+
+  o Removed the use of the shape and linetype aesthetic by default
+    in autoplot() method.
+
+  o Bug fix in na.fill for univariate series based on 1-column matrices
+    (provided by Josh Ulrich).
 
 
 Changes in Version 1.7-9

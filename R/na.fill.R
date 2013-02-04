@@ -71,7 +71,7 @@ na.fill.zoo <- function(object, fill, ix, ...) {
 			keep <- setdiff(keep, intersect(which(!ix), wrng))
 		}
 		if (length(fill[[3]]) == 0) keep <- unique(pmin(wx.max, keep)) 
-		object[keep]
+		object[keep, , drop = is.null(dim(object))]
 	}
 
 }
