@@ -129,6 +129,15 @@ print.yearqtr <- function(x, ...) {
     val
 }
 
+"[[.yearqtr" <- function (x, ..., drop = TRUE) 
+{
+    cl <- oldClass(x)
+    class(x) <- NULL
+    val <- NextMethod("[[")
+    class(val) <- cl
+    val
+}
+
 MATCH.yearqtr <- function(x, table, nomatch = NA, ...)
     match(floor(4*as.numeric(x) + .001), floor(4*as.numeric(table) + .001), nomatch = nomatch, ...)
 
