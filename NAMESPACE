@@ -179,6 +179,7 @@ export(
   S3method("llines", "zoo")
   S3method("lpoints", "zoo")
   S3method("ltext", "zoo")
+  S3method("mean", "zoo")
   S3method("median", "zoo")
   S3method("merge", "zoo")
   S3method("na.approx", "zoo")

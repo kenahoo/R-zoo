@@ -319,6 +319,8 @@ ifelse.zoo <- function(test, yes, no) {
 	ifelse(test, yes, no)
 }
 
+mean.zoo <- function(x, ...)  mean(coredata(x), ...)
+
 median.zoo <- function(x, na.rm = FALSE)  median(coredata(x), na.rm = na.rm)
 
 quantile.zoo <- function(x, ...) quantile(coredata(x), ...)

@@ -6,6 +6,9 @@ Changes in Version 1.7-10
     S3method()s for the standard generics. Exception: as.Date.* are
     still only fully exported.
 
+  o Added a new mean() method for "zoo" objects that simply does
+    mean(coredata(obj), ...).
+
   o Added yearmon_trans, scale_x_yearmon and scale_y_yearmon and
     yearqtr_trans, scale_x_yearqtr and scale_y_yearqtr to ggplot2 interface.
 
