@@ -310,7 +310,8 @@ names.zoo <- function(x) {
 }
 
 rev.zoo <- function(x) {
-	zoo(coredata(x), time(x)[rev(ORDER(time(x)))])
+  ix <- rev(ORDER(time(x)))
+  zoo(coredata(x), time(x)[ix])
 }
 
 ifelse.zoo <- function(test, yes, no) {

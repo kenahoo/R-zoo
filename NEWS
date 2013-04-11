@@ -20,6 +20,11 @@ Changes in Version 1.7-10
 
   o Added [[ methods for "yearmon" and "yearqtr".
 
+  o Constructs like time(obj)[ORDER(time(obj))] are now split up into
+    two steps in the package code. If zoo is only imported but not
+    loaded, R can otherwise have problems correctly dispatching to
+    the new generics ORDER and MATCH.
+
 
 Changes in Version 1.7-9
 
