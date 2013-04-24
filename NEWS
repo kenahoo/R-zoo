@@ -24,6 +24,9 @@ Changes in Version 1.7-10
     two steps in the package code. If zoo is only imported but not
     loaded, R can otherwise have problems correctly dispatching to
     the new generics ORDER and MATCH.
+    
+  o as.Date() now also works for yearqtr/yearmon that are all NA
+    (especially needed for format() and print() method).
 
 
 Changes in Version 1.7-9
