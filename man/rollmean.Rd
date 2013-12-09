@@ -24,18 +24,19 @@
 Generic functions for computing rolling means, maximums and medians of ordered observations.
 }
 \usage{
-rollmean(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = c("center", "left", "right"), ...)
-rollmeanr(..., align = "right")
-rollmax(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = c("center", "left", "right"), ...)
-rollmaxr(..., align = "right")
-rollmedian(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = c("center", "left", "right"), ...)
+  rollmean(x, k, fill=if (na.pad) NA, na.pad=FALSE,
+           align = c("center", "left", "right"), ...)
+   rollmax(x, k, fill=if (na.pad) NA, na.pad=FALSE,
+           align = c("center", "left", "right"), ...)
+rollmedian(x, k, fill=if (na.pad) NA, na.pad=FALSE,
+           align = c("center", "left", "right"), ...)
+   rollsum(x, k, fill=if (na.pad) NA, na.pad=FALSE,
+           align = c("center", "left", "right"), ...)
+
+  rollmeanr(..., align = "right")
+   rollmaxr(..., align = "right")
 rollmedianr(..., align = "right")
-rollsum(x, k, fill = if (na.pad) NA, na.pad = FALSE, 
-	align = c("center", "left", "right"), ...)
-rollsumr(..., align = "right")
+   rollsumr(..., align = "right")
 }
 \arguments{
   \item{x}{an object (representing a series of observations).}
@@ -51,7 +52,7 @@ rollsumr(..., align = "right")
 }
 
 \details{
-These functions compute rolling means, maximums and medians respectively
+These functions compute rolling means, maximums, medians, and sums respectively
 and are thus similar to \code{\link{rollapply}} but are
 optimized for speed.
 
