@@ -21,7 +21,7 @@
 \alias{rollmax.default}
 \title{Rolling Means/Maximums/Medians}
 \description{
-Generic functions for computing rolling means, maximums and medians of ordered observations.
+Generic functions for computing rolling quantities of ordered observations.
 }
 \usage{
   rollmean(x, k, fill=if (na.pad) NA, na.pad=FALSE,
@@ -32,11 +32,14 @@ rollmedian(x, k, fill=if (na.pad) NA, na.pad=FALSE,
            align = c("center", "left", "right"), ...)
    rollsum(x, k, fill=if (na.pad) NA, na.pad=FALSE,
            align = c("center", "left", "right"), ...)
+    rollsd(x, k, fill=if (na.pad) NA, na.pad=FALSE,
+           align = c("center", "left", "right"), ...)
 
   rollmeanr(..., align = "right")
    rollmaxr(..., align = "right")
 rollmedianr(..., align = "right")
    rollsumr(..., align = "right")
+     rollsd(..., align = "right")
 }
 \arguments{
   \item{x}{an object (representing a series of observations).}
@@ -52,8 +55,8 @@ rollmedianr(..., align = "right")
 }
 
 \details{
-These functions compute rolling means, maximums, medians, and sums respectively
-and are thus similar to \code{\link{rollapply}} but are
+These functions compute rolling means, maximums, medians, sums, and standard
+deviations, respectively, and are thus similar to \code{\link{rollapply}} but are
 optimized for speed.
 
 Currently, there are methods for \code{"zoo"} and \code{"ts"} series and

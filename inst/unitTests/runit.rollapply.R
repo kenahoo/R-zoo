@@ -39,3 +39,27 @@ test.rollapply.zoo.from.cbind <- function() {
   checkEquals(target, current)
 }
 
+test.rollsd.simple <- function() {
+  x <- 1:5
+  k <- 4
+  current <- rollsd(x, k, align='right')
+  target <- rollapply(x, k, sd, align='right')
+  checkEquals(target, current)
+}
+
+
+test.rollsd.multiwidth <- function() {
+  x <- 1:5
+  k <- c(1,1,3,2,2)
+  current <- rollsd(x, k, align='right')
+  target <- rollapply(x, k, sd, align='right')
+  checkEquals(target, current)
+}
+
+test.rollsd.na.rm <- function() {
+  x <- c(2,6,4,NA,5,2,8,6)
+  w <- c(1,1,2, 2,3,2,3,3)
+  current <- rollsd(x, w, na.rm=TRUE, align='right')
+  target <- sapply(seq_along(x), function(i) sd(x[(i-w[i]+1):i], na.rm=TRUE))
+  checkEquals(target, current)
+}

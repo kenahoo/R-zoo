@@ -232,5 +232,63 @@ rollmedian.ts <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE,
 }
 
 
+rollsdr <- function(..., align = "right") {
+  rollsd(..., align = align)
+}
+
+rollsd <- function(x, k, fill = if (na.pad) NA, na.pad = FALSE,
+                   align = c("center", "left", "right"), ...) {
+  UseMethod('rollsd')
+}
+
+rollsd.zoo <- function(x, ...) {
+  zoo(rollsd(coredata(x), ...), index(x))
+}
 
 
+##' Efficiently computes the rolling-window sample standard deviation
+##' of a numeric vector.  Uses the formula
+##'   Var(x) = mean(x^2) - mean(x)^2
+##' and then adjusts by n/(n-1) for the sample mean.
+rollsd.default <- function(x, k, align = c("center", "left", "right"), na.rm=FALSE) {
+  stopifnot(is.vector(x))
+
+  n <- length(x)
+
+  align <- match.arg(align)
+  if (align != 'right')
+    stop("Only 'right' alignment is currently supported")
+
+  v <- cbind(
+    s0 = c(0,cumsum(!is.na(x)))
+  )
+
+  if (na.rm) {
+    x[is.na(x)] <- 0
+  }
+
+  v <- cbind( v,
+              s1 = c(0,cumsum(x)),
+              s2 = c(0,cumsum(x^2))
+  )
+
+  if (is.vector(k)) {
+    if(!is.numeric(k))
+      stop("'k' must be a numeric vector or list of numeric vectors")
+
+    if(length(k)==1)
+      v <- diff(v, k)
+    else
+      v <- v[1+seq_along(k), ] - v[1+seq_along(k) - k, ]
+
+  } else if (is.list(k) && all(lapply(k, is.numeric))) {
+    stop("list not handled yet")
+
+  } else {
+    stop("'k' must be a numeric vector or list of numeric vectors")
+  }
+
+  ret <- suppressWarnings( sqrt( (v[,'s2'] - v[,'s1']^2/v[,'s0'])/(v[,'s0']-1) ) )
+  ret[v[,'s0']==1 | v[,'s0']==0] <- NA
+  ret
+}

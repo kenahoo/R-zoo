@@ -60,6 +60,9 @@ export(
   "rollsum",
   "rollsumr",
   "rollsum.default",
+  "rollsd",
+  "rollsdr",
+  "rollsd.default",
 
 ## NA operations
   "na.approx",
