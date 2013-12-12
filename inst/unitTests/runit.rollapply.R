@@ -45,6 +45,17 @@ test.rollsd.simple <- function() {
   current <- rollsd(x, k, align='right')
   target <- rollapply(x, k, sd, align='right')
   checkEquals(target, current)
+
+  ## Poor-man's random numbers
+  x <- 1.3^(1:100) %% 1
+  current <- rollsd(x, k, align='right')
+  target <- rollapply(x, k, sd, align='right')
+  checkEquals(target, current)
+
+  ## Check for numeric stability
+  current <- rollsd(x+1e8, k, align='right')
+  target <- rollapply(x+1e8, k, sd, align='right')
+  checkEquals(target, current)
 }
 
 

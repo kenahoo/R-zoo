@@ -253,6 +253,7 @@ rollsd.zoo <- function(x, ...) {
 rollsd.default <- function(x, k, align = c("center", "left", "right"), na.rm=FALSE) {
   stopifnot(is.vector(x))
 
+  x <- x - mean(x, na.rm=TRUE)
   n <- length(x)
 
   align <- match.arg(align)
